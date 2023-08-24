@@ -67,9 +67,14 @@ model User {
 
     role UserRole @default(PARTICIPANT)
 
-    accounts        Account[]
-    sessions        Session[]
-    ParticipantData ParticipantData[]
+    accounts                 Account[]
+    sessions                 Session[]
+    ParticipantData          ParticipantData[]
+    ExamMultipleChoiceAnswer ExamMultipleChoiceAnswer[]
+    ExamShortAnswerAnswer    ExamShortAnswerAnswer[]
+    ExamEssayAnswer          ExamEssayAnswer[]
+    ExamAttendance           ExamAttendance[]
+    EventTicket              EventTicket[]
 }
 
 model VerificationToken {
@@ -91,5 +96,162 @@ model ParticipantData {
     zip         String?
     isSubmitted Boolean @default(false)
 
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Event Models
+
+enum EventType {
+    PRE_EVENT
+    STUDENT_SUMMIT
+    GRAND_SUMMIT
+    CEREMONIAL
+}
+
+enum EventTicketStatus {
+    UNATTENDED
+    PAID_UNCONFIRMED
+    PAID_CONFIRMED
+}
+
+model EventTicket {
+    id String @id @default(cuid())
+
+    userId String
+
+    status EventTicketStatus @default(UNATTENDED)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Competition-Prelimination Exam Models
+enum QuestionType {
+    MULTIPLE_CHOICE
+    SHORT_ANSWER
+    ESSAY
+}
+
+enum MCAnswerType {
+    A
+    B
+    C
+    D
+    E
+}
+
+model Exam {
+    id String @id @default(cuid())
+
+    name        String
+    description String
+    startTime   DateTime
+    endTime     DateTime
+    duration    Int
+    isPublished Boolean  @default(false)
+
+    multipleChoiceQuestions  ExamMultipleChoice[]
+    shortAnswerQuestions     ExamShortAnswer[]
+    essayQuestions           ExamEssay[]
+    ExamMultipleChoiceAnswer ExamMultipleChoiceAnswer[]
+    ExamShortAnswerAnswer    ExamShortAnswerAnswer[]
+    ExamEssayAnswer          ExamEssayAnswer[]
+    ExamAttendance           ExamAttendance[]
+}
+
+model ExamMultipleChoice {
+    id String @id @default(cuid())
+
+    examId        String
+    question      String
+    answerA       String
+    answerB       String
+    answerC       String?
+    answerD       String?
+    answerE       String?
+    correctAnswer MCAnswerType
+
+    exam                     Exam                       @relation(fields: [examId], references: [id], onDelete: Cascade)
+    ExamMultipleChoiceAnswer ExamMultipleChoiceAnswer[]
+}
+
+model ExamShortAnswer {
+    id String @id @default(cuid())
+
+    examId        String
+    question      String
+    correctAnswer String
+
+    exam                  Exam                    @relation(fields: [examId], references: [id], onDelete: Cascade)
+    ExamShortAnswerAnswer ExamShortAnswerAnswer[]
+}
+
+model ExamEssay {
+    id String @id @default(cuid())
+
+    examId   String
+    question String
+
+    exam            Exam              @relation(fields: [examId], references: [id], onDelete: Cascade)
+    ExamEssayAnswer ExamEssayAnswer[]
+}
+
+model ExamMultipleChoiceAnswer {
+    id String @id @default(cuid())
+
+    examId               String
+    userId               String
+    examMultipleChoiceId String
+
+    answer MCAnswerType?
+
+    exam               Exam               @relation(fields: [examId], references: [id], onDelete: Cascade)
+    user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    examMultipleChoice ExamMultipleChoice @relation(fields: [examMultipleChoiceId], references: [id], onDelete: Cascade)
+}
+
+model ExamShortAnswerAnswer {
+    id String @id @default(cuid())
+
+    examId            String
+    userId            String
+    examShortAnswerId String
+
+    answer String?
+
+    exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+    user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+    examShortAnswer ExamShortAnswer @relation(fields: [examShortAnswerId], references: [id], onDelete: Cascade)
+}
+
+model ExamEssayAnswer {
+    id String @id @default(cuid())
+
+    examId      String
+    userId      String
+    examEssayId String
+
+    answer String?
+
+    exam      Exam      @relation(fields: [examId], references: [id], onDelete: Cascade)
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    examEssay ExamEssay @relation(fields: [examEssayId], references: [id], onDelete: Cascade)
+}
+
+enum ExamAttendanceStatus {
+    ABSENT
+    TAKEN
+    FINISHED
+}
+
+model ExamAttendance {
+    id String @id @default(cuid())
+
+    examId String
+    userId String
+
+    status            ExamAttendanceStatus @default(ABSENT)
+    durationRemaining Int                  @default(0)
+
+    exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
