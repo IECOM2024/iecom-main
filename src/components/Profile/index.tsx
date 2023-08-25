@@ -36,13 +36,17 @@ export const Profile = () => {
 
   useEffect(() => {
     if (!profile) return;
-    downloader({
-      folder: FolderEnum.PROFILE,
-      filename: `${profile.id}.png`,
-    }).then(({ url }) => setImageUrl(url));
+    if (!profile.image) {
+      return;
+    } else if (profile.image === "GS") {
+      downloader({
+        folder: FolderEnum.PROFILE,
+        filename: `${profile.id}.png`,
+      }).then(({ url }) => setImageUrl(url));
+    } else {
+      setImageUrl(profile.image);
+    }
   }, [profile]);
-
-  console.log(imageUrl);
 
   if (!profile) return <></>;
 
@@ -62,8 +66,15 @@ export const Profile = () => {
       FolderEnum.PROFILE,
       AllowableFileTypeEnum.JPEG,
       picInput
-    );
-    profileQuery.refetch();
+    ).then(() => {
+      profileMutation
+        .mutateAsync({
+          image: "GS",
+        })
+        .then(() => {
+          profileQuery.refetch();
+        });
+    });
   };
 
   return (

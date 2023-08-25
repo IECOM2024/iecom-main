@@ -41,7 +41,7 @@ export const EditPictureModal = ({ profile, imageUrl, uploadProfileImage, isUplo
 
   return (
     <>
-      <Button w="8em" h="8em" borderRadius="4em" mt="1em" onClick={onOpen} overflow="hidden">
+      <Button w="8em" h="8em" borderRadius="4em" mt="1em" onClick={onOpen} overflow="hidden" p="0">
         {imageUrl ? <Image src={imageUrl} w="8em"/> : <MdPerson size="8em" />}
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -58,8 +58,8 @@ export const EditPictureModal = ({ profile, imageUrl, uploadProfileImage, isUplo
           >
             {picInput ? (
               <Image src={URL.createObjectURL(picInput)} w="8em" h="8em" />
-            ) : profile.imageUrl ? (
-              <Image src={profile.imageUrl} w="8em" h="8em" />
+            ) : imageUrl ? (
+              <Image src={imageUrl} w="8em" h="8em" />
             ) : (
               <MdPerson size="8em" />
             )}

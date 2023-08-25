@@ -127,13 +127,34 @@ const monoOutlineButton: SystemStyleFunction = () => {
   };
 };
 
+const noBorderButton: SystemStyleFunction = () => {
+  return {
+    color: 'black',
+    bg: `transparent`,
+    borderRadius: '12',
+    _hover: {
+      color: 'gray.600',
+    },
+    _active: {
+      bg: 'gray.600',
+      shadow: 'none'
+    },
+    _disabled: {
+      color: 'gray.500',
+      bg: 'transparent',
+      borderColor: 'gray.400'
+    }
+  };
+}
+
 export const Button: ComponentStyleConfig = {
   variants: {
     solid: defaultButton,
     outline: outlineButton,
     'mono-black': monoBlackButton,
     'mono-gray': monoGrayButton,
-    'mono-outline': monoOutlineButton
+    'mono-outline': monoOutlineButton,
+    'no-border': noBorderButton
   },
   defaultProps: {
     variant: 'solid'

@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { getCsrfToken, useSession } from "next-auth/react";
+import { getCsrfToken, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { SignIn } from "~/components/SignIn";
@@ -12,6 +12,7 @@ export default function Signin({
   const router = useRouter();
 
   if (status === "authenticated") {
+    console.log(session)
     router.push("/");
   }
 
