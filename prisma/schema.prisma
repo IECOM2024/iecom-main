@@ -14,6 +14,11 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum Uploaded {
+    YES
+    NO
+}
+
 enum UserRole {
     PARTICIPANT
     ADMIN
@@ -101,27 +106,43 @@ model ParticipantData {
 
 // Event Models
 
-enum EventType {
-    PRE_EVENT
-    STUDENT_SUMMIT
-    GRAND_SUMMIT
-    CEREMONIAL
-}
-
 enum EventTicketStatus {
     UNATTENDED
+    REGISTERED
     PAID_UNCONFIRMED
     PAID_CONFIRMED
+}
+
+model Event {
+    id String @id @default(cuid())
+
+    name        String
+    description String
+    startTime   DateTime
+    endTime     DateTime?
+    location    String
+    isPublished Boolean  @default(false)
+
+    EventTicket EventTicket[]
 }
 
 model EventTicket {
     id String @id @default(cuid())
 
-    userId String
+    userId  String
+    eventId String
 
     status EventTicketStatus @default(UNATTENDED)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    participantName        String
+    participantEmail       String
+    participantInstitution String
+    participantPhoneNumber      String
+
+    paymentDocument Uploaded @default(NO)
+
+    user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+    event Event @relation(fields: [eventId], references: [id])
 }
 
 // Competition-Prelimination Exam Models
