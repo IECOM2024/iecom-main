@@ -6,6 +6,7 @@ const config = {
   },
   plugins: ["@typescript-eslint"],
   extends: [
+    "next",
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
@@ -21,6 +22,10 @@ const config = {
     "@typescript-eslint/no-var-requires": "off",
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/require-await": "off",
+
   },
 };
 

@@ -156,8 +156,8 @@ export const EventRegistrationModal = ({
                           <Td>
                             <Select value={eventIdInput} onChange={handleSelectChange} placeholder="Select Event">
                                 {
-                                    eventList.map((event) => (
-                                        <option value={event.id}>{event.name}</option>
+                                    eventList.map((event, idx) => (
+                                        <option value={event.id} key={idx}>{event.name}</option>
                                     ))
                                 }
                             </Select>

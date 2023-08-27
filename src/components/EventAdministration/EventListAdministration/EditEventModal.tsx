@@ -39,7 +39,7 @@ type FormValues = {
   location: string;
 };
 
-const resolver: Resolver<FormValues> = async (values) => {
+const resolver: Resolver<FormValues> = (values) => {
   return {
     values: values,
     errors: {},

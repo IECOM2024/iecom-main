@@ -25,8 +25,8 @@ export const EventRegistration = () => {
   const editEventMutation = api.event.participantEditEventTicket.useMutation();
   const deleteEventMutation = api.event.participantDeleteEventTicket.useMutation();
 
-  const eventTicketList = eventTicketListQuery.data || [];
-  const eventList = eventListQuery.data || [];
+  const eventTicketList = eventTicketListQuery.data ?? [];
+  const eventList = eventListQuery.data ?? [];
 
   const registerEvent = async (data: RouterInputs['event']['participantCreateEventTicket']) => {
     toaster(createEventMutation.mutateAsync(data), {

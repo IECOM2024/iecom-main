@@ -126,7 +126,7 @@ export const eventRouter = createTRPCRouter({
         });
 
       if (
-        eventTicket.status === EventTicketStatus.PAID_CONFIRMED ||
+        eventTicket.status === EventTicketStatus.PAID_CONFIRMED ??
         eventTicket.status === EventTicketStatus.PAID_UNCONFIRMED
       ) {
         throw new TRPCError({
@@ -245,14 +245,14 @@ export const eventRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          status: input.status || eventTicket.status,
-          participantName: input.participantName || eventTicket.participantName,
+          status: input.status ?? eventTicket.status,
+          participantName: input.participantName ?? eventTicket.participantName,
           participantEmail:
-            input.participantEmail || eventTicket.participantEmail,
+            input.participantEmail ?? eventTicket.participantEmail,
           participantInstitution:
-            input.participantInstitution || eventTicket.participantInstitution,
+            input.participantInstitution ?? eventTicket.participantInstitution,
           participantPhoneNumber:
-            input.participantPhoneNumber || eventTicket.participantPhoneNumber,
+            input.participantPhoneNumber ?? eventTicket.participantPhoneNumber,
         },
       });
 
@@ -348,11 +348,11 @@ export const eventRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          name: input.name || event.name,
-          description: input.description || event.description,
-          startTime: input.startTime || event.startTime,
-          endTime: input.endTime || event.endTime,
-          status: input.status || event.status,
+          name: input.name ?? event.name,
+          description: input.description ?? event.description,
+          startTime: input.startTime ?? event.startTime,
+          endTime: input.endTime ?? event.endTime,
+          status: input.status ?? event.status,
         },
       });
 

@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 
 type voidFn = () => void | undefined;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export const useToaster = () => {
   const toast = useToast();
@@ -28,14 +29,24 @@ export const useToaster = () => {
       });
       thenFn && thenFn();
     })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.message,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
+      .catch((err: Error) => {
+        if (err?.message) {
+          toast({
+            title: "Error",
+            description: err.message,
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "Something went wrong",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
         catchFn && catchFn();
       })
       .finally(() => {

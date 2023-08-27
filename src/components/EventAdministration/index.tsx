@@ -29,9 +29,9 @@ export const EventAdministration = () => {
   const editTicketMutation = api.event.adminEditEventTicket.useMutation();
   const deleteTicketMutation = api.event.adminDeleteEventTicket.useMutation();
 
-  const eventList = eventListQuery.data || [];
-  const eventTicketList = eventTicketListQuery.data?.data || [];
-  const eventTicketRows = eventTicketListQuery.data?.metadata.rows || 0;
+  const eventList = eventListQuery.data ?? [];
+  const eventTicketList = eventTicketListQuery.data?.data ?? [];
+  const eventTicketRows = eventTicketListQuery.data?.metadata.rows ?? 0;
 
   const eventFn = {
     addEvent: async (data: RouterInputs["event"]["adminCreateEvent"]) => {
