@@ -20,7 +20,7 @@ export const TimeInput = ({
 
   const timeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const format = e.target.value.split(':');
-    setTimeState([parseInt(format[0] || '0'), parseInt(format[1] || '0')]);
+    setTimeState([parseInt(format[0] ?? '0'), parseInt(format[1] ?? '0')]);
   };
 
   return (
