@@ -9,6 +9,8 @@ import { authOptions } from ".";
 import { UserRole } from "@prisma/client";
 import { prisma } from "../db";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 type WithSessionParams<T extends boolean> = {
   force?: T;
   handler?: (
@@ -67,7 +69,7 @@ export function withSession<T extends boolean>({
     }
 
     if (handler) {
-      const result = await handler(ctx, session!);
+      const result = await handler(ctx, session);
       if ("props" in result) {
         const props = await result.props;
         return {
@@ -81,7 +83,7 @@ export function withSession<T extends boolean>({
     }
 
     session.user.role = session.user.role || null;
-    session.user.image = session.user.image || null;
+    session.user.image = session.user.image ?? null;
 
     return { props: { session } };
   };

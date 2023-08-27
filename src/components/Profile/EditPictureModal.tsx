@@ -31,7 +31,7 @@ export const EditPictureModal = ({ profile, imageUrl, uploadProfileImage, isUplo
   const [picInput, setPicInput] = useState<File>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) return;
+    if (!e.target.files?.[0]) return;
     setPicInput(e.target.files[0]);
   };
   
@@ -42,7 +42,7 @@ export const EditPictureModal = ({ profile, imageUrl, uploadProfileImage, isUplo
   return (
     <>
       <Button w="8em" h="8em" borderRadius="4em" mt="1em" onClick={onOpen} overflow="hidden" p="0">
-        {imageUrl ? <Image src={imageUrl} w="8em"/> : <MdPerson size="8em" />}
+        {imageUrl ? <Image src={imageUrl} w="8em" alt=""/> : <MdPerson size="8em" />}
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -57,9 +57,9 @@ export const EditPictureModal = ({ profile, imageUrl, uploadProfileImage, isUplo
             overflow="hidden"
           >
             {picInput ? (
-              <Image src={URL.createObjectURL(picInput)} w="8em" h="8em" />
+              <Image src={URL.createObjectURL(picInput)} w="8em" h="8em" alt="" />
             ) : imageUrl ? (
-              <Image src={imageUrl} w="8em" h="8em" />
+              <Image src={imageUrl} w="8em" h="8em" alt=""/>
             ) : (
               <MdPerson size="8em" />
             )}

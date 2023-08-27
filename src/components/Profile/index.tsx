@@ -46,7 +46,7 @@ export const Profile = () => {
     } else {
       setImageUrl(profile.image);
     }
-  }, [profile]);
+  }, [profile, downloader]);
 
   if (!profile) return <></>;
 
@@ -95,15 +95,15 @@ export const Profile = () => {
       />
       <TableContainer>
         <Table>
-          <ProfileInfoRow placeholder="Name" value={profile.name} />
-          <ProfileInfoRow placeholder="Email" value={profile.email} />
+          <ProfileInfoRow placeholder="Name" value={profile.name ?? ""} />
+          <ProfileInfoRow placeholder="Email" value={profile.email ?? ""} />
         </Table>
       </TableContainer>
       {!profileQuery.isLoading && (
         <EditProfileModal
           initState={{
-            name: profile.name || "",
-            email: profile.email || "",
+            name: profile.name ?? "",
+            email: profile.email ?? "",
           }}
           updateProfile={updateProfile}
         />
@@ -114,7 +114,7 @@ export const Profile = () => {
 
 interface ProfileInfoRowProps {
   placeholder: string;
-  value: any;
+  value: string;
 }
 
 const ProfileInfoRow = ({ placeholder, value }: ProfileInfoRowProps) => {
