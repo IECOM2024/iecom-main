@@ -1,4 +1,4 @@
-import { EventTicketStatus } from "@prisma/client";
+import { EventStatus, EventTicketStatus } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
@@ -135,7 +135,7 @@ export const eventRouter = createTRPCRouter({
             "Ticket already paid, please contact support for cancellation",
         });
       }
-
+      console.log("ASDAD");
       const deletedEventTicket = await ctx.prisma.eventTicket.delete({
         where: {
           id: input.id,
@@ -145,15 +145,73 @@ export const eventRouter = createTRPCRouter({
       return deletedEventTicket;
     }),
 
-  adminGetEventTicketList: adminProcedure.query(async ({ ctx }) => {
-    const eventTickets = await ctx.prisma.eventTicket.findMany({
-      include: {
-        user: true,
-      },
-    });
+  adminGetEventTicketList: adminProcedure
+    .input(
+      z.object({
+        currentPage: z.number(),
+        limitPerPage: z.number(),
+        filterBy: z
+          .union([
+            z.literal("EVENT"),
+            z.literal("PARTICIPANT"),
+            z.literal("STATUS"),
+            z.literal("ALL"),
+          ])
+          .optional(),
+        searchQuery: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const currentPage = input.currentPage;
+      const limitPerPage = input.limitPerPage;
+      const offset = (currentPage - 1) * limitPerPage;
 
-    return eventTickets;
-  }),
+      const eventTickets = await ctx.prisma.eventTicket.findMany({
+        where: {
+          eventId: {
+            contains: input.filterBy === "EVENT" ? input.searchQuery : "",
+            mode: "insensitive",
+          },
+          status:
+            input.filterBy === "STATUS"
+              ? (input.searchQuery as EventTicketStatus)
+              : undefined,
+          OR: [
+            {
+              participantName:
+                {
+                    contains: input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
+                    mode: "insensitive",
+                }
+            },
+            {
+              participantEmail:
+                {
+                    contains: input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
+                    mode: "insensitive",
+                }
+            },
+            {
+              participantInstitution:
+                {
+                    contains: input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
+                    mode: "insensitive",
+                }
+            },
+          ],
+        },
+        include: {
+          user: true,
+          event: true,
+        },
+        skip: offset,
+        take: limitPerPage,
+      });
+
+      console.log(input.currentPage);
+
+      return { data: eventTickets, metadata: { rows: eventTickets.length } };
+    }),
 
   adminEditEventTicket: adminProcedure
     .input(
@@ -228,9 +286,8 @@ export const eventRouter = createTRPCRouter({
   participantGetEventList: participantProcedure.query(async ({ ctx }) => {
     const events = await ctx.prisma.event.findMany({
       where: {
-        isPublished: true,
+        status: EventStatus.PUBLISHED,
       },
-      
     });
 
     return events;
@@ -253,7 +310,7 @@ export const eventRouter = createTRPCRouter({
           description: input.description,
           startTime: input.startTime,
           endTime: input.endTime,
-          location: input.location
+          location: input.location,
         },
       });
 
@@ -274,7 +331,7 @@ export const eventRouter = createTRPCRouter({
         description: z.string().min(1),
         startTime: z.date(),
         endTime: z.date(),
-        isPublished: z.boolean(),
+        status: z.enum([EventStatus.UNPUBLISHED, EventStatus.PUBLISHED]),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -295,7 +352,7 @@ export const eventRouter = createTRPCRouter({
           description: input.description || event.description,
           startTime: input.startTime || event.startTime,
           endTime: input.endTime || event.endTime,
-          isPublished: input.isPublished || event.isPublished,
+          status: input.status || event.status,
         },
       });
 

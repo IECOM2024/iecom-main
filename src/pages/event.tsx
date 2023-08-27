@@ -1,9 +1,12 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function EventPage() {
-    const router = useRouter()
+  const router = useRouter();
+
+  const { data: session } = useSession();
 
   return (
     <PublicLayout>
@@ -17,7 +20,15 @@ export default function EventPage() {
           }
         </Flex>
         <Flex w="100%" justifyContent="center" alignItems="center">
-          <Button onClick={() => router.push("event-registration")}>Register Event</Button>
+          {session?.user.role === "ADMIN" ? (
+            <Button onClick={() => router.push("event-administration")}>
+              Manage Event
+            </Button>
+          ) : (
+            <Button onClick={() => router.push("event-registration")}>
+              Register Event
+            </Button>
+          )}
         </Flex>
       </Flex>
     </PublicLayout>

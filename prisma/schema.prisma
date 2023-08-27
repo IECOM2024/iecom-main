@@ -113,15 +113,20 @@ enum EventTicketStatus {
     PAID_CONFIRMED
 }
 
+enum EventStatus {
+    PUBLISHED
+    UNPUBLISHED
+}
+
 model Event {
     id String @id @default(cuid())
 
     name        String
     description String
     startTime   DateTime
-    endTime     DateTime?
+    endTime     DateTime
     location    String
-    isPublished Boolean  @default(false)
+    status      EventStatus @default(UNPUBLISHED)
 
     EventTicket EventTicket[]
 }
@@ -137,7 +142,7 @@ model EventTicket {
     participantName        String
     participantEmail       String
     participantInstitution String
-    participantPhoneNumber      String
+    participantPhoneNumber String
 
     paymentDocument Uploaded @default(NO)
 

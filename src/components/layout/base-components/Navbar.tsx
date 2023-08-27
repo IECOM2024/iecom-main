@@ -29,7 +29,7 @@ export const Navbar = ({ type }: NavbarProps) => {
       py="0.5em"
       alignItems="center"
     >
-      <Text onClick={() => router.push("/")}> Hello </Text>
+      <Text onClick={() => router.push("/")} fontSize="xl" fontWeight="bold" cursor="pointer"> IECOM 2024 </Text>
       <Flex w="min(35em,40%)" justifyContent="space-around" alignItems="center">
         {!isMobile && (
           <>
@@ -52,8 +52,26 @@ export const Navbar = ({ type }: NavbarProps) => {
                   ? `Hello, ${session.user.name.split(" ")[0]}`
                   : "Hello"}
               </MenuButton>
-              <MenuList>
+              <MenuList border="1px solid gray">
                 <Flex flexDirection="column" alignItems="center" px="0.7em" py="0.5em">
+                  {
+                    session.user.role === "ADMIN" ? (
+                      <Button
+                        variant="no-border"
+                        onClick={() => router.push("/event-administration")}
+                      >
+                        Manage Event
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="no-border"
+                        onClick={() => router.push("/event-registration")}
+                      >
+                        Register Event
+                      </Button>
+                    )
+                  }
+                  <Box bg="black" w="80%" m="auto" h="1px" my="1em"/>
                   <Button onClick={() => router.push("/profile")}>
                     Profile
                   </Button>
