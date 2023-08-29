@@ -3,6 +3,12 @@ import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
+export const getStaticProps = async () => {
+  return {
+    props: {},
+  };
+};
+
 export default function EventPage() {
   const router = useRouter();
 
