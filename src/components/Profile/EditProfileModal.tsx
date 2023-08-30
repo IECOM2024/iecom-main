@@ -60,8 +60,8 @@ export const EditProfileModal = ({
             <form onSubmit={handleSubmit}>
               <TableContainer>
                 <Table>
-                  {nameInput && profileInfoRow("Name ", nameInput, setNameInput)}
-                  {emailInput && profileInfoRow("Email ", emailInput, setEmailInput)}
+                  {profileInfoRow("Name ", nameInput, setNameInput)}
+                  {profileInfoRow("Email ", emailInput, setEmailInput)}
                 </Table>
               </TableContainer>
               <Flex justifyContent="right" w="100%">
@@ -77,10 +77,9 @@ export const EditProfileModal = ({
 
 const profileInfoRow = (
   placeholder: string,
-  inputState: string,
-  setInputState: React.Dispatch<React.SetStateAction<typeof inputState | undefined>>
+  inputState: any,
+  setInputState: React.SetStateAction<typeof inputState>
 ) => {
-
   return (
     <Tr h="4em">
       <Td w="40%">
