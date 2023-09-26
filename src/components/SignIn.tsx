@@ -110,7 +110,6 @@ export const SignIn = ({ csrfToken }: SignInProps) => {
               </Flex>
             </FormControl>
           </form>
-          {session ? <Text>Logged in as {session.user.email}</Text> : <Text>Not logged in</Text>}
         </Flex>
       </Flex>
   );

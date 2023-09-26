@@ -355,7 +355,10 @@ export const eventRouter = createTRPCRouter({
           status: input.status ?? event.status,
         },
       });
-
       return updatedEvent;
     }),
+
+    
+
+    
 });

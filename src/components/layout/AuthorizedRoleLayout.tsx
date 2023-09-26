@@ -11,7 +11,7 @@ export const AuthorizedRoleLayout = ({
 
   useEffect(() => {
     authCheck();
-  }, []);
+  });
 
   const authCheck = () => {
     if (!session) {

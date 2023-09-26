@@ -136,7 +136,6 @@ const noBorderButton: SystemStyleFunction = () => {
       color: 'gray.600',
     },
     _active: {
-      bg: 'gray.600',
       shadow: 'none'
     },
     _disabled: {

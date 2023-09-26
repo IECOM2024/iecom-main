@@ -1,10 +1,11 @@
 const white = '#FFFFFF';
 
-const black = '#0B0A0A';
-
 const oranye = '#E85535';
 
-const blue = '#2D3648';
+const blue = '#054E84';
+const red = '#FA440A';
+const black = '#341F16';
+
 
 const gray = {
   200: '#F9F9F9',

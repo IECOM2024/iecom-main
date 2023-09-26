@@ -17,10 +17,7 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  experimental: {
-    outputFileTracingIncludes: {"~/secret/creds.json": ["~/secret/creds.json"]},
-    outputFileTracingRoot: "/"
-  }
+  output: "standalone",
 };
 
 export default config;

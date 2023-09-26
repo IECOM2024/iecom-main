@@ -9,3 +9,14 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+@font-face {
+  font-family: alsans;
+  src: url("/fonts/Albert_Sans/AlbertSans-VariableFont_wght.ttf");
+}
+
+@font-face {
+  font-family: alsans;
+  font-style: italic;
+  src: url("/fonts/Albert_Sans/AlbertSans-Italic-VariableFont_wght.ttf");
+}
