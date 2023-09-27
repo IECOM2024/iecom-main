@@ -14,6 +14,7 @@ import {
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { MdArrowDropDown, MdReorder } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 interface NavbarProps {
   type?: "signin" | "signup";
@@ -25,6 +26,20 @@ export const Navbar = ({ type }: NavbarProps) => {
 
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
 
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY/200);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Flex
       justifyContent="space-between"
@@ -32,6 +47,11 @@ export const Navbar = ({ type }: NavbarProps) => {
       py="0.5em"
       alignItems="center"
       fontFamily="heading"
+      position="absolute"
+      zIndex="1000"
+      h="4em"
+      w="100%"
+      bg={`rgba(255,255,255,${scrollY})`}
     >
       <Flex
         onClick={() => router.push("/")}
@@ -40,10 +60,7 @@ export const Navbar = ({ type }: NavbarProps) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Image src="main-icon.webp" alt="" w="2.5em" />
-        <Text fontSize="2xl" fontWeight="900" color="blue">
-          IECOM
-        </Text>
+        <Image src="main-icon.webp" alt="" w="3.5em" ml="2.5em" mt="0.5em" />
       </Flex>
       <Flex w="min(35em,60%)" justifyContent="space-around" alignItems="center">
         {!isMobile ? (
@@ -63,12 +80,16 @@ interface ButtonGroupProps {
 }
 
 const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
-  
   return (
     <>
       <Menu>
-        <MenuButton as={Button} variant="no-border">
-          Event
+        <MenuButton
+          as={Button}
+          variant="no-border"
+          color="blue"
+          fontWeight="bold"
+        >
+          EVENT
         </MenuButton>
         <MenuList
           border="1px solid black"
@@ -76,20 +97,32 @@ const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
           flexDir="column"
           display="flex"
         >
-          <Button variant="no-border" onClick={() => router.push("/pre-event")}>
+          <Button
+            variant="no-border"
+            onClick={() => router.push("/pre-event")}
+            color="blue"
+            fontWeight="bold"
+          >
             Pre-Event
           </Button>
           <Button
             variant="no-border"
             onClick={() => router.push("/student-summit")}
+            color="blue"
+            fontWeight="bold"
           >
             Student Summit
           </Button>
         </MenuList>
       </Menu>
       <Menu>
-        <MenuButton as={Button} variant="no-border">
-          Competition
+        <MenuButton
+          as={Button}
+          variant="no-border"
+          color="blue"
+          fontWeight="bold"
+        >
+          COMPETITION
         </MenuButton>
         <MenuList
           border="1px solid black"
@@ -97,12 +130,19 @@ const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
           flexDir="column"
           display="flex"
         >
-          <Button variant="no-border" onClick={() => router.push("/essay-competition")}>
+          <Button
+            variant="no-border"
+            onClick={() => router.push("/essay-competition")}
+            color="blue"
+            fontWeight="bold"
+          >
             Essay Competition
           </Button>
           <Button
             variant="no-border"
-            onClick={() => router.push("/ie-competition")}
+            onClick={() => router.push("/main-competition")}
+            color="blue"
+            fontWeight="bold"
           >
             IE Competition
           </Button>
@@ -176,7 +216,10 @@ const ButtonGroupMobile = ({ session, router, type }: ButtonGroupProps) => {
           </Button>
           {eventDisclosure.isOpen && (
             <>
-              <Button variant="no-border" onClick={() => router.push("/pre-event")}>
+              <Button
+                variant="no-border"
+                onClick={() => router.push("/pre-event")}
+              >
                 Pre-Event
               </Button>
               <Button
@@ -201,14 +244,14 @@ const ButtonGroupMobile = ({ session, router, type }: ButtonGroupProps) => {
               </Button>
               <Button
                 variant="no-border"
-                onClick={() => router.push("/ie-competition")}
+                onClick={() => router.push("/main-competition")}
               >
                 IE Competition
               </Button>
             </>
           )}
-          
-            <Box h="1px" w="90%" m="auto" my="1em" bg="black"/>
+
+          <Box h="1px" w="90%" m="auto" my="1em" bg="black" />
 
           {!!session ? (
             <>

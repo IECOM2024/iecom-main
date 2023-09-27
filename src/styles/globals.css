@@ -20,3 +20,26 @@ a {
   font-style: italic;
   src: url("/fonts/Albert_Sans/AlbertSans-Italic-VariableFont_wght.ttf");
 }
+
+@font-face {
+  font-family: ebgar;
+  src: url("/fonts/EB_Garamond/EBGaramond-VariableFont_wght.ttf");
+}
+
+@font-face {
+  font-family: ebgar;
+  font-style: italic;
+  src: url("/fonts/EB_Garamond/EBGaramond-Italic-VariableFont_wght.ttf");
+}
+
+.blue-stroke {
+  /* Prefix required. Even Firefox only supports the -webkit- prefix */
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: #054E84;
+}
+
+.blue-stroke-1px {
+  /* Prefix required. Even Firefox only supports the -webkit- prefix */
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: #054E84;
+}

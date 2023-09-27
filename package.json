@@ -27,7 +27,7 @@
     "@types/uuid": "^9.0.2",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.1",
-    "framer-motion": "^10.12.18",
+    "framer-motion": "^10.16.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "next": "^13.4.2",

@@ -5,6 +5,8 @@ const oranye = '#E85535';
 const blue = '#054E84';
 const red = '#FA440A';
 const black = '#341F16';
+const cream = '#F0E1CC';
+const whiteCream = '#F9F6F0';
 
 
 const gray = {
@@ -65,5 +67,7 @@ export const colors = {
   yellow,
   green,
   purple,
-  blue
+  blue,
+  cream,
+  whiteCream
 };

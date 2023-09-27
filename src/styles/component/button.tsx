@@ -3,16 +3,13 @@ import type { ComponentStyleConfig } from '@chakra-ui/react';
 
 const defaultButton: SystemStyleFunction = () => {
   return {
-    color: 'white',
-    borderRadius: '12',
-    bg: 'black',
+    color: 'black',
+    borderRadius: '24',
+    bg: 'white',
+    border: "2px solid black",
+    my:"10px",
     _hover: {
-      bg: 'rgba(47, 46, 46,1)',
-      shadow: '0 0 24px rgba(255,200,4,0.6)',
-      _disabled: {
-        bg: 'gray.400',
-        shadow: 'none'
-      }
+      shadow: '0 0 10px rgba(40,40,200,0.6)',
     },
     _active: {
       bg: 'rgba(80, 80, 80,1)',

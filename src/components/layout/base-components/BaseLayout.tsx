@@ -1,9 +1,10 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import { Navbar } from "./Navbar";
 import { type Session } from "next-auth";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { Footer } from "./Footer";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -21,9 +22,13 @@ export function BaseLayout({ children, type, title }: LayoutProps) {
       <Head>
         <title>{title ?? "IECOM 2024"}</title>
       </Head>
-      <Flex flexDir="column" w="100vw" overflowX="hidden">
+      <Flex flexDir="column" w="100vw" overflowX="hidden" bgImage="texture.webp">
         <Navbar type={type} />
-        {children}
+        <Box pos="relative" zIndex="1">
+          {children}
+        </Box>
+
+        <Footer />
       </Flex>
     </>
   );
