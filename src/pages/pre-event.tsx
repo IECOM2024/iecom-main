@@ -16,14 +16,17 @@ export default function EventPage() {
 
   return (
     <PublicLayout>
-      <Image 
-        src = ""
-      />
+      <Image
+        src="preevent-1.webp"
+        alt=""
+        position="absolute"
+        zIndex="-1"
+      ></Image>
       <Flex flexDir="column" marginLeft = "10vw">
         <Text w="100%" fontSize="7xl" fontWeight = "bold" color="blue" marginTop="30vh" >
           Pre-event
         </Text>
-        <Text fontWeight ="Medium" color = "blue" mr = "60vh" fontSize="26" fontFamily="Inter">
+        <Text fontWeight ="Regular" color = "blue" mr = "60vh" fontSize="26" fontFamily="Inter">
           Lorem ipsum dolor sit amet consectetur. Eget ultrices lobortis 
           consequat morbi sodales sollicitudin tristique faucibus. Nunc 
           commodo mi dolor ipsum odio in cras. Eu posuere libero tristique 
@@ -36,7 +39,7 @@ export default function EventPage() {
               Manage Event
             </Button>
           ) : (
-            <Button onClick={() => router.push("event-registration")} mt = "5vh" fontFamily ="alsans" color = "blue" mb = "30vh">
+            <Button onClick={() => router.push("event-registration")} mt = "5vh" fontFamily ="alsans" color = "blue" mb = "20vh" width = "15%">
               Register Now!
             </Button>
           )}
