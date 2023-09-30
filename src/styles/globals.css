@@ -32,6 +32,17 @@ a {
   src: url("/fonts/EB_Garamond/EBGaramond-Italic-VariableFont_wght.ttf");
 }
 
+@font-face {
+  font-family: Inter;
+  src: url("/fonts/Inter/Inter-VariableFont_slnt_wght.ttf");
+}
+
+@font-face {
+  font-family: Inter;
+  font-style: Medium;
+  src: url("/fonts/Inter/static/Inter-VariableFont_slnt_wght.ttf");
+}
+
 .blue-stroke {
   /* Prefix required. Even Firefox only supports the -webkit- prefix */
   -webkit-text-stroke-width: 0.5px;

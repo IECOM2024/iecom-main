@@ -44,7 +44,7 @@ export const Navbar = ({ type }: NavbarProps) => {
     <Flex
       justifyContent="space-between"
       px="2em"
-      py="0.5em"
+      py="2em"
       alignItems="center"
       fontFamily="heading"
       position="absolute"
@@ -60,7 +60,7 @@ export const Navbar = ({ type }: NavbarProps) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Image src="main-icon.webp" alt="" w="3.5em" ml="2.5em" mt="0.5em" />
+        <Image src="main-icon.webp" alt="" w="3.5em" ml="5.5em" mt="2em" />
       </Flex>
       <Flex w="min(35em,60%)" justifyContent="space-around" alignItems="center">
         {!isMobile ? (

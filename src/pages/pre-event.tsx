@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Image, Text } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -16,23 +16,28 @@ export default function EventPage() {
 
   return (
     <PublicLayout>
-      <Flex flexDir="column">
-        <Text w="100%" fontSize="2xl">
-          IECOM 2024 Event
+      <Image 
+        src = ""
+      />
+      <Flex flexDir="column" marginLeft = "10vw">
+        <Text w="100%" fontSize="7xl" fontWeight = "bold" color="blue" marginTop="30vh" >
+          Pre-event
         </Text>
-        <Flex w="100%" justifyContent="center" alignItems="center">
-          {
-            "IECOM 2024 Eventis a Event held by Keluarga Mahasiswa Teknik Industri (MTI) ITB"
-          }
-        </Flex>
-        <Flex w="100%" justifyContent="center" alignItems="center">
+        <Text fontWeight ="Medium" color = "blue" mr = "60vh" fontSize="26" fontFamily="Inter">
+          Lorem ipsum dolor sit amet consectetur. Eget ultrices lobortis 
+          consequat morbi sodales sollicitudin tristique faucibus. Nunc 
+          commodo mi dolor ipsum odio in cras. Eu posuere libero tristique 
+          praesent nunc sit mollis. Gravida mi vulputate massa in mauris 
+          tortor bibendum tincidunt.
+        </Text>
+        <Flex w="100%">
           {session?.user.role === "ADMIN" ? (
             <Button onClick={() => router.push("event-administration")}>
               Manage Event
             </Button>
           ) : (
-            <Button onClick={() => router.push("event-registration")}>
-              Register Event
+            <Button onClick={() => router.push("event-registration")} mt = "5vh" fontFamily ="alsans" color = "blue" mb = "30vh">
+              Register Now!
             </Button>
           )}
         </Flex>
