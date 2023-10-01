@@ -75,27 +75,28 @@ export default function EventPage() {
               borderLeft={{ md: 'none', base: 'solid #054E83' }}
               borderBlock={{ base: 'none', md: 'solid #054E83' }}
               borderWidth={{ base: '4px', md: '.625rem' }}
-              width='78%'
+              width='80%'
               height={{ base: '35rem', md: '12.5rem' }}
               mt = "5em"
               ml = "6em"
             >
-              {Object.keys(timelineData).map((keys, index) => (
-  <TimelineCard
-    key={index}
-    title= {PhaseName[`phase${index+1}`]}                    //{PhaseName[`phase${index+!}`]}
-    date={timelineData[`date${index+1}`]} // Use the value associated with the key
-    top={`calc(${index * 5}rem - 1rem)`}
-    left={`calc(${
-      (index - 4 * Math.floor(index / 4)) * 18
-    }rem - 8rem)`}
-    isLower={index > 3}
-  />
-))}
-
+              {Array(8)
+                .fill(0)
+                .map((_, index, timelineData) => (
+                  <TimelineCard
+                    key={index}
+                    title={`Phase ${index + 1}`}
+                    date = {timelineData[index]}
+                    top={`calc(${index * 5}rem - 1rem)`}
+                    left={`calc(${
+                      (index - 4 * Math.floor(index / 4)) * 18
+                    }rem - 8rem)`}
+                    isLower={index > 3}
+                  />
+                ))}
             </Flex>
           </VStack>
-          <Flex mt = "10em" mb = "10em">
+          <Flex mt = "5em">
 
           </Flex>
         </Flex>
@@ -227,32 +228,50 @@ const paddings = {
     md: '9rem',
   },
 };
-interface timelineData {
-  [key: string]: string;
-}
+
+const EventCard = ({
+  title,
+  content,
+  img,
+}: {
+  title: string;
+  content: string;
+  img: string;
+}) => {
+  return (
+    <Flex
+      direction={{ base: 'column', md: 'row' }}
+      alignItems='center'
+      bgColor='brown.5'
+      padding='1rem 1.5rem 1rem 3rem'
+      width='100%'
+      gap={{ base: '1.25rem', md: '2rem' }}
+    >
+      <VStack align='flex-start'>
+        <Heading
+          fontSize={fontSizes.lg}
+          fontFamily='body'
+        >
+          {title}
+        </Heading>
+        <Text
+          fontSize={fontSizes.base}
+          fontWeight='semibold'
+        >
+          {content}
+        </Text>
+      </VStack>
+      <Image
+        alt='image'
+        src={img}
+        aspectRatio={16 / 9}
+        height={{ base: 'auto', md: '16rem' }}
+      />
+    </Flex>
+  );
+};
 
 const timelineData = {
     date1: "20 September 2023",
-    date2: "25 September 2023",
-    date3: "25 October 2023",
-    date4: "25 September 2023",
-    date5: "20 September 2023",
-    date6: "25 September 2023",
-    date7: "25 October 2023",
-    date8: "25 September 2023"
-}
-
-interface PhaseName{
-  [key: string]: string;
-}
-
-const PhaseName = {
-    phase1: "Pre-Event 1",
-    phase2: "Pre-Event 2",
-    phase3: "Essay Competition",
-    phase4: "Pre-Event 2",
-    phase5: "Pre-Event 1",
-    phase6: "Essay Competition",
-    phase7: "Essay Competition",
-    phase8: "Pre-Event 2"
+    date2: "20 September 2023"
 }
