@@ -1,10 +1,11 @@
-import { Button, Flex, Image, Text, VStack, FlexProps, Heading, useMediaQuery } from "@chakra-ui/react";
+import { Button, Flex, Image, Text, VStack, FlexProps, Box, useMediaQuery, Center, Img } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { relative } from "path";
 
 export const getStaticProps = async () => {
-  return {
+  return {  
     props: {},
   };
 };
@@ -83,8 +84,8 @@ export default function EventPage() {
               {Object.keys(timelineData).map((keys, index) => (
   <TimelineCard
     key={index}
-    title= {PhaseName[`phase${index+1}`]}                    //{PhaseName[`phase${index+!}`]}
-    date={timelineData[`date${index+1}`]} // Use the value associated with the key
+    title= {PhaseName[`phase${index+1}`]}
+    date={timelineData[`date${index+1}`]} 
     top={`calc(${index * 5}rem - 1rem)`}
     left={`calc(${
       (index - 4 * Math.floor(index / 4)) * 18
@@ -92,11 +93,42 @@ export default function EventPage() {
     isLower={index > 3}
   />
 ))}
-
             </Flex>
           </VStack>
-          <Flex mt = "10em" mb = "10em">
-
+          <Flex mt = "10em" mb = "20em" justifyContent='center'flexWrap='wrap' w = '100%'>
+              <Box  justifyContent='center'  bg='#FFF7E7'fontFamily = "Inter" p={10} color = 'black' borderRadius='md'>
+                <Text color = 'blue' fontSize='3xl' fontFamily='Inter' fontWeight='medium'>
+                  IECOM Series Episode 1:
+                </Text>
+                <Text color = 'blue' fontSize='5xl' fontFamily='ebgar' fontWeight='bold'>
+                  Behind The Success of A Social Entrepreneurship
+                </Text>
+                <Flex position = 'absolute'>
+                <Text  fontSize = '1xl' color = 'blue' fontFamily='Inter' fontWeight='medium'>
+                Lorem ipsum dolor sit amet consectetur. 
+                Eget ultrices lobortis consequat morbi sodales sollicitudin tristique faucibus. 
+                Nunc commodo mi dolor ipsum odio in cras. 
+                Eu posuere libero tristique praesent nunc sit mollis. 
+                Gravida mi vulputate massa in mauris tortor bibendum.
+                </Text>
+                </Flex>
+                <Flex justifyContent='flex-end'>
+<Box position = 'relative'>
+  <Image
+    src="vector-1.webp"
+    alt="Image 1"
+    position='relative'
+   />
+  <Image
+    src="rectangle-25.webp"
+    alt="Image 2"
+    position='absolute'
+    top ="-1.2em"
+    left="1.1em"
+  />
+</Box>
+                </Flex>
+              </Box>
           </Flex>
         </Flex>
     </PublicLayout>
