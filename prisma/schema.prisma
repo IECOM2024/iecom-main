@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
     previewFeatures = ["jsonProtocol", "metrics", "tracing", "extendedWhereUnique"]
     binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
@@ -74,14 +74,15 @@ model User {
 
     role UserRole @default(PARTICIPANT)
 
-    accounts                 Account[]
-    sessions                 Session[]
-    ParticipantData          ParticipantData[]
-    ExamMultipleChoiceAnswer ExamMultipleChoiceAnswer[]
-    ExamShortAnswerAnswer    ExamShortAnswerAnswer[]
-    ExamEssayAnswer          ExamEssayAnswer[]
-    ExamAttendance           ExamAttendance[]
-    EventTicket              EventTicket[]
+    accounts                        Account[]
+    sessions                        Session[]
+    ParticipantData                 ParticipantData[]
+    ExamMultipleChoiceAnswer        ExamMultipleChoiceAnswer[]
+    ExamShortAnswerAnswer           ExamShortAnswerAnswer[]
+    ExamEssayAnswer                 ExamEssayAnswer[]
+    ExamAttendance                  ExamAttendance[]
+    EventTicket                     EventTicket[]
+    MainCompetitionRegistrationData MainCompetitionRegistrationData[]
 }
 
 model VerificationToken {
@@ -102,6 +103,39 @@ model ParticipantData {
     city        String?
     zip         String?
     isSubmitted Boolean @default(false)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Competition Registration Models
+enum CompetitionRegistrationStatus {
+    UNREGISTERED
+    FORM_FILLING
+    SUBMITTED_UNCONFIRMED
+    SUBMITTED_CONFIRMED
+}
+
+model MainCompetitionParticipantData {
+    id String @id @default(cuid())
+
+    firstName  String?
+    lastName   String?
+    email      String?
+    phoneNumber String?
+    isAccepted Boolean @default(false)
+}
+
+model MainCompetitionRegistrationData {
+    id String @id @default(cuid())
+
+    userId String
+
+    status CompetitionRegistrationStatus @default(UNREGISTERED)
+
+    universityName    String?
+    universityCountry String?
+
+    isAccepted Boolean @default(false)
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

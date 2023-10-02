@@ -47,11 +47,13 @@ export const Navbar = ({ type }: NavbarProps) => {
       py="0.5em"
       alignItems="center"
       fontFamily="heading"
-      position="absolute"
+      position="fixed"
+      top="0"
       zIndex="1000"
       h="4em"
       w="100%"
-      bg={`rgba(255,255,255,${scrollY})`}
+      bg={`white`}
+      borderBottom="1px solid black"
     >
       <Flex
         onClick={() => router.push("/")}

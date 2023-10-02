@@ -6,6 +6,7 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
 import { MdArrowForward } from "react-icons/md";
 import { PublicLayout } from "~/components/layout/PublicLayout";
@@ -46,6 +47,7 @@ const REGIST_INFO: [string, number, number, string][] = [
 
 export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
+  const router = useRouter()
 
   return (
     <PublicLayout>
@@ -405,6 +407,7 @@ export default function MainCompetitionPage() {
                 mt="2em"
                 color="blue"
                 border="0.5px solid black"
+                onClick={() => router.push("main-competition-registration")}
               >
                 <Text mr="1em">Register</Text> <MdArrowForward size="1.5em" />
               </Button>

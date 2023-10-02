@@ -22,9 +22,9 @@ export function BaseLayout({ children, type, title }: LayoutProps) {
       <Head>
         <title>{title ?? "IECOM 2024"}</title>
       </Head>
-      <Flex flexDir="column" w="100vw" overflowX="hidden" bgImage="texture.webp">
+      <Flex flexDir="column" bgImage="texture.webp">
         <Navbar type={type} />
-        <Box pos="relative" zIndex="1">
+        <Box pos="relative" zIndex="1" mt="4em">
           {children}
         </Box>
 

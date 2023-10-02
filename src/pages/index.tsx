@@ -24,7 +24,6 @@ export default function Home() {
         <Flex
           paddingBlock={paddings.xxl}
           paddingInline={paddings.xxxl}
-          mt='4rem'
           gap={{ base: '2rem', md: '4rem' }}
           alignItems='center'
         >
@@ -172,6 +171,7 @@ export default function Home() {
               textAlign='center'
               color='blue'
               mb={{ base: '2rem', md: '4rem' }}
+              textShadow='2px 2px #F9F6F0'
             >
               WHAT THEY SAY ABOUT IECOM
             </Heading>
