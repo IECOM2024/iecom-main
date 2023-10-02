@@ -1,7 +1,8 @@
-import { Button, Flex, Image, Text, VStack, FlexProps, Box, useMediaQuery, Center, Img } from "@chakra-ui/react";
+import { Button, Flex, Image, Text, VStack, FlexProps, Box, useMediaQuery, HStack, Center, IconButton, ButtonGroup } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { MdArrowDropDown } from "react-icons/md";
 import { relative } from "path";
 
 export const getStaticProps = async () => {
@@ -95,41 +96,109 @@ export default function EventPage() {
 ))}
             </Flex>
           </VStack>
-          <Flex mt = "10em" mb = "20em" justifyContent='center'flexWrap='wrap' w = '100%'>
-              <Box  justifyContent='center'  bg='#FFF7E7'fontFamily = "Inter" p={10} color = 'black' borderRadius='md'>
+          <Flex 
+          mt = "3em" 
+          w = '100%'
+          mb = "-3em"
+          padding = {paddings.base}
+          pl = {paddings.xxxl}
+          pr = {paddings.lg}
+          direction={{base: 'column', md: 'row'}}
+          gap = '2rem'
+          justifyContent = 'space-between'>
+              <Box  justifyContent='center'  bg='#FFF7E7'fontFamily = "Inter" p={10} color = 'black' borderRadius='md' w ="90%">
                 <Text color = 'blue' fontSize='3xl' fontFamily='Inter' fontWeight='medium'>
                   IECOM Series Episode 1:
                 </Text>
                 <Text color = 'blue' fontSize='5xl' fontFamily='ebgar' fontWeight='bold'>
                   Behind The Success of A Social Entrepreneurship
                 </Text>
-                <Flex position = 'absolute'>
                 <Text  fontSize = '1xl' color = 'blue' fontFamily='Inter' fontWeight='medium'>
                 Lorem ipsum dolor sit amet consectetur. 
                 Eget ultrices lobortis consequat morbi sodales sollicitudin tristique faucibus. 
                 Nunc commodo mi dolor ipsum odio in cras. 
                 Eu posuere libero tristique praesent nunc sit mollis. 
                 Gravida mi vulputate massa in mauris tortor bibendum.
+                <Box position = 'relative' ml = "30em">
+                  <Image
+                    src="vector-1.webp"
+                    alt="Image 1"
+                    aspectRatio='1'
+                  />
+                  <Image
+                    src="rectangle-25.webp"
+                    alt="Image 2"
+                    position='absolute'
+                    top ="-1.2em"
+                    left="0.6em"
+                  />
+                </Box>
+                <Button>
+                  Register
+                </Button>
                 </Text>
-                </Flex>
-                <Flex justifyContent='flex-end'>
-<Box position = 'relative'>
-  <Image
-    src="vector-1.webp"
-    alt="Image 1"
-    position='relative'
-   />
-  <Image
-    src="rectangle-25.webp"
-    alt="Image 2"
-    position='absolute'
-    top ="-1.2em"
-    left="1.1em"
-  />
-</Box>
-                </Flex>
-              </Box>
+              </Box>  
           </Flex>
+          <Flex 
+          mb = '-10em' 
+          w = '100%'
+          padding = {paddings.base}
+          pl = {paddings.xxxl}
+          pr = {paddings.lg}
+          direction={{base: 'column', md: 'row'}}
+          gap = '2rem'
+          justifyContent = 'space-between'>
+              <Box  justifyContent='center'  bg='#FFF7E7'fontFamily = "Inter" p={10} color = 'black' borderRadius='md' w ="90%">
+                <Text color = 'blue' fontSize='3xl' fontFamily='Inter' fontWeight='medium'>
+                  IECOM Series Episode 2:
+                </Text>
+                <Text color = 'blue' fontSize='5xl' fontFamily='ebgar' fontWeight='bold'>
+                Enhancing Business With The Power of Digital Platform                
+                </Text>
+                <Text  fontSize = '1xl' color = 'blue' fontFamily='Inter' fontWeight='medium'>
+                Lorem ipsum dolor sit amet consectetur. 
+                Eget ultrices lobortis consequat morbi sodales sollicitudin tristique faucibus. 
+                Nunc commodo mi dolor ipsum odio in cras. 
+                Eu posuere libero tristique praesent nunc sit mollis. 
+                Gravida mi vulputate massa in mauris tortor bibendum.
+                <Box position = 'relative' ml = "30em" >
+                  <Image
+                    src="vector-1.webp"
+                    alt="Image 1"
+                    aspectRatio='1'
+                  />
+                  <Image
+                    src="rectangle-25.webp"
+                    alt="Image 2"
+                    position='absolute'
+                    top ="-1.2em"
+                    left="0.6em"
+                  />
+                </Box>
+                <Button>
+                  Register
+                </Button>
+                </Text>
+              </Box>  
+          </Flex>
+          <Flex bgColor='#C3A580' mb ='0em' zIndex='-1' justifyContent='center'>
+            <Flex mt = '10em' mb = '0em' flexDir='column'>
+              <Text fontFamily='ebgar' fontSize='6xl' color='#FFF7E7'>
+                Frequently Asked Question
+              </Text>
+              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em'> 
+              Lorem ipsum dolor sit amet consectetu?
+              </Button>
+              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em'>
+              Lorem ipsum dolor sit amet consectetu?
+              </Button>
+              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em' w = '50em'>
+              Lorem ipsum dolor sit amet consectetu?
+              </Button>
+            </Flex>
+            <Flex>
+            </Flex>
+          </Flex> 
         </Flex>
     </PublicLayout>
   );
@@ -259,6 +328,7 @@ const paddings = {
     md: '9rem',
   },
 };
+
 interface timelineData {
   [key: string]: string;
 }
