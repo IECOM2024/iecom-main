@@ -186,15 +186,14 @@ export default function EventPage() {
               <Text fontFamily='ebgar' fontSize='6xl' color='#FFF7E7'>
                 Frequently Asked Question
               </Text>
-              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em'> 
+              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em' borderColor='blue'> 
               Lorem ipsum dolor sit amet consectetu?
               </Button>
-              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em'>
-              Lorem ipsum dolor sit amet consectetu?
+              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em' borderColor='blue'>
+              Lorem ipsum dolor sit amet consectetusit amet consectetu?              
               </Button>
-              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em' w = '50em'>
-              Lorem ipsum dolor sit amet consectetu?
-              </Button>
+              <Button fontFamily='Inter' fontSize='lg' color = 'blue' h = '3em' mb = "2em" borderColor='blue'>
+              Lorem ipsum dolor sit amet amet consectetu?              </Button>
             </Flex>
             <Flex>
             </Flex>
