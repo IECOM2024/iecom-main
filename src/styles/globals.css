@@ -46,3 +46,11 @@ a {
 :root {
   overflow-x: hidden;
 }
+
+.file-input-default {
+  border:none
+}
+
+.file-input-default::file-selector-button {
+  display:none
+}

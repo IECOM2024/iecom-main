@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FileInput } from "../common/FileInput";
 
 type ParticipantRegistrationFormValues = {
   firstName: string;
@@ -122,14 +123,7 @@ export const MainCompParticipantForm = ({
                       <Text color="blue" fontWeight="bold">
                         Student Card
                       </Text>
-                      <Input
-                        type="file"
-                        onChange={(e) => {
-                          if (e.target.files) {
-                            studentCardState[1](e.target.files[0]);
-                          }
-                        }}
-                      />
+                      <FileInput fileStateArr={studentCardState} />
                     </Td>
                   </Tr>
                   <Tr>
@@ -137,14 +131,7 @@ export const MainCompParticipantForm = ({
                       <Text color="blue" fontWeight="bold">
                         Picture
                       </Text>
-                      <Input
-                        type="file"
-                        onChange={(e) => {
-                          if (e.target.files) {
-                            pictureState[1](e.target.files[0]);
-                          }
-                        }}
-                      />
+                      <FileInput fileStateArr={pictureState} />
                     </Td>
                   </Tr>
                 </Tbody>

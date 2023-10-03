@@ -11,6 +11,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FileInput } from "~/components/common/FileInput";
 import { AuthorizedRoleLayout } from "~/components/layout/AuthorizedRoleLayout";
 import {
   MainCompParticipantForm,
@@ -23,7 +24,7 @@ export const getServerSideProps = withSession({ force: true });
 export default function MainCompetitionRegistrationPage() {
   const { data: session } = useSession();
 
-  const [paymentProof, setPaymentProof] = useState<File | null>(null);
+  const [paymentProof, setPaymentProof] = useState<File | null | undefined>(null);
   const studentCardState1 = useState<File | null | undefined>(null);
   const pictureState1 = useState<File | null | undefined>(null);
   const studentCardState2 = useState<File | null | undefined>(null);
@@ -189,12 +190,7 @@ export default function MainCompetitionRegistrationPage() {
                       <Text color="blue" fontWeight="bold">
                         Proof of Payment
                       </Text>
-                      <Input
-                        type="file"
-                        onChange={(e) =>
-                          setPaymentProof(e.target.files?.[0] ?? null)
-                        }
-                      />
+                      <FileInput fileStateArr={[paymentProof, setPaymentProof]} />
                     </Td>
                   </Tr>
                 </Tbody>
