@@ -4,9 +4,9 @@ import type { ComponentStyleConfig } from '@chakra-ui/react';
 const defaultButton: SystemStyleFunction = () => {
   return {
     color: 'black',
-    borderRadius: '24',
+    borderRadius: '20',
     bg: 'white',
-    border: "2px solid black",
+    border: "1px solid black",
     my:"10px",
     _hover: {
       shadow: '0 0 10px rgba(40,40,200,0.6)',
