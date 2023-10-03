@@ -168,10 +168,6 @@ const paddings = {
   },
 };
 
-interface timelineData {
-  [key: string]: string;
-}
-
 const timelineData = {
     date1: "20 September 2023",
     date2: "25 September 2023",
@@ -181,10 +177,6 @@ const timelineData = {
     date6: "25 September 2023",
     date7: "25 October 2023",
     date8: "25 September 2023"
-}
-
-interface PhaseName{
-  [key: string]: string;
 }
 
 const PhaseName = {
