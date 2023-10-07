@@ -11,9 +11,10 @@ import { use, useEffect, useState } from "react";
 import { MdArrowForward } from "react-icons/md";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import {
-  OpacityAnim,
+  FadeIn,
   Slide,
-  StepPops,
+  StaggeredPops,
+  VisGrow,
 } from "~/utils/animation/entrance-animation";
 
 const COMP_DESCRIPTION =
@@ -47,14 +48,14 @@ const REGIST_INFO: [string, number, number, string][] = [
 
 export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <PublicLayout>
       <Flex flexDir="column" w="100%" pos="relative">
         {/* Main Description Group*/}
 
-        <Flex bgImage="main-comp-1.webp">
+        <Flex bgImage="main-comp-1.webp" bgSize="100vw auto">
           <Slide from="left">
             <Flex flexDir="column" w="80%" mt="12rem" ml="4.5em">
               <Text
@@ -84,7 +85,7 @@ export default function MainCompetitionPage() {
         </Flex>
 
         {/* Grand Theme Group*/}
-        <OpacityAnim time={5}>
+        <FadeIn>
           <Flex
             flexDir="column"
             w="100%"
@@ -116,10 +117,10 @@ export default function MainCompetitionPage() {
               {`"Engineering Horizon: Empowering Communities through Sustainable Industrial Innovation"`}
             </Text>
           </Flex>
-        </OpacityAnim>
+        </FadeIn>
 
         {/* Requirements  Group*/}
-        <OpacityAnim time={5}>
+        <FadeIn>
           <Box>
             <Text
               w="100%"
@@ -132,7 +133,7 @@ export default function MainCompetitionPage() {
             >
               Requirements
             </Text>
-            <StepPops>
+            <StaggeredPops delay={0.1}>
               {COMP_REQUIREMENTS.map((requirement, index) => (
                 <Text
                   key={index}
@@ -153,12 +154,12 @@ export default function MainCompetitionPage() {
                   {requirement}
                 </Text>
               ))}
-            </StepPops>
+            </StaggeredPops>
           </Box>
-        </OpacityAnim>
+        </FadeIn>
 
         {/* Prize Group*/}
-        <OpacityAnim time={5}>
+        <FadeIn>
           <Box>
             <Text
               w="100%"
@@ -182,7 +183,6 @@ export default function MainCompetitionPage() {
                 if (isMobile) {
                   return (
                     <Flex
-                      key={index}
                       w="90%"
                       alignItems="center"
                       my="1em"
@@ -190,6 +190,7 @@ export default function MainCompetitionPage() {
                       justifyContent="space-between"
                       boxShadow="0 4px 4px rgba(0,0,0,0.25)"
                       h="6em"
+                      key={index}
                     >
                       <Flex
                         w="100%"
@@ -233,64 +234,68 @@ export default function MainCompetitionPage() {
                   );
                 }
                 return (
-                  <Flex
-                    key={index}
-                    w="30%"
-                    flexDir="column"
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    my="1em"
-                    bg="whiteCream"
-                    boxShadow="0 4px 4px rgba(0,0,0,0.25)"
-                    h={`${17 * prize[0]}em`}
-                  >
+                  <VisGrow key={index} type="height" height={300 * prize[0]}>
                     <Flex
-                      w="100%"
-                      fontFamily="heading"
-                      fontSize="6xl"
-                      color="cream"
-                      stroke="black"
-                      fontWeight="bold"
-                      wordBreak="normal"
-                      textAlign="center"
-                      justifyContent="center"
+                      key={index}
+                      w="14em"
+                      flexDir="column"
+                      justifyContent="flex-end"
                       alignItems="center"
+                      py="1em"
+                      mx="1em"
+                      bg="whiteCream"
+                      boxShadow="0 4px 4px rgba(0,0,0,0.25)"
+                      h="100%"
                     >
-                      {index == 0 ? (
-                        <Text>
-                          1<Text as="sup">st</Text>
-                        </Text>
-                      ) : index == 1 ? (
-                        <Text>
-                          2<Text as="sup">nd</Text>
-                        </Text>
-                      ) : (
-                        <Text>
-                          3<Text as="sup">rd</Text>
-                        </Text>
-                      )}
+                      <Flex
+                        w="100%"
+                        fontFamily="heading"
+                        fontSize="6xl"
+                        color="cream"
+                        stroke="black"
+                        fontWeight="bold"
+                        wordBreak="normal"
+                        textAlign="center"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        {index == 0 ? (
+                          <Text>
+                            1<Text as="sup">st</Text>
+                          </Text>
+                        ) : index == 1 ? (
+                          <Text>
+                            2<Text as="sup">nd</Text>
+                          </Text>
+                        ) : (
+                          <Text>
+                            3<Text as="sup">rd</Text>
+                          </Text>
+                        )}
+                      </Flex>
+                      <Text
+                        w="100%"
+                        fontFamily="heading"
+                        fontSize="4xl"
+                        color="cream"
+                        fontWeight="bolder"
+                        wordBreak="normal"
+                        textAlign="center"
+                        className="blue-stroke"
+                      >
+                        {prize[1]}
+                      </Text>
                     </Flex>
-                    <Text
-                      w="100%"
-                      fontFamily="heading"
-                      fontSize="4xl"
-                      color="cream"
-                      fontWeight="bolder"
-                      wordBreak="normal"
-                      textAlign="center"
-                      className="blue-stroke"
-                    >
-                      {prize[1]}
-                    </Text>
-                  </Flex>
+                    <Box w="100%" h="1em"/>
+                  </VisGrow>
                 );
               })}
             </Flex>
           </Box>
-        </OpacityAnim>
+        </FadeIn>
 
         {/* Timeline Group*/}
-        <OpacityAnim time={5}>
+        <FadeIn>
           <Box>
             <Text
               w="100%"
@@ -303,11 +308,9 @@ export default function MainCompetitionPage() {
             >
               Timeline
             </Text>
-            <Text w="100%" >
-              FIXIN DULU TIMELINE colek @compe
-            </Text>
+            <Text w="100%">FIXIN DULU TIMELINE colek @compe</Text>
           </Box>
-        </OpacityAnim>
+        </FadeIn>
 
         {/* Registration Group*/}
         <Text

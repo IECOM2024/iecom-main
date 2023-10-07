@@ -1,43 +1,74 @@
+import { Box, Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { duration } from "moment";
 import { useEffect, useState } from "react";
 
-export const Pops = ({ children }: { children: JSX.Element }) => {
+export const Pops = ({
+  children,
+  duration,
+  delay,
+}: {
+  delay?: number;
+  duration?: number;
+  children: JSX.Element;
+}) => {
   return (
     <motion.div
-      animate={{ opacity: [0, 0.9, 1], scale: [0.3, 1.05, 1] }}
-      transition={{ duration: 0.3, times: [0, 0.8, 1] }}
+      initial={{ scale: 0 }}
+      whileInView={{
+        scale: [0, 1.1, 1],
+        transition: {
+          duration: duration ?? 0.5,
+          delay: delay ?? 0,
+          times: [0, 0.8, 1],
+        },
+      }}
+      viewport={{ once: true }}
     >
       {children}
     </motion.div>
   );
 };
 
-export const StepPops = ({ children }: { children: JSX.Element[] }) => {
-  const [step, setStep] = useState(0);
+export const StaggeredPops = ({
+  children,
+  duration,
+  delay,
+}: {
+  children: JSX.Element[];
+  duration?: number;
+  delay?: number;
+}) => {
+  if (!children) return;
 
-  const totalSteps = children.length;
-  useEffect(() => {
-    if (step < totalSteps) {
-      setTimeout(() => {
-        setStep((s) => s + 1);
-      }, 100);
-    }
-  }, [step, totalSteps]);
   return (
     <>
-      {children.map((e, i) =>
-        i <= step ? <Pops key={i}>{e}</Pops> : <div key={i} />
-      )}
+      {children.map((e, i) => (
+        <Pops duration={duration ?? 0.5} delay={(delay ?? 0.3) * i} key={i}>
+          {e}
+        </Pops>
+      ))}
     </>
   );
 };
 
-export const OpacityAnim = ({ children,time }: { children: JSX.Element,time?:number }) => {
+export const FadeIn = ({
+  children,
+  duration,
+}: {
+  children: JSX.Element;
+  duration?: number;
+}) => {
   return (
     <motion.div
-      animate={{ opacity: [0, 1] }}
-      transition={{ duration: time ?? 0.3, times: [0, 1] }}
+      initial={{ opacity: 0 }}
+      whileInView={{
+        opacity: 1,
+        transition: {
+          duration: duration ?? 0.5,
+        },
+      }}
+      viewport={{ once: true }}
     >
       {children}
     </motion.div>
@@ -45,18 +76,117 @@ export const OpacityAnim = ({ children,time }: { children: JSX.Element,time?:num
 };
 
 interface slideProps {
-  children: JSX.Element
-  from: "right" | "left" | "top" | "bottom"
-  duration?: number
+  children: JSX.Element;
+  from: "right" | "left" | "top" | "bottom";
+  duration?: number;
+  delay?: number;
 }
 
-export const Slide = ({ children, from, duration}: slideProps) => {
-  const initX = from == "right" ? 1080 : from == "left" ? -1080 : 0 
-  const initY = from == "top" ? 640 : from == "bottom" ? -640 : 0
+export const Slide = ({ children, from, duration, delay }: slideProps) => {
+  const initX = from == "right" ? 1080 : from == "left" ? -1080 : 0;
+  const initY = from == "top" ? -640 : from == "bottom" ? 640 : 0;
 
-  return <motion.div 
-    initial={{ position: "relative", top: initY, left: initX}}
-    animate={{ top: [initY,0], left: [initX,0]}}
-    transition={{duration: duration ?? 1}}
-    >{children}</motion.div>
+  return (
+    <motion.div
+      initial={{ position: "relative", top: initY, left: initX }}
+      whileInView={{
+        top: 0,
+        left: 0,
+        transition: {
+          duration: duration ?? 0.5,
+          delay: delay ?? 0,
+        },
+      }}
+      viewport={{ once: true }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export const StaggeredSlide = ({
+  children,
+  from,
+  duration,
+  delay,
+}: {
+  children: JSX.Element[];
+  from: slideProps["from"];
+  duration: number;
+  delay?: number;
+}) => {
+  if (!children) return;
+
+  return (
+    <>
+      {children.map((e, i) => (
+        <Slide
+          from={from}
+          duration={duration ?? 0.5}
+          delay={(delay ?? 0.3) * i}
+          key={i}
+        >
+          {e}
+        </Slide>
+      ))}
+    </>
+  );
+};
+
+interface VisGrowProps {
+  children: React.ReactNode;
+  duration?: number;
+  delay?: number;
+  type: "height" | "width";
+  direction?: "normal" | "reverse";
+  height?: number;
+  width?: number;
 }
+
+export const VisGrow = ({
+  children,
+  duration,
+  delay,
+  type,
+  direction,
+  height,
+  width,
+}: VisGrowProps) => {
+  if (type == "height") {
+    return (
+      <Flex height={height ?? "auto"} width={width ?? "auto"} flexDir="column" justifyContent="flex-end">
+        <motion.div
+          initial={{ height: 0, overflow: "hidden" }}
+          whileInView={{
+            height: height ?? 100,
+            transition: {
+              duration: duration ?? 0.5,
+              delay: delay ?? 0,
+            },
+          }}
+          viewport={{ once: true }}
+        >
+          {children}
+        </motion.div>
+      </Flex>
+    );
+  }
+
+  return (
+    <Flex height={height ?? "auto"} width={width ?? "auto"} flexDir="column" justifyContent="flex-end">
+      <motion.div
+        initial={{ width: 0, overflow: "hidden" }}
+        whileInView={{
+          width: width ?? 100,
+          transition: {
+            duration: duration ?? 0.5,
+            delay: delay ?? 0,
+          },
+        }}
+        viewport={{ once: true }}
+      >
+        {children}
+      </motion.div>
+    </Flex>
+  );
+};
