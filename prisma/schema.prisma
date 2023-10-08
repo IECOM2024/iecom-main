@@ -3,7 +3,7 @@
 
 generator client {
     provider        = "prisma-client-js"
-    previewFeatures = ["jsonProtocol", "metrics", "tracing", "extendedWhereUnique"]
+    previewFeatures = [ "metrics", "tracing"]
     binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -79,7 +79,6 @@ model User {
     ParticipantData                 ParticipantData[]
     ExamMultipleChoiceAnswer        ExamMultipleChoiceAnswer[]
     ExamShortAnswerAnswer           ExamShortAnswerAnswer[]
-    ExamEssayAnswer                 ExamEssayAnswer[]
     ExamAttendance                  ExamAttendance[]
     EventTicket                     EventTicket[]
     MainCompetitionRegistrationData MainCompetitionRegistrationData[]
@@ -213,10 +212,8 @@ model Exam {
 
     multipleChoiceQuestions  ExamMultipleChoice[]
     shortAnswerQuestions     ExamShortAnswer[]
-    essayQuestions           ExamEssay[]
     ExamMultipleChoiceAnswer ExamMultipleChoiceAnswer[]
     ExamShortAnswerAnswer    ExamShortAnswerAnswer[]
-    ExamEssayAnswer          ExamEssayAnswer[]
     ExamAttendance           ExamAttendance[]
 }
 
@@ -247,16 +244,6 @@ model ExamShortAnswer {
     ExamShortAnswerAnswer ExamShortAnswerAnswer[]
 }
 
-model ExamEssay {
-    id String @id @default(cuid())
-
-    examId   String
-    question String
-
-    exam            Exam              @relation(fields: [examId], references: [id], onDelete: Cascade)
-    ExamEssayAnswer ExamEssayAnswer[]
-}
-
 model ExamMultipleChoiceAnswer {
     id String @id @default(cuid())
 
@@ -283,20 +270,6 @@ model ExamShortAnswerAnswer {
     exam            Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
     user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
     examShortAnswer ExamShortAnswer @relation(fields: [examShortAnswerId], references: [id], onDelete: Cascade)
-}
-
-model ExamEssayAnswer {
-    id String @id @default(cuid())
-
-    examId      String
-    userId      String
-    examEssayId String
-
-    answer String?
-
-    exam      Exam      @relation(fields: [examId], references: [id], onDelete: Cascade)
-    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    examEssay ExamEssay @relation(fields: [examEssayId], references: [id], onDelete: Cascade)
 }
 
 enum ExamAttendanceStatus {

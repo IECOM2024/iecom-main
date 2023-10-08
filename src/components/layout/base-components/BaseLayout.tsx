@@ -13,7 +13,7 @@ export interface LayoutProps {
 }
 
 export interface ProtectedLayoutProps extends LayoutProps {
-  session: Session | null;
+  session?: Session | null;
 }
 
 export function BaseLayout({ children, type, title }: LayoutProps) {

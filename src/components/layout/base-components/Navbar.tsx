@@ -16,11 +16,12 @@ import {
   useDisclosure,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { MdArrowDropDown, MdReorder } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useHoverMenu } from "~/utils/hooks/useHoverMenu";
+import { SignOutBtn } from "./SignOutBtn";
 
 interface NavbarProps {
   type?: "signin" | "signup";
@@ -201,14 +202,12 @@ const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
               )}
               <Box bg="black" w="80%" m="auto" h="1px" my="1em" />
               <Button onClick={() => router.push("/profile")}>Profile</Button>
-              <Button onClick={() => router.push("/api/auth/signout")} mt="1em">
-                Sign Out
-              </Button>
+              <SignOutBtn/>
             </Flex>
           </MenuList>
         </Menu>
       ) : type !== "signin" ? (
-        <Button onClick={() => signIn()}> Sign In </Button>
+        <Button onClick={() => signIn(undefined, {callbackUrl: "/"})}> Sign In </Button>
       ) : (
         <Box />
       )}
@@ -281,12 +280,10 @@ const ButtonGroupMobile = ({ session, router, type }: ButtonGroupProps) => {
           {!!session ? (
             <>
               <Button onClick={() => router.push("/profile")}>Profile</Button>
-              <Button onClick={() => router.push("/api/auth/signout")} mt="1em">
-                Sign Out
-              </Button>
+              <SignOutBtn/>
             </>
           ) : (
-            <Button onClick={() => router.push("/signin")}>Sign In</Button>
+            <Button onClick={() => signIn(undefined, {callbackUrl: "/"})}>Sign In</Button>
           )}
         </MenuList>
       </Menu>

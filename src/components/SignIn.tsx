@@ -47,7 +47,8 @@ export const SignIn = ({ csrfToken }: SignInProps) => {
   };
 
   const googleSignIn = () => {
-    toaster(signIn("google", { redirect: true, csrfToken }));
+    signIn("google", { redirect: true, csrfToken })
+    console.log(csrfToken)
   };
 
   const onSignIn = (e: FormEvent<HTMLFormElement>) => {

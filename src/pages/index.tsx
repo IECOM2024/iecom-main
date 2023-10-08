@@ -49,15 +49,15 @@ export default function Home() {
             >
               <Heading
                 fontFamily="body"
-                fontSize={{ base: fontSizes.xl.base, md: fontSizes.xxxl.md }}
+                fontSize={{ base: fontSizes.lg.base, md: fontSizes.xl.md }}
               >
-                Industrial Engineering Competition
+                Industrial Engineering and Engineering Management Competition
               </Heading>
               <Box>
                 <Text
                   fontSize={fontSizes.base}
                   fontFamily="body"
-                  display={"inline" }
+                  display={"inline"}
                   color="brown.3"
                   fontWeight="bold"
                 >
@@ -66,7 +66,7 @@ export default function Home() {
                 <Text
                   fontSize={fontSizes.base}
                   fontFamily="body"
-                  display={ "inline" }
+                  display={"inline"}
                   color="brown.1"
                 >
                   Empowering Communities through Sustainable Industrial
@@ -274,7 +274,7 @@ const EventCard = ({
       direction={{ base: "column", md: "row" }}
       alignItems="center"
       bgColor="brown.5"
-      padding="1rem 1.5rem 1rem 3rem"
+      padding={{ base: "1rem 1.5rem 1rem 3rem", md: "0 0 0 3rem" }}
       width="100%"
       gap={{ base: "1.25rem", md: "2rem" }}
     >
