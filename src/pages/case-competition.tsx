@@ -53,7 +53,7 @@ export default function MainCompetitionPage() {
 
   return (
     <PublicLayout>
-      <ComingSoon something="Essay Competition" />
+      <ComingSoon something="Case Competition" />
     </PublicLayout>
   );
 

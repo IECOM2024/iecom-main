@@ -45,7 +45,7 @@ export default function EventPage() {
 
   return (
     <PublicLayout>
-      <ComingSoon something="Essay Competition" />
+      <ComingSoon something="Student Summit" />
     </PublicLayout>
   );
 
