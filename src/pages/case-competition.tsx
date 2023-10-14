@@ -16,6 +16,7 @@ import {
   StaggeredPops,
   VisGrow,
 } from "~/utils/animation/entrance-animation";
+import {ComingSoon} from '~/components/ComingSoon';
 
 const COMP_DESCRIPTION =
   "IECOM’s main competition is designed for those who are thirsty for a challenge! Through this four-stage competition, each team of three will be challenged to implement Industrial Engineering body of knowledge to provide an answer for real life problems. Every team will have a chance to enhance their critical thinking and problem solving skills to make the most of the possibilities that exist from the cases.";
@@ -49,6 +50,12 @@ const REGIST_INFO: [string, number, number, string][] = [
 export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
   const router = useRouter();
+
+  return (
+    <PublicLayout>
+      <ComingSoon something="Essay Competition" />
+    </PublicLayout>
+  );
 
   return (
     <PublicLayout>

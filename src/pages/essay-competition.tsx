@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
 import { MdArrowForward } from "react-icons/md";
+import { ComingSoon } from "~/components/ComingSoon";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import {
   FadeIn,
@@ -49,6 +50,12 @@ const REGIST_INFO: [string, number, number, string][] = [
 export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
   const router = useRouter();
+
+  return (
+    <PublicLayout>
+      <ComingSoon something="Essay Competition" />
+    </PublicLayout>
+  );
 
   return (
     <PublicLayout>
@@ -286,7 +293,7 @@ export default function MainCompetitionPage() {
                         {prize[1]}
                       </Text>
                     </Flex>
-                    <Box w="100%" h="1em"/>
+                    <Box w="100%" h="1em" />
                   </VisGrow>
                 );
               })}

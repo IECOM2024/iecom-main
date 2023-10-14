@@ -28,7 +28,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "types/**/*.ts",
+    "types/**/*.ts", "src/utils/animation/retno.tsx",
   ], 
   "exclude": ["node_modules"]
 }

@@ -37,12 +37,13 @@ export const PreEventCards = () => {
           px="2em"
           borderRadius="2em"
           boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+          id="color-run"
         >
           <Flex>
             <Flex w="65%">
               <Flex flexDir="column">
                 <Text color="blue" fontSize="xl">
-                  IECOM Series #1:
+                  Color Run
                 </Text>
                 <Text
                   color="blue"

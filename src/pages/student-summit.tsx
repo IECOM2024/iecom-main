@@ -26,6 +26,7 @@ import { Slide } from "~/utils/animation/entrance-animation";
 import { Heading } from "@chakra-ui/react";
 import { PreEventCards } from "~/components/pre-event/PreEventCards";
 import { PreEventFAQ } from "~/components/pre-event/PreEventFAQ";
+import {ComingSoon} from '~/components/ComingSoon';
 
 const STUDENT_SUMMIT_DESCRIPTION =
   "Student Summit is a series of events that will be held before the main event. This event is held to introduce the main event to the participants and to provide information about the main event. Pre-event will be held in the form of webinars, workshops, and competitions. The pre-event will be held in October and November 2023.";
@@ -36,10 +37,17 @@ export const getStaticProps = async () => {
   };
 };
 
+
 export default function EventPage() {
   const router = useRouter();
   const { data: session } = useSession();
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
+
+  return (
+    <PublicLayout>
+      <ComingSoon something="Essay Competition" />
+    </PublicLayout>
+  );
 
   return (
     <PublicLayout>

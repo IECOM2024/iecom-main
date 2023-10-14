@@ -12,7 +12,6 @@ const defaultButton: SystemStyleFunction = () => {
       shadow: '0 0 10px rgba(40,40,200,0.6)',
     },
     _active: {
-      bg: 'rgba(80, 80, 80,1)',
       shadow: 'none'
     },
     _disabled: {
@@ -133,7 +132,8 @@ const noBorderButton: SystemStyleFunction = () => {
       color: 'gray.600',
     },
     _active: {
-      shadow: 'none'
+      shadow: 'none',
+      border: 'none'
     },
     _disabled: {
       color: 'gray.500',

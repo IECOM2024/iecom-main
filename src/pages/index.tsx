@@ -23,11 +23,13 @@ import {
   StaggeredPops,
   StaggeredSlide,
 } from "~/utils/animation/entrance-animation";
+import { NewsModal } from "~/components/landing-page/NewsModal";
 
 export default function Home() {
   return (
     <>
       <PublicLayout>
+
         {/* First Section */}
         <Slide from="left">
           <Flex
@@ -94,6 +96,7 @@ export default function Home() {
           <Text
             fontSize={fontSizes.base}
             fontFamily="Inter"
+            textAlign="justify"
             width={{ base: "auto", lg: "65ch" }}
           >
             {COMP_DESCRIPTION}
@@ -219,6 +222,8 @@ export default function Home() {
             </Grid>
           </VStack>
         </VStack>
+
+        <NewsModal/>
       </PublicLayout>
     </>
   );
@@ -282,7 +287,7 @@ const EventCard = ({
         <Heading fontSize={fontSizes.lg} fontFamily="body">
           {title}
         </Heading>
-        <Text fontSize={fontSizes.base} fontWeight="semibold">
+        <Text fontSize={fontSizes.base} fontWeight="semibold" textAlign="justify">
           {content}
         </Text>
       </VStack>

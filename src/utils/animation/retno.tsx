@@ -1,7 +1,7 @@
 import { Box, Flex, useMediaQuery } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { duration } from "moment";
-import { Children, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 export const Pops = ({
   children,
@@ -10,14 +10,8 @@ export const Pops = ({
 }: {
   delay?: number;
   duration?: number;
-  children: ReactNode;
+  children: JSX.Element;
 }) => {
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
-
-  if (isMobile) {
-    return <FadeIn duration={0.8}>{children}</FadeIn>;
-  }
-
   return (
     <motion.div
       initial={{ scale: 0 }}
@@ -41,19 +35,11 @@ export const StaggeredPops = ({
   duration,
   delay,
 }: {
-  children: ReactNode[];
+  children: JSX.Element[];
   duration?: number;
   delay?: number;
 }) => {
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
   if (!children) return;
-  if (isMobile) {
-    return (
-      <StagggeredFadeIn delay={delay} duration={duration}>
-        {children}
-      </StagggeredFadeIn>
-    );
-  }
 
   return (
     <>
@@ -69,11 +55,9 @@ export const StaggeredPops = ({
 export const FadeIn = ({
   children,
   duration,
-  delay,
 }: {
-  children: ReactNode;
+  children: JSX.Element;
   duration?: number;
-  delay?: number;
 }) => {
   return (
     <motion.div
@@ -91,28 +75,8 @@ export const FadeIn = ({
   );
 };
 
-export const StagggeredFadeIn = ({
-  children,
-  duration,
-  delay,
-}: {
-  children: ReactNode[];
-  duration?: number;
-  delay?: number;
-}) => {
-  return (
-    <>
-      {children.map((e, i) => (
-        <FadeIn duration={duration ?? 0.5} delay={(delay ?? 0.3) * i} key={i}>
-          {e}
-        </FadeIn>
-      ))}
-    </>
-  );
-};
-
 interface slideProps {
-  children: ReactNode;
+  children: JSX.Element;
   from: "right" | "left" | "top" | "bottom";
   duration?: number;
   delay?: number;
@@ -121,12 +85,6 @@ interface slideProps {
 export const Slide = ({ children, from, duration, delay }: slideProps) => {
   const initX = from == "right" ? 1080 : from == "left" ? -1080 : 0;
   const initY = from == "top" ? -640 : from == "bottom" ? 640 : 0;
-
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
-
-  if (isMobile) {
-    return <FadeIn duration={0.8}>{children}</FadeIn>;
-  }
 
   return (
     <motion.div
@@ -152,7 +110,7 @@ export const StaggeredSlide = ({
   duration,
   delay,
 }: {
-  children: ReactNode[];
+  children: JSX.Element[];
   from: slideProps["from"];
   duration: number;
   delay?: number;
@@ -194,26 +152,9 @@ export const VisGrow = ({
   height,
   width,
 }: VisGrowProps) => {
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
-
-  if (!children) {
-    return Children
-  }
-
-
-  if (isMobile) {
-    return <FadeIn duration={0.8}>{children}</FadeIn>;
-  }
-
-
   if (type == "height") {
     return (
-      <Flex
-        height={height ?? "auto"}
-        width={width ?? "auto"}
-        flexDir="column"
-        justifyContent="flex-end"
-      >
+      <Flex height={height ?? "auto"} width={width ?? "auto"} flexDir="column" justifyContent="flex-end">
         <motion.div
           initial={{ height: 0, overflow: "hidden" }}
           whileInView={{
@@ -232,12 +173,7 @@ export const VisGrow = ({
   }
 
   return (
-    <Flex
-      height={height ?? "auto"}
-      width={width ?? "auto"}
-      flexDir="column"
-      justifyContent="flex-end"
-    >
+    <Flex height={height ?? "auto"} width={width ?? "auto"} flexDir="column" justifyContent="flex-end">
       <motion.div
         initial={{ width: 0, overflow: "hidden" }}
         whileInView={{
