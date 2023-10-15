@@ -1,7 +1,8 @@
-import { Box, Flex, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, useDimensions, useMediaQuery } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { duration } from "moment";
-import { Children, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { useWindowDimensions } from "../hooks/useWindowDimensions";
 
 export const Pops = ({
   children,
@@ -119,18 +120,14 @@ interface slideProps {
 }
 
 export const Slide = ({ children, from, duration, delay }: slideProps) => {
-  const initX = from == "right" ? 1080 : from == "left" ? -1080 : 0;
-  const initY = from == "top" ? -640 : from == "bottom" ? 640 : 0;
+  const { width, height } = useWindowDimensions();
 
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
-
-  if (isMobile) {
-    return <FadeIn duration={0.8}>{children}</FadeIn>;
-  }
+  const initX = from == "right" ? width : from == "left" ? -width : 0;
+  const initY = from == "top" ? -height : from == "bottom" ? height : 0;
 
   return (
     <motion.div
-      initial={{ position: "relative", top: initY, left: initX }}
+      initial={{ position: "relative", top:initY, left:initX, overflow: "hidden" }}
       whileInView={{
         top: 0,
         left: 0,
@@ -197,14 +194,12 @@ export const VisGrow = ({
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
 
   if (!children) {
-    return Children
+    return children;
   }
-
 
   if (isMobile) {
     return <FadeIn duration={0.8}>{children}</FadeIn>;
   }
-
 
   if (type == "height") {
     return (

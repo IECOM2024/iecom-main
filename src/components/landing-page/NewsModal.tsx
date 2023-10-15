@@ -13,22 +13,26 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useIsMobile } from "~/utils/hooks/useIsMobile";
 
 const NEWS: NewsPanelProps[] = [
   {
     title: "Color Run",
-    imgUrl: "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80",
+    imgUrl:
+      "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80",
     linkTo: "pre-event#color-run",
   },
   {
     title: "Seminar & Workshop",
-    imgUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    linkTo: "pre-event#color-run",
+    imgUrl:
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    linkTo: "pre-event#seminar-and-workshop",
   },
 ];
 
 export const NewsModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,7 +47,12 @@ export const NewsModal = () => {
         <ModalHeader>WHAT'S ON IECOM</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex w="100%" justifyContent={"space-around"}>
+          <Flex
+            w="100%"
+            justifyContent={"space-around"}
+            flexDir={isMobile ? "column" : "row"}
+            gap={isMobile ? "1em" : undefined}
+          >
             {NEWS.map((e, i) => {
               return <NewsPanel {...e} key={i} />;
             })}
@@ -66,11 +75,12 @@ interface NewsPanelProps {
 }
 const NewsPanel = ({ title, imgUrl, linkTo }: NewsPanelProps) => {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex
-      w="30%"
+      w={isMobile ? "100%" : "30%"}
       h="18em"
       borderRadius="5px"
       boxShadow="4px 4px 8px black"
@@ -91,7 +101,7 @@ const NewsPanel = ({ title, imgUrl, linkTo }: NewsPanelProps) => {
         w="100%"
         h="5em"
         pos="absolute"
-        top={isOpen ? "60%" : "110%"}
+        top={isMobile ? "60%" : isOpen ? "60%" : "110%"}
         fontSize="3xl"
         fontWeight="bold"
         color="whiteCream"

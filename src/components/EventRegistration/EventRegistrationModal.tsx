@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Resolver } from "react-hook-form";
 import { RouterInputs, RouterOutputs } from "~/utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type FormValues = {
   participantName: string;
@@ -41,13 +41,21 @@ interface EventRegistrationModalProps {
     data: RouterInputs["event"]["participantCreateEventTicket"]
   ) => Promise<void>;
   eventList: RouterOutputs["event"]["participantGetEventList"];
+  eventType?: string;
 }
 
 export const EventRegistrationModal = ({
   registerEvent,
   eventList,
+  eventType,
 }: EventRegistrationModalProps) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
+
+  useEffect(() => {
+    if (eventType == "color_run" || eventType == "seminar_and_workshop") {
+      onOpen();
+    }
+  }, [onOpen, eventType]);
 
   const {
     register,
@@ -57,14 +65,14 @@ export const EventRegistrationModal = ({
     resolver,
   });
 
-  const [eventIdInput, setEventIdInput] = useState<string>();
+  const [eventIdInput, setEventIdInput] = useState<string>(eventType ?? "");
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setEventIdInput(e.target.value);
   };
 
   const onSubmit = handleSubmit((data) => {
     if (!eventIdInput) return;
-    registerEvent({...data, eventId:eventIdInput}).then(() => onClose());
+    registerEvent({ ...data, eventId: eventIdInput }).then(() => onClose());
   });
 
   return (
@@ -154,12 +162,16 @@ export const EventRegistrationModal = ({
                             <Text>Register For</Text>
                           </Td>
                           <Td>
-                            <Select value={eventIdInput} onChange={handleSelectChange} placeholder="Select Event">
-                                {
-                                    eventList.map((event, idx) => (
-                                        <option value={event.id} key={idx}>{event.name}</option>
-                                    ))
-                                }
+                            <Select
+                              value={eventIdInput}
+                              onChange={handleSelectChange}
+                              placeholder="Select Event"
+                            >
+                              {eventList.map((event, idx) => (
+                                <option value={event.id} key={idx}>
+                                  {event.name}
+                                </option>
+                              ))}
                             </Select>
                           </Td>
                         </Tr>

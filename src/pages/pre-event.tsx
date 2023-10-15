@@ -22,13 +22,18 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { MdArrowDropDown } from "react-icons/md";
 import { relative } from "path";
-import { Slide } from "~/utils/animation/entrance-animation";
+import { Slide, FadeIn } from "~/utils/animation/entrance-animation";
 import { Heading } from "@chakra-ui/react";
 import { PreEventCards } from "~/components/pre-event/PreEventCards";
 import { PreEventFAQ } from "~/components/pre-event/PreEventFAQ";
+import { useIsMobile } from "~/utils/hooks/useIsMobile";
 
 const PRE_EVENT_DESCRIPTION =
-  "Pre-event is a series of events that will be held before the main event. This event is held to introduce the main event to the participants and to provide information about the main event. Pre-event will be held in the form of webinars, workshops, and competitions. The pre-event will be held in October and November 2023.";
+  "Pre-event consist of a series of events designed for you to explore more about Industrial Engineering and Engineering Management. Pre-event will be held in the form of Color Run and Seminar. The pre-event will be held in October and November 2023. Grab the chance to learn from best expertise who’ll share their knowledge and experience about Sustainable Industry!";
+const PRE_EVENT_THEME =
+  "Sustainable Economic Growth: Navigating the Path to Prosperity, Equity, and Environment Resilience";
+const PRE_EVENT_THEME_DESC =
+  "Underscoring the idea that sustainable innovation in industrial engineering can be a profitable approach. By developing and implementing environmentally friendly technologies and processes, businesses and industries can not only reduce their ecological footprint but also benefit from increased efficiency and profitability. The integration of sustainability principles into industrial engineering practices is critical to addressing global environmental challenges while improving economic well-being. This is aligned with the idea that environmentally responsible practices can provide economic benefits, making them a key driver for a more sustainable and prosperous future.";
 
 export const getStaticProps = async () => {
   return {
@@ -39,14 +44,14 @@ export const getStaticProps = async () => {
 export default function EventPage() {
   const router = useRouter();
   const { data: session } = useSession();
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
+  const isMobile = useIsMobile();
 
   return (
-    <PublicLayout>
-      <Flex flexDir="column" mb="6rem">
+    <PublicLayout title="Pre-Event">
+      <Flex flexDir="column">
         {/* Main Description Group*/}
 
-        <Flex bgImage="preevent-1.webp" borderBottom="1px solid black">
+        <Flex bgImage="preevent-1.webp" bgSize="100% auto" bgRepeat="no-repeat">
           <Slide from="left">
             <Flex
               flexDir="column"
@@ -71,6 +76,7 @@ export default function EventPage() {
                 fontSize="lg"
                 fontWeight="bold"
                 wordBreak="normal"
+                textAlign="justify"
               >
                 {PRE_EVENT_DESCRIPTION}
               </Text>
@@ -87,6 +93,75 @@ export default function EventPage() {
             </Flex>
           </Slide>
         </Flex>
+
+        {/*Theme Desc Group */}
+        <FadeIn>
+          <Flex
+            flexDir="column"
+            w="100%"
+            justifyContent="center"
+            alignItems="center"
+            pos="relative"
+            bg="rgba(5,79,133,1)"
+            pt="8em"
+            pb="10em"
+          >
+            <Text
+              fontSize="6xl"
+              fontFamily="body"
+              color="cream"
+              fontWeight="bold"
+            >
+              Pre-event's Theme
+            </Text>
+            <Text
+              fontSize="3xl"
+              fontFamily="heading"
+              color="cream"
+              fontWeight="bold"
+              wordBreak="normal"
+              textAlign="center"
+              w="80%"
+              mt="2em"
+            ></Text>
+            <Accordion allowToggle w="min(80em, 90%)">
+              <AccordionItem
+                mt="1em"
+                borderRadius="10px"
+                mx="auto"
+                color="cream"
+                borderTop="none"
+                borderBottom="none"
+              >
+                <h2>
+                  <AccordionButton bg="none">
+                    <Box flex="1" textAlign="center">
+                      <Text fontSize="3xl" fontWeight="bold">
+                        {PRE_EVENT_THEME}
+                      </Text>
+                    </Box>
+                  </AccordionButton>
+                </h2>
+
+                <AccordionPanel bg="cream">
+                  <Text
+                    fontSize="xl"
+                    fontFamily="heading"
+                    color="blue"
+                    fontWeight="bold"
+                    wordBreak="normal"
+                    textAlign="justify"
+                    w="80%"
+                    borderRadius="10px"
+                    mx="auto"
+                  >
+                    {PRE_EVENT_THEME_DESC}
+                  </Text>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </Flex>
+        </FadeIn>
 
         {/* Timeline Group */}
         <VStack
@@ -130,7 +205,10 @@ export default function EventPage() {
 
         {/* FAQ Group */}
         <Box pos="relative" top="-4em" background="brown.3">
-          <PreEventFAQ/>
+          <PreEventFAQ />
+        </Box>
+        <Box pos="relative">
+          <Box w="100%" h="4em" bg="brown.3" pos="absolute" top="-4em" />
         </Box>
       </Flex>
     </PublicLayout>

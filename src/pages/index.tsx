@@ -24,12 +24,14 @@ import {
   StaggeredSlide,
 } from "~/utils/animation/entrance-animation";
 import { NewsModal } from "~/components/landing-page/NewsModal";
+import { useIsMobile } from "~/utils/hooks/useIsMobile";
 
 export default function Home() {
+  const isMobile = useIsMobile();
+
   return (
     <>
       <PublicLayout>
-
         {/* First Section */}
         <Slide from="left">
           <Flex
@@ -37,11 +39,13 @@ export default function Home() {
             paddingInline={paddings.xxxl}
             gap={{ base: "2rem", md: "4rem" }}
             alignItems="center"
+            flexDir={isMobile ? "column" : "row"}
           >
             <Image
               alt="IECOM"
               src="main-icon.webp"
-              h={{ base: "6rem", md: "18rem" }}
+              h={{ base: "10rem", md: "18rem" }}
+              mb={isMobile ? "3em" : "0"}
             />
             <VStack
               align="flex-start"
@@ -75,9 +79,8 @@ export default function Home() {
                   Innovation
                 </Text>
               </Box>
-              <Button fontSize={fontSizes.base} size={{ base: "sm", md: "lg" }}>
-                Learn More
-              </Button>
+              {/* <Button fontSize={fontSizes.base} size={{ base: "sm", md: "lg" }}>
+                Learn More </Button> */}
             </VStack>
           </Flex>
         </Slide>
@@ -92,6 +95,7 @@ export default function Home() {
           gap="2rem"
           bgColor="brown.3"
           justifyContent="space-between"
+          mb={isMobile ? "3em" : "0"}
         >
           <Text
             fontSize={fontSizes.base}
@@ -134,11 +138,18 @@ export default function Home() {
                 OUR EVENTS
               </Heading>
             </FadeIn>
-            <Slide from="left">
+            <Slide from="right">
               <EventCard
                 title="Pre Event"
                 content={PRE_EVENT_DESCRIPTION}
                 img="landing-page/pre-event.webp"
+              />
+            </Slide>
+            <Slide from="left">
+              <EventCard
+                title="Case Competition"
+                content={CASE_COMPETITION_DESCRIPTION}
+                img="landing-page/case-competition.webp"
               />
             </Slide>
             <Slide from="right">
@@ -150,7 +161,7 @@ export default function Home() {
             </Slide>
             <Slide from="left">
               <EventCard
-                title="Grand Summit"
+                title="Student Summit"
                 content={GRAND_SUMMIT_DESCRIPTION}
                 img="landing-page/grand-summit.webp"
               />
@@ -190,7 +201,7 @@ export default function Home() {
                 ))}
             </Flex>
           </VStack>
-          <VStack>
+          {/* <VStack>
             <Heading
               fontSize={fontSizes.xxl}
               fontFamily="body"
@@ -220,10 +231,10 @@ export default function Home() {
                 ))}
               </StaggeredPops>
             </Grid>
-          </VStack>
+          </VStack>*/}
         </VStack>
 
-        <NewsModal/>
+        <NewsModal />
       </PublicLayout>
     </>
   );
@@ -233,13 +244,16 @@ const COMP_DESCRIPTION =
   "IECOM is an international industrial engineering competition designed for undergraduate students majoring in Industrial Engineering, Engineering Management, or other related fields, held by Industrial Engineering Student Union of Bandung Institute of Technology (MTI ITB).";
 
 const PRE_EVENT_DESCRIPTION =
-  "IECOM 2022 will also give you a series of events to explore more about Industrial Engineering, especially to be the answer to today's problem. Grab the chance to learn from best expertise who’ll share their knowledge and experience about Sustainable Industry";
+  "IECOM 2024 will give you a series of events to explore more about Industrial Engineering, especially to be the answer to today's problem. Grab the chance to learn from best expertise who’ll share their knowledge and experience about Sustainable Industry";
+
+const CASE_COMPETITION_DESCRIPTION =
+  "IECOM 2024's case competition is designed for you who are thirsty for challenge!. Through 4 stage of competition, this competition will challenge your knowledge of Industrial Engineering and Engineering Management";
 
 const ESSAY_COMPETITION_DESCRIPTION =
   "The essay competition provides a place to be creative and solution-oriented to answer a problem related to the main topic “Refining Southeast Asia’s Business through Entrepreneurship in the Disruptive Era”";
 
 const GRAND_SUMMIT_DESCRIPTION =
-  "The Grand Summit is a national seminar that will discuss current issues related to IECOM 2022's grand theme “Industry development through digitalization and innovation”.";
+  "The Student Summit is a national seminar that will discuss current issues related to IECOM 2024's grand theme “Industry development through digitalization and innovation”.";
 
 const Testimonial = [
   {
@@ -287,7 +301,11 @@ const EventCard = ({
         <Heading fontSize={fontSizes.lg} fontFamily="body">
           {title}
         </Heading>
-        <Text fontSize={fontSizes.base} fontWeight="semibold" textAlign="justify">
+        <Text
+          fontSize={fontSizes.base}
+          fontWeight="semibold"
+          textAlign="justify"
+        >
           {content}
         </Text>
       </VStack>

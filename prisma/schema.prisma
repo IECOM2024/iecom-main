@@ -153,6 +153,11 @@ enum EventStatus {
     UNPUBLISHED
 }
 
+enum EventType {
+    COLOR_RUN
+    SEMINAR
+}
+
 model Event {
     id String @id @default(cuid())
 
@@ -162,6 +167,7 @@ model Event {
     endTime     DateTime
     location    String
     status      EventStatus @default(UNPUBLISHED)
+    eventType   EventType @default(COLOR_RUN)
 
     EventTicket EventTicket[]
 }
@@ -179,11 +185,13 @@ model EventTicket {
     participantInstitution String
     participantPhoneNumber String
 
-    paymentDocument Uploaded @default(NO)
+    paymentDocument Uploaded? @default(NO)
 
     user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     event Event @relation(fields: [eventId], references: [id])
 }
+
+// Feedback Telemetry
 
 // Competition Exam Models
 enum ExamType {
@@ -333,7 +341,7 @@ model ExamMultipleChoiceAnswer {
 
     examId String
 
-    answer     String
+    answer String
 
     answerData           AnswerData?        @relation(fields: [answerDataId], references: [id])
     answerDataId         String?
@@ -347,7 +355,7 @@ model ExamShortAnswerAnswer {
     examId String
     userId String
 
-    answer     String?
+    answer String?
 
     answerData        AnswerData?     @relation(fields: [answerDataId], references: [id])
     answerDataId      String?

@@ -15,12 +15,20 @@ const FAQCONTENT: {
   answer: string;
 }[] = [
   {
-    question: "What is IECOM Preevent?",
-    answer: "Lorem ipsum dolor sit amet consectetur.",
+    question: "Who can join IECOM's Pre-event?",
+    answer:
+      "University students, High school students, or any of you that find the event interesting.",
+  },
+
+  {
+    question: "How can i join IECOM's Pre-event?",
+    answer:
+      "You can register as a participant by applying yourself through this website. First, you need to create an IECOM account then click 'Register' button on the event you wish to join. Kindly follow our social media page or our website to keep updated!",
   },
   {
-    question: "What is MTI?",
-    answer: "Lorem ipsum dolor sit amet consectetur.",
+    question: "Can i join both of the events?",
+    answer:
+      "Yes, you can join both of the events, as long as there are available seats.",
   },
 ];
 
@@ -42,7 +50,7 @@ export const PreEventFAQ = () => {
           Frequently Asked Questions
         </Text>
 
-        <Accordion allowToggle>
+        <Accordion allowMultiple allowToggle>
           {FAQCONTENT.map((faq, index) => (
             <AccordionItem
               key={index}
@@ -57,17 +65,13 @@ export const PreEventFAQ = () => {
               <h2>
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
-                    <Text fontSize="xl">
-                      {faq.question}
-                    </Text>
+                    <Text fontSize="xl" fontWeight="bold">{faq.question}</Text>
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <Text fontSize="xl">
-                  {faq.answer}
-                </Text>
+                <Text fontSize="xl">{faq.answer}</Text>
               </AccordionPanel>
             </AccordionItem>
           ))}

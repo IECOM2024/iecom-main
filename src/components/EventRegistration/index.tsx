@@ -15,7 +15,11 @@ import { EventTicketListRow } from "./EventTicketListRow";
 import { EventRegistrationModal } from "./EventRegistrationModal";
 import { useToaster } from "~/utils/hooks/useToaster";
 
-export const EventRegistration = () => {
+interface EventRegistrationProps {
+  eventType?: string
+}
+
+export const EventRegistration = ({eventType} : EventRegistrationProps) => {
   const toaster = useToaster()
 
   const eventTicketListQuery =
@@ -99,7 +103,7 @@ export const EventRegistration = () => {
         )}
       </Flex>
       <Flex w="100%" justifyContent="center" alignItems="center" mt="1em">
-        <EventRegistrationModal registerEvent={registerEvent} eventList={eventList}/>
+        <EventRegistrationModal registerEvent={registerEvent} eventList={eventList} eventType={eventType}/>
       </Flex>
     </Flex>
   );
