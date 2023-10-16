@@ -126,7 +126,13 @@ export const Slide = ({ children, from, duration, delay }: slideProps) => {
   const width = 0.8 * vw;
   const height = 0.8 * vh;
 
-  console.log(isMobile);
+  if (isMobile) {
+    return (
+      <FadeIn delay={delay} duration={duration}>
+        {children}
+      </FadeIn>
+    );
+  }
 
   const initX = from == "right" ? width : from == "left" ? isMobile ? width : -width : 0;
   const initY = from == "top" ? -height : from == "bottom" ? height : 0;

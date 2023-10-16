@@ -89,10 +89,10 @@ export const EditEventRegistrationModal = ({
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit Your Registration</ModalHeader>
+        <ModalContent maxW={{ base: "95vw", md: undefined }}>
+          <ModalHeader>View/Edit Your Registration</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody >
             <form onSubmit={onSubmit}>
               <ModalCloseButton />
               <ModalBody>
@@ -112,8 +112,7 @@ export const EditEventRegistrationModal = ({
                               {...register("participantName", {
                                 required: true,
                               })}
-                              w="min(10em,95%)"
-                              color="white"
+                              w="min(15em,95%)"
                             />
                           </Td>
                         </Tr>
@@ -126,8 +125,7 @@ export const EditEventRegistrationModal = ({
                               {...register("participantEmail", {
                                 required: true,
                               })}
-                              w="min(10em,95%)"
-                              color="white"
+                              w="min(15em,95%)"
                             />
                           </Td>
                         </Tr>
@@ -140,8 +138,7 @@ export const EditEventRegistrationModal = ({
                               {...register("participantPhoneNumber", {
                                 required: true,
                               })}
-                              w="min(10em,95%)"
-                              color="white"
+                              w="min(15em,95%)"
                             />
                           </Td>
                         </Tr>
@@ -154,8 +151,7 @@ export const EditEventRegistrationModal = ({
                               {...register("participantInstitution", {
                                 required: true,
                               })}
-                              w="min(10em,95%)"
-                              color="white"
+                              w="min(15em,95%)"
                             />
                           </Td>
                         </Tr>

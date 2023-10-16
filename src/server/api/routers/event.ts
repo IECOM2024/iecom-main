@@ -178,25 +178,25 @@ export const eventRouter = createTRPCRouter({
               : undefined,
           OR: [
             {
-              participantName:
-                {
-                    contains: input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
-                    mode: "insensitive",
-                }
+              participantName: {
+                contains:
+                  input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
+                mode: "insensitive",
+              },
             },
             {
-              participantEmail:
-                {
-                    contains: input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
-                    mode: "insensitive",
-                }
+              participantEmail: {
+                contains:
+                  input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
+                mode: "insensitive",
+              },
             },
             {
-              participantInstitution:
-                {
-                    contains: input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
-                    mode: "insensitive",
-                }
+              participantInstitution: {
+                contains:
+                  input.filterBy === "PARTICIPANT" ? input.searchQuery : "",
+                mode: "insensitive",
+              },
             },
           ],
         },
@@ -284,9 +284,18 @@ export const eventRouter = createTRPCRouter({
     }),
 
   participantGetEventList: participantProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
     const events = await ctx.prisma.event.findMany({
       where: {
         status: EventStatus.PUBLISHED,
+        NOT: {
+          EventTicket: {
+            some: {
+                userId: userId
+            },
+          },
+        },
       },
     });
 
@@ -357,8 +366,4 @@ export const eventRouter = createTRPCRouter({
       });
       return updatedEvent;
     }),
-
-    
-
-    
 });

@@ -51,11 +51,11 @@ export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
   const router = useRouter();
 
-  return (
+  return(
     <PublicLayout>
       <ComingSoon something="Essay Competition" />
     </PublicLayout>
-  );
+  ); 
 
   return (
     <PublicLayout>

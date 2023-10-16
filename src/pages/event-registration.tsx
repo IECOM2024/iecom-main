@@ -11,6 +11,9 @@ export const getServerSideProps = withSession({ force: true });
 export default function EventRegistrationPage() {
   const { data: session } = useSession();
   const router = useRouter()
+  console.log(
+    router.query
+  )
 
   return (
     <AuthorizedRoleLayout session={session}>

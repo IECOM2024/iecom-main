@@ -12,10 +12,19 @@ interface EventListRowProps {
     editEventTicket: (data: RouterInputs["event"]["participantEditEventTicket"]) => Promise<void>;
     num: number
     deleteEventTicket: (data: RouterInputs["event"]["participantDeleteEventTicket"]) => Promise<void>;
+    isMobile?: boolean
 }
 
-export const EventTicketListRow = ({eventTicket,num, eventList, editEventTicket, deleteEventTicket} : EventListRowProps) => {
+export const EventTicketListRow = ({eventTicket,num, eventList, editEventTicket, deleteEventTicket, isMobile} : EventListRowProps) => {
     const momentTime = moment(eventTicket.event.startTime)
+
+    if (!!isMobile) {
+        return <Tr>
+            <Td>{eventTicket.event.name}</Td>
+            <Td>{eventTicket.status}</Td>
+            <EditEventRegistrationModal deleteEventTicket={deleteEventTicket} eventList={eventList} eventTicket={eventTicket} editEventTicket={editEventTicket}/>
+        </Tr>
+    }
 
     return <Tr>
         <Td>{num}</Td> 
