@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { duration } from "moment";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 export const Pops = ({
   children,
@@ -120,17 +121,29 @@ interface slideProps {
 }
 
 export const Slide = ({ children, from, duration, delay }: slideProps) => {
-  const { width, height } = useWindowDimensions();
+  const { width: vw, height: vh } = useWindowDimensions();
+  const isMobile = useIsMobile()
+  const width = 0.8 * vw;
+  const height = 0.8 * vh;
 
-  const initX = from == "right" ? width : from == "left" ? -width : 0;
+  console.log(isMobile);
+
+  const initX = from == "right" ? width : from == "left" ? isMobile ? width : -width : 0;
   const initY = from == "top" ? -height : from == "bottom" ? height : 0;
 
   return (
     <motion.div
-      initial={{ position: "relative", top:initY, left:initX, overflow: "hidden" }}
+      initial={{
+        position: "relative",
+        top: initY,
+        left: initX,
+        overflow: "hidden",
+        opacity: 0,
+      }}
       whileInView={{
         top: 0,
         left: 0,
+        opacity: 1,
         transition: {
           duration: duration ?? 0.5,
           delay: delay ?? 0,
