@@ -12,9 +12,10 @@ export const TimelineCard = ({
       <Flex
         direction="column"
         {...props}
-        width="20em"
+        width={{base: "10em", md: "20em"}}
         alignItems="center"
         gap={{ base: "1rem", md: "0" }}
+        fontSize={{base: "md", lg:"lg"}}
       >
         <VStack spacing={0} align={{ base: "flex-start", md: "center" }}>
           <Text

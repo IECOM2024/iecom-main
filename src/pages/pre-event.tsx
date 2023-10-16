@@ -81,12 +81,12 @@ export default function EventPage() {
               flexDir="column"
               w="80%"
               mt="4rem"
-              ml="4.5em"
+              ml={{base: "5vw", md:"4.5em"}}
               pb={{ base: "2rem", md: "14rem" }}
             >
               <Text
                 w="100%"
-                fontSize="7xl"
+                fontSize={{base: "5xl", md:"7xl"}}
                 fontFamily="body"
                 color="blue"
                 fontWeight="bold"
@@ -97,7 +97,7 @@ export default function EventPage() {
                 w="100%"
                 fontFamily="heading"
                 color="blue"
-                fontSize="lg"
+                fontSize={{base: "md", md:"lg"}}
                 fontWeight="bold"
                 wordBreak="normal"
                 textAlign="justify"
@@ -105,8 +105,9 @@ export default function EventPage() {
                 {PRE_EVENT_DESCRIPTION}
               </Text>
               <Button
-                w="8em"
+                w={{base: "90%", md:"8em"}}
                 h="2em"
+                mx="auto"
                 mt="3em"
                 mb="6em"
                 fontSize="xl"
@@ -131,7 +132,7 @@ export default function EventPage() {
             pb="10em"
           >
             <Text
-              fontSize="6xl"
+              fontSize={{base: "4xl", md:"6xl"}}
               fontFamily="body"
               color="cream"
               fontWeight="bold"
@@ -140,7 +141,7 @@ export default function EventPage() {
               Pre-event's Theme
             </Text>
             <Text
-              fontSize="3xl"
+              fontSize={{base: "xl", md:"3xl"}}
               fontFamily="heading"
               color="cream"
               fontWeight="bold"

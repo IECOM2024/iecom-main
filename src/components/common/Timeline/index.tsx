@@ -17,7 +17,7 @@ export const Timeline = ({ timelineContent }: TimelineProps) => {
       width="100%"
       bg="whiteCream"
       borderRadius="10px"
-      p="2em"
+      p={{base: "1em",md:"2em"}}
     >
       <Flex
         height="100%"

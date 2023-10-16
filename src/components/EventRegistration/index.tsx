@@ -96,6 +96,22 @@ export const EventRegistration = ({ eventType }: EventRegistrationProps) => {
   };
 
   return (
+    <Flex
+      fontSize="4xl"
+      h="90vh"
+      mt="1em"
+      color="brown.3"
+      fontWeight="bold"
+      fontFamily="heading"
+      w="100%"
+      textAlign="center"
+      ml="1em"
+    >
+      Please Wait, We Are Creating Something Special For You!
+    </Flex>
+  );
+
+  return (
     <Flex flexDir="column" w="100%">
       <Text w="100%" fontSize="2xl" textAlign="center">
         Event Registration Page

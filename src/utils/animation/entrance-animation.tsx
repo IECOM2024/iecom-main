@@ -122,11 +122,15 @@ interface slideProps {
 
 export const Slide = ({ children, from, duration, delay }: slideProps) => {
   const { width: vw, height: vh } = useWindowDimensions();
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
   const width = 0.8 * vw;
   const height = 0.8 * vh;
+  if (isMobile) {
+    return <FadeIn>{children}</FadeIn>;
+  }
 
-  const initX = from == "right" ? width : from == "left" ? isMobile ? width : -width : 0;
+  const initX =
+    from == "right" ? width : from == "left" ? (isMobile ? width : -width) : 0;
   const initY = from == "top" ? -height : from == "bottom" ? height : 0;
 
   return (
