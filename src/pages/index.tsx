@@ -26,6 +26,7 @@ import {
 } from "~/utils/animation/entrance-animation";
 import { NewsModal } from "~/components/landing-page/NewsModal";
 import { useIsMobile } from "~/utils/hooks/useIsMobile";
+import { Timeline } from "~/components/common/Timeline";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -34,7 +35,7 @@ export default function Home() {
     <>
       <PublicLayout>
         {/* First Section */}
-        <Slide from="left">
+        <Slide from="right">
           <Flex
             paddingBlock={paddings.xxl}
             paddingInline={paddings.xxxl}
@@ -146,7 +147,7 @@ export default function Home() {
                 img="landing-page/pre-event.webp"
               />
             </Slide>
-            <Slide from="left">
+            <Slide from={!isMobile ? "left" : "right"}>
               <EventCard
                 title="Case Competition"
                 content={CASE_COMPETITION_DESCRIPTION}
@@ -160,7 +161,7 @@ export default function Home() {
                 img="landing-page/essay-competition.webp"
               />
             </Slide>
-            <Slide from="left">
+            <Slide from={!isMobile ? "left" : "right"}>
               <EventCard
                 title="Student Summit"
                 content={GRAND_SUMMIT_DESCRIPTION}
@@ -177,59 +178,8 @@ export default function Home() {
             <Heading fontSize={fontSizes.xxl} fontFamily="body">
               PHASE & TIMELINE
             </Heading>
-            <Show above="md">
-              <Flex
-                height="20em"
-                width="100%"
-                bg="whiteCream"
-                borderRadius="10px"
-                p="2em"
-              >
-                <Flex
-                  height="100%"
-                  overflowX="scroll"
-                  width="100%"
-                  direction="column"
-                  justifyContent="end"
-                  padding="3rem 1rem"
-                  sx={{
-                    "&::-webkit-scrollbar": {
-                      height: "2px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      height: "2px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      background: "#054E83",
-                      borderRadius: "1rem",
-                    },
-                    "&::-webkit-scrollbar-thumb:hover": {
-                      background: "#054E83",
-                    },
-                  }}
-                >
-                  <Flex
-                    position="relative"
-                    backgroundColor="blue"
-                    height="1.5rem"
-                    width="156rem"
-                    borderRadius="full"
-                  >
-                    {timelineContent
-                      .map((e, index) => (
-                        <TimelineCard
-                          key={index}
-                          title={e.title}
-                          date={e.dateStr}
-                          bottom="-1rem"
-                          left={`calc(${index * 20}rem )`}
-                        />
-                      ))}
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Show>
-            <Show below="md">
+            <Timeline timelineContent={timelineContent}/>
+            {/* <Show below="md">
               <Flex
                 position="relative"
                 borderRight={{ base: "none", md: "solid #054E83" }}
@@ -239,21 +189,20 @@ export default function Home() {
                 width="80%"
                 height={{ base: "35rem", md: "12.5rem" }}
               >
-                {timelineContent
-                  .map((e, index) => (
-                    <TimelineCard
-                      key={index}
-                      title={e.title}
-                      date={e.dateStr}
-                      top={`calc(${index * 5}rem - 1rem)`}
-                      left={`calc(${
-                        (index - 4 * Math.floor(index / 4)) * 18
-                      }rem - 8rem)`}
-                      isLower={index > 3}
-                    />
-                  ))}
+                {timelineContent.map((e, index) => (
+                  <TimelineCard
+                    key={index}
+                    title={e.title}
+                    date={e.dateStr}
+                    top={`calc(${index * 5}rem - 1rem)`}
+                    left={`calc(${
+                      (index - 4 * Math.floor(index / 4)) * 18
+                    }rem - 8rem)`}
+                    isLower={index > 3}
+                  />
+                ))}
               </Flex>
-            </Show>
+                  </Show> */}
           </VStack>
           {/* <VStack>
             <Heading
@@ -343,23 +292,23 @@ const timelineContent: {
   },
   {
     dateStr: "21 October 2023",
-    title: "Competition Open Registration"
+    title: "Competition Open Registration",
   },
   {
     dateStr: "5 November 2023",
-    title: "Color Run"
+    title: "Color Run",
   },
   {
     dateStr: "11 November 2023",
-    title: "Seminar & Workshop"
+    title: "Seminar & Workshop",
   },
   {
     dateStr: "25 November 2023",
-    title: "Preliminary"
+    title: "Preliminary",
   },
   {
     dateStr: "1 December 2023",
-    title: "Essay Last Submission"
+    title: "Essay Last Submission",
   },
 ];
 
@@ -377,7 +326,7 @@ const EventCard = ({
       direction={{ base: "column", md: "row" }}
       alignItems="center"
       bgColor="brown.5"
-      padding={{ base: "1rem 1.5rem 1rem 3rem", md: "0 0 0 3rem" }}
+      padding= "0 0 0 3rem"
       width="100%"
       gap={{ base: "1.25rem", md: "2rem" }}
     >
@@ -394,6 +343,7 @@ const EventCard = ({
           fontWeight="semibold"
           textAlign="justify"
           paddingBottom={{ base: 0, md: "1rem" }}
+          pr="1rem"
         >
           {content}
         </Text>
@@ -408,55 +358,7 @@ const EventCard = ({
   );
 };
 
-const TimelineCard = ({
-  title,
-  date,
-  top,
-  left,
-  isLower = false,
-  ...props
-}: FlexProps & { title: string; date: string; isLower?: boolean }) => {
-  const topPos = !isLower
-    ? "calc(-1.75rem - .625rem/2)"
-    : "calc(12.5rem - 1.75rem - .625rem * 3/2)";
-  return (
-    <Flex
-      direction={{ base: "row", md: "column-reverse" }}
-      position="absolute"
-      top={top ?? topPos}
-      left={{ md: left as string, base: "calc(-1rem - 2px)" }}
-      {...props}
-      width="16em"
-      alignItems="center"
-      gap={{ base: "1rem", md: "0" }}
-    >
-      <Flex
-        bgColor="white"
-        borderRadius="50%"
-        height={{ base: "2rem", md: "3.5rem" }}
-        width={{ base: "2rem", md: "3.5rem" }}
-      />
-      <VStack
-        spacing={0}
-        align={{ base: "flex-start", md: "center" }}
-        mb={{ md: "4em" }}
-      >
-        <Text
-          fontSize={fontSizes.md}
-          fontWeight="semibold"
-          color="blue"
-          fontFamily="body"
-        >
-          {date}
-        </Text>
-        <Box bg="blue" h="1px" w="80%" mx="auto" mt="0.2em" mb="1em"/>
-        <Text fontSize={fontSizes.base} color="blue" fontFamily="heading" h="3em" textAlign="center">
-          {title}
-        </Text>
-      </VStack>
-    </Flex>
-  );
-};
+
 
 const TestimonialCard = ({
   content,

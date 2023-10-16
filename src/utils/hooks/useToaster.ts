@@ -2,12 +2,12 @@ import { useToast } from "@chakra-ui/react";
 
 type voidFn = () => void | undefined;
 
-export const useToaster = () => {
+export const useToaster = <T>() => {
   const toast = useToast();
 
   /* eslint-disable */
   const toaster = (
-    pr: Promise<any>,
+    pr: Promise<T>,
     fns?: {
       thenFn?: voidFn;
       catchFn?: voidFn;

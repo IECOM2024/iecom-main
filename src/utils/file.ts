@@ -3,6 +3,7 @@ import axios, { type AxiosProgressEvent } from "axios";
 export enum FolderEnum {
   PROFILE = "profile-picture",
   DOCUMENT = "document",
+  COLOR_RUN_PROOF = "color-run-payment-proof"
 }
 
 export enum AllowableFileTypeEnum {

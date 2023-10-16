@@ -15,6 +15,10 @@ import { EventTicketListRow } from "./EventTicketListRow";
 import { EventRegistrationModal } from "./EventRegistrationModal";
 import { useToaster } from "~/utils/hooks/useToaster";
 import { useIsMobile } from "~/utils/hooks/useIsMobile";
+import { useUploader } from "~/utils/hooks/useUploader";
+import { useDownloader } from "~/utils/hooks/useDownloader";
+import { AllowableFileTypeEnum, FolderEnum } from "~/utils/file";
+import React, { Dispatch, SetStateAction } from "react";
 
 interface EventRegistrationProps {
   eventType?: string;
@@ -22,6 +26,8 @@ interface EventRegistrationProps {
 
 export const EventRegistration = ({ eventType }: EventRegistrationProps) => {
   const toaster = useToaster();
+  const { uploader } = useUploader();
+  const { downloader } = useDownloader();
   const isMobile = useIsMobile();
 
   const eventTicketListQuery =
@@ -66,6 +72,29 @@ export const EventRegistration = ({ eventType }: EventRegistrationProps) => {
     });
   };
 
+  const uploadColorRunPayment = (file: File, eventTicketId: string) => {
+    toaster(
+      uploader(
+        `${eventTicketId}.png`,
+        FolderEnum.COLOR_RUN_PROOF,
+        AllowableFileTypeEnum.PNG,
+        file
+      )
+    );
+  };
+
+  const downloadColorRunPayment = (
+    eventTicketId: string,
+    setState: Dispatch<SetStateAction<string | null | undefined>>
+  ) => {
+    downloader({
+      folder: FolderEnum.COLOR_RUN_PROOF,
+      filename: `${eventTicketId}.png`,
+    }).then(({ url }) => {
+      setState(url);
+    });
+  };
+
   return (
     <Flex flexDir="column" w="100%">
       <Text w="100%" fontSize="2xl" textAlign="center">
@@ -100,6 +129,8 @@ export const EventRegistration = ({ eventType }: EventRegistrationProps) => {
                         num={index + 1}
                         key={eventTicket.id}
                         isMobile={isMobile}
+                        uploadColorRunPayment={uploadColorRunPayment}
+                        downloadColorRunPayment={downloadColorRunPayment}
                       />
                     ))}
                   </Tbody>
@@ -130,6 +161,8 @@ export const EventRegistration = ({ eventType }: EventRegistrationProps) => {
                         eventList={eventList}
                         num={index + 1}
                         key={eventTicket.id}
+                        uploadColorRunPayment={uploadColorRunPayment}
+                        downloadColorRunPayment={downloadColorRunPayment}
                       />
                     ))}
                   </Tbody>
@@ -146,6 +179,8 @@ export const EventRegistration = ({ eventType }: EventRegistrationProps) => {
           registerEvent={registerEvent}
           eventList={eventList}
           eventType={eventType}
+          uploadColorRunPayment={uploadColorRunPayment}
+          downloadColorRunPayment={downloadColorRunPayment}
         />
       </Flex>
     </Flex>

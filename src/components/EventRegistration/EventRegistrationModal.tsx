@@ -21,6 +21,8 @@ import {
 import { useForm, Resolver } from "react-hook-form";
 import { RouterInputs, RouterOutputs } from "~/utils/api";
 import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { FileInput } from "../common/FileInput";
 
 type FormValues = {
   participantName: string;
@@ -42,14 +44,24 @@ interface EventRegistrationModalProps {
   ) => Promise<void>;
   eventList: RouterOutputs["event"]["participantGetEventList"];
   eventType?: string;
+  uploadColorRunPayment: (file: File, eventTicketId: string) => void;
+  downloadColorRunPayment: (
+    eventTicketId: string,
+    setState: Dispatch<SetStateAction<string | null | undefined>>
+  ) => void;
 }
 
 export const EventRegistrationModal = ({
   registerEvent,
   eventList,
   eventType,
+  downloadColorRunPayment,
+  uploadColorRunPayment,
 }: EventRegistrationModalProps) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const colorRunPaymentFileInput = useState<
+    File | null | undefined
+  >(null);
 
   useEffect(() => {
     if (eventType == "color_run" || eventType == "seminar_and_workshop") {
@@ -175,6 +187,16 @@ export const EventRegistrationModal = ({
                             </Select>
                           </Td>
                         </Tr>
+                        {eventIdInput == "color_run" && (
+                          <Tr>
+                            <Td border="none" w="5em">
+                              <Text>Proof of Payment</Text>
+                            </Td>
+                            <Td>
+                              <FileInput fileStateArr={colorRunPaymentFileInput}/>
+                            </Td>
+                          </Tr>
+                        )}
                       </Tbody>
                     </Table>
                   </FormControl>

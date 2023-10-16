@@ -126,14 +126,6 @@ export const Slide = ({ children, from, duration, delay }: slideProps) => {
   const width = 0.8 * vw;
   const height = 0.8 * vh;
 
-  if (isMobile) {
-    return (
-      <FadeIn delay={delay} duration={duration}>
-        {children}
-      </FadeIn>
-    );
-  }
-
   const initX = from == "right" ? width : from == "left" ? isMobile ? width : -width : 0;
   const initY = from == "top" ? -height : from == "bottom" ? height : 0;
 
@@ -141,18 +133,19 @@ export const Slide = ({ children, from, duration, delay }: slideProps) => {
     <motion.div
       initial={{
         position: "relative",
-        top: initY,
-        left: initX,
+        top: 0,
+        left: 0,
         overflow: "hidden",
         opacity: 0,
       }}
       whileInView={{
-        top: 0,
-        left: 0,
+        top: [initY, 0],
+        left: [initX, 0],
         opacity: 1,
         transition: {
           duration: duration ?? 0.5,
           delay: delay ?? 0,
+          times: [0, 1],
         },
       }}
       viewport={{ once: true }}

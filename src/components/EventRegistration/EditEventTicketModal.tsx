@@ -23,6 +23,7 @@ import { useForm, Resolver } from "react-hook-form";
 import { RouterInputs, RouterOutputs } from "~/utils/api";
 import { useState } from "react";
 import { MdEdit } from "react-icons/md";
+import {Dispatch, SetStateAction} from 'react';
 
 type FormValues = {
   participantName: string;
@@ -47,6 +48,11 @@ interface EventRegistrationModalProps {
   ) => Promise<void>;
   eventList: RouterOutputs["event"]["participantGetEventList"];
   eventTicket: RouterOutputs["event"]["participantGetEventTicketList"][0];
+  uploadColorRunPayment: (file: File, eventTicketId: string) => void;
+  downloadColorRunPayment: (
+    eventTicketId: string,
+    setState: Dispatch<SetStateAction<string | null | undefined>>
+  ) => void;
 }
 
 export const EditEventRegistrationModal = ({
@@ -54,6 +60,8 @@ export const EditEventRegistrationModal = ({
   eventList,
   eventTicket,
   deleteEventTicket,
+  downloadColorRunPayment,
+  uploadColorRunPayment,
 }: EventRegistrationModalProps) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
 

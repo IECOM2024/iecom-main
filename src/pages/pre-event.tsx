@@ -27,6 +27,7 @@ import { Heading } from "@chakra-ui/react";
 import { PreEventCards } from "~/components/pre-event/PreEventCards";
 import { PreEventFAQ } from "~/components/pre-event/PreEventFAQ";
 import { useIsMobile } from "~/utils/hooks/useIsMobile";
+import { Timeline, timelineContent } from "~/components/common/Timeline";
 
 const PRE_EVENT_DESCRIPTION =
   "Pre-event consist of a series of events designed for you to explore more about Industrial Engineering and Engineering Management. Pre-event will be held in the form of Color Run and Seminar. The pre-event will be held in October and November 2023. Grab the chance to learn from best expertise who’ll share their knowledge and experience about Sustainable Industry!";
@@ -34,6 +35,29 @@ const PRE_EVENT_THEME =
   "Sustainable Economic Growth: Navigating the Path to Prosperity, Equity, and Environment Resilience";
 const PRE_EVENT_THEME_DESC =
   "Underscoring the idea that sustainable innovation in industrial engineering can be a profitable approach. By developing and implementing environmentally friendly technologies and processes, businesses and industries can not only reduce their ecological footprint but also benefit from increased efficiency and profitability. The integration of sustainability principles into industrial engineering practices is critical to addressing global environmental challenges while improving economic well-being. This is aligned with the idea that environmentally responsible practices can provide economic benefits, making them a key driver for a more sustainable and prosperous future.";
+
+const TIMELINE_DATA: timelineContent[] = [
+  {
+    dateStr: "16 October 2023",
+    title: "Open Registration",
+  },
+  {
+    dateStr: "1 November 2023",
+    title: "Registration Closed for Color Run",
+  },
+  {
+    dateStr: "5 November 2023",
+    title: "Color Run",
+  },
+  {
+    dateStr: "10 November 2023",
+    title: "Registration Closed for Seminar & Workshop",
+  },
+  {
+    dateStr: "11 November 2023",
+    title: "Seminar & Workshop",
+  },
+]
 
 export const getStaticProps = async () => {
   return {
@@ -51,7 +75,7 @@ export default function EventPage() {
       <Flex flexDir="column">
         {/* Main Description Group*/}
 
-        <Flex bgImage="preevent-1.webp" bgSize="100% auto" bgRepeat="no-repeat">
+        <Flex bgImage="preevent-1.webp" bgSize={{base: "auto 100%",lg: "100% auto"}} bgRepeat="no-repeat">
           <Slide from="left">
             <Flex
               flexDir="column"
@@ -111,6 +135,7 @@ export default function EventPage() {
               fontFamily="body"
               color="cream"
               fontWeight="bold"
+              textAlign="center"
             >
               Pre-event's Theme
             </Text>
@@ -175,30 +200,7 @@ export default function EventPage() {
           <Heading fontSize={fontSizes.xxl} fontFamily="body">
             PHASE & TIMELINE
           </Heading>
-          <Flex
-            position="relative"
-            borderRight={{ base: "none", md: "solid #054E83" }}
-            borderLeft={{ md: "none", base: "solid #054E83" }}
-            borderBlock={{ base: "none", md: "solid #054E83" }}
-            borderWidth={{ base: "4px", md: ".625rem" }}
-            width="80%"
-            height={{ base: "35rem", md: "12.5rem" }}
-          >
-            {Array(8)
-              .fill(0)
-              .map((_, index) => (
-                <TimelineCard
-                  key={index}
-                  title={`Phase ${index + 1}`}
-                  date="20 September 2022"
-                  top={`calc(${index * 5}rem - 1rem)`}
-                  left={`calc(${
-                    (index - 4 * Math.floor(index / 4)) * 18
-                  }rem - 8rem)`}
-                  isLower={index > 3}
-                />
-              ))}
-          </Flex>
+          <Timeline timelineContent={TIMELINE_DATA}/>
         </VStack>
 
         <PreEventCards />
