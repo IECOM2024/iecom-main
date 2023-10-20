@@ -15,7 +15,7 @@ import {
   import {
     MainCompParticipantForm,
     MainCompRegistrationFormValues,
-  } from "~/components/main-competititon-registration/MemberRegistrationModal";
+  } from "~/components/MainCompetitionRegistration/MemberRegistrationModal";
   import { withSession } from "~/server/auth/withSession";
   
   export const getServerSideProps = withSession({ force: true });

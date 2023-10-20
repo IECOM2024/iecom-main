@@ -4,6 +4,8 @@ import { userRouter } from "./routers/user";
 import { storageRouter } from "./routers/storage";
 import { profileRouter } from "./routers/profile";
 import { eventRouter } from "./routers/event";
+import { colorRunRouter } from "./routers/color-run";
+import { caseRegistRouter } from "./routers/case-regist";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +18,8 @@ export const appRouter = createTRPCRouter({
   storage: storageRouter,
   profile: profileRouter,
   event: eventRouter,
+  colorRun: colorRunRouter,
+  caseRegist: caseRegistRouter,
 });
 
 // export type definition of API

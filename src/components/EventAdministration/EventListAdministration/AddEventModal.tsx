@@ -19,8 +19,8 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm, type Resolver } from "react-hook-form";
-import { DateInput } from "~/components/common/DateInput";
-import { TimeInput } from "~/components/common/TimeInput";
+import { DateInput } from "~/components/common/CustomForm/DateInput";
+import { TimeInput } from "~/components/common/CustomForm/TimeInput";
 import { RouterInputs, RouterOutputs, api } from "~/utils/api";
 
 interface AddEventModalProps {

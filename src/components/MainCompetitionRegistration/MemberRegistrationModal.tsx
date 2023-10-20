@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FileInput } from "../common/FileInput";
+import { FileInput } from "../common/CustomForm/FileInput";
 
 type ParticipantRegistrationFormValues = {
   firstName: string;

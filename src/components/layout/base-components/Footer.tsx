@@ -23,7 +23,7 @@ export const Footer = () => {
       px="2em"
       zIndex="10"
     >
-      <Image src="main-icon.webp" alt="IECOM 2024" w="auto" h="6em" />
+      <Image src="/main-icon.webp" alt="IECOM 2024" w="auto" h="6em" />
       <Flex
         flexDir="column"
         w="15em"

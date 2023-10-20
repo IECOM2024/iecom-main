@@ -50,7 +50,7 @@ export const PreEventFAQ = () => {
           Frequently Asked Questions
         </Text>
 
-        <Accordion allowMultiple allowToggle>
+        <Accordion allowMultiple>
           {FAQCONTENT.map((faq, index) => (
             <AccordionItem
               key={index}

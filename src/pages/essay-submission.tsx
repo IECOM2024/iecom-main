@@ -1,7 +1,7 @@
 import { Flex, ListItem, OrderedList, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { FileInput } from "~/components/common/FileInput";
+import { FileInput } from "~/components/common/CustomForm/FileInput";
 import { AuthorizedRoleLayout } from "~/components/layout/AuthorizedRoleLayout";
 
 export default function EssaySubmissionPage() {

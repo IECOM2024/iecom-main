@@ -28,7 +28,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "types/**/*.ts", "src/utils/animation/retno.tsx",
+    "types/**/*.ts", "src/utils/animation/retno.tsx", "src/components/MainCompetitionRegistration",
   ], 
   "exclude": ["node_modules"]
 }

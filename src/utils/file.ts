@@ -3,13 +3,18 @@ import axios, { type AxiosProgressEvent } from "axios";
 export enum FolderEnum {
   PROFILE = "profile-picture",
   DOCUMENT = "document",
-  COLOR_RUN_PROOF = "color-run-payment-proof"
+  COLOR_RUN_PROOF = "color-run-payment-proof",
+  CASE_COMP_FILES = "case-comp-files",
+  CASE_COMP_PROOF = "case-comp-proof"
+
 }
 
 export enum AllowableFileTypeEnum {
   PDF = "application/pdf",
   PNG = "image/png",
-  JPEG = "image/jpeg"
+  JPEG = "image/jpeg",
+  ZIP = "application/zip",
+  PICTURES = "image/*"
 }
 
 export const uploadFile = async (
@@ -33,11 +38,14 @@ export const downloadFile = async (
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
 ) => {
   const axiosInstance = axios.create();
-
+ 
   const response = await axiosInstance.get<Blob>(url, {
     responseType: "blob",
     onDownloadProgress
   });
+
+  console.log(response)
+
 
   return response.data;
 };

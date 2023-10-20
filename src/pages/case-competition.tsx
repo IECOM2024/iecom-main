@@ -32,17 +32,17 @@ const PRIZE: [number, string][] = [
   [1, "USD 2500"],
   [0.6, "USD 500"],
 ];
-const REGIST_INFO: [string, number, number, string][] = [
+const REGIST_INFO: [string, number, string, string][] = [
   [
     "Early Bird Registration",
     15,
-    200000,
+    "200000",
     "Will be opened until 10th of November 2023",
   ],
   [
     "Normal Registration",
     20,
-    250000,
+    "250000",
     "Will be opened until 20th of November 2023",
   ],
 ];
@@ -50,12 +50,6 @@ const REGIST_INFO: [string, number, number, string][] = [
 export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
   const router = useRouter();
-
-  return (
-    <PublicLayout>
-      <ComingSoon something="Case Competition" />
-    </PublicLayout>
-  );
 
   return (
     <PublicLayout>
@@ -85,7 +79,7 @@ export default function MainCompetitionPage() {
                 {COMP_DESCRIPTION}
               </Text>
               <Button w="8em" h="2em" mt="4em" mb="6em" fontSize="2xl">
-                Learn More
+                Download Guidebook!
               </Button>
             </Flex>
           </Slide>

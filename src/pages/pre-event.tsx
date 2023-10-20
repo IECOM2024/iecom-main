@@ -107,7 +107,7 @@ export default function EventPage() {
               <Button
                 w={{base: "90%", md:"8em"}}
                 h="2em"
-                mx="auto"
+                mx={{base: "auto", md:"0"}}
                 mt="3em"
                 mb="6em"
                 fontSize="xl"

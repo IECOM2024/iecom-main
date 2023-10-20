@@ -45,13 +45,13 @@ a {
 .blue-stroke {
   /* Prefix required. Even Firefox only supports the -webkit- prefix */
   -webkit-text-stroke-width: 0.5px;
-  -webkit-text-stroke-color: #054E84;
+  -webkit-text-stroke-color: #054e84;
 }
 
 .blue-stroke-1px {
   /* Prefix required. Even Firefox only supports the -webkit- prefix */
   -webkit-text-stroke-width: 1.5px;
-  -webkit-text-stroke-color: #054E84;
+  -webkit-text-stroke-color: #054e84;
 }
 
 :root {
@@ -59,9 +59,25 @@ a {
 }
 
 .file-input-default {
-  border:none
+  border: 1px solid #054e84;;
+  height: 5rem;
 }
 
+.file-input-default {
+  border: none;
+  height: 5rem;
+}
+
+
 .file-input-default::file-selector-button {
-  display:none
+  width: 100%;
+  height: 2em;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  font-family: EbGar;
+  font-weight: 700;
+  color: #054e84;
+  cursor: pointer;
 }

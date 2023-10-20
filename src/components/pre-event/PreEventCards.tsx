@@ -110,11 +110,7 @@ export const PreEventCards = () => {
                   color="blue"
                   mt="1em"
                   onClick={() =>
-                    router.push("/event-registration", {
-                      query: {
-                        eventType: "color_run",
-                      },
-                    })
+                    router.push("/event-registration/color-run")
                   }
                 >
                   Register <MdArrowForward size="1.5em" />

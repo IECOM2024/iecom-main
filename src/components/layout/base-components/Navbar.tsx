@@ -69,7 +69,7 @@ export const Navbar = ({ type }: NavbarProps) => {
         alignItems="center"
       >
         <Image
-          src="main-icon.webp"
+          src="/main-icon.webp"
           alt=""
           w="3.5em"
           ml={{ base: "0.5em", md: "5.5em" }}

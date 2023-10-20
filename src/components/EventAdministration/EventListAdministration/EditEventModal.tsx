@@ -24,8 +24,8 @@ import { EventStatus } from "@prisma/client";
 import { useState } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import { MdEdit } from "react-icons/md";
-import { DateInput } from "~/components/common/DateInput";
-import { TimeInput } from "~/components/common/TimeInput";
+import { DateInput } from "~/components/common/CustomForm/DateInput";
+import { TimeInput } from "~/components/common/CustomForm/TimeInput";
 import { RouterInputs, RouterOutputs, api } from "~/utils/api";
 
 interface EditEventModalProps {

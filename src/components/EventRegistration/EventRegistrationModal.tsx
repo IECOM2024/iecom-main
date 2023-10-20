@@ -22,7 +22,7 @@ import { useForm, Resolver } from "react-hook-form";
 import { RouterInputs, RouterOutputs } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-import { FileInput } from "../common/FileInput";
+import { FileInput } from "../common/CustomForm/FileInput";
 
 type FormValues = {
   participantName: string;

@@ -12,7 +12,7 @@ datasource db {
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#String
     url      = env("DATABASE_URL")
 }
 
@@ -82,6 +82,7 @@ model User {
     EventTicket                     EventTicket[]
     MainCompetitionRegistrationData MainCompetitionRegistrationData[]
     ExamEnrollment                  ExamEnrollment[]
+    ColorRunParticipantData         ColorRunParticipantData[]
 }
 
 model VerificationToken {
@@ -114,16 +115,6 @@ enum CompetitionRegistrationStatus {
     SUBMITTED_CONFIRMED
 }
 
-model MainCompetitionParticipantData {
-    id String @id @default(cuid())
-
-    firstName   String?
-    lastName    String?
-    email       String?
-    phoneNumber String?
-    isAccepted  Boolean @default(false)
-}
-
 model MainCompetitionRegistrationData {
     id String @id @default(cuid())
 
@@ -131,10 +122,30 @@ model MainCompetitionRegistrationData {
 
     status CompetitionRegistrationStatus @default(UNREGISTERED)
 
-    universityName    String?
-    universityCountry String?
+    teamName                                  String?
+    leaderName                                String?
+    leaderInstitution                         String?
+    leaderMajor                               String?
+    leaderBatch                               String?
+    leaderEmail                               String?
+    leaderPhoneNumber                         String?
+    member1Name                               String?
+    member1Institution                        String?
+    member1Major                              String?
+    member1Batch                              String?
+    member1Email                              String?
+    member1PhoneNumber                        String?
+    member2Name                               String?
+    member2Institution                        String?
+    member2Major                              String?
+    member2Batch                              String?
+    member2Email                              String?
+    member2PhoneNumber                        String?
+    member3Name                               String?
+    whereDidYouKnowThisCompetitionInformation String?
 
-    isAccepted Boolean @default(false)
+    messageFromAdmin String?
+    isFilePaymentUploaded Boolean @default(false)
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -167,7 +178,7 @@ model Event {
     endTime     DateTime
     location    String
     status      EventStatus @default(UNPUBLISHED)
-    eventType   EventType @default(COLOR_RUN)
+    eventType   EventType   @default(COLOR_RUN)
 
     EventTicket EventTicket[]
 }
@@ -189,6 +200,37 @@ model EventTicket {
 
     user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
     event Event @relation(fields: [eventId], references: [id])
+}
+
+enum RegistrationStatus {
+    UNREGISTERED
+    FORM_FILLING
+    SUBMITTED_UNCONFIRMED
+    SUBMITTED_CONFIRMED
+}
+
+// Color Run Models
+
+model ColorRunParticipantData {
+    id String @id @default(cuid())
+
+    name                         String?
+    email                        String?
+    phoneNumber                  String?
+    address                      String?
+    institution                  String?
+    bloodType                    String?
+    healthHistory                String?
+    emergencyContactNumber       String?
+    emergencyContactName         String?
+    emergencyContactRelationship String?
+
+    status RegistrationStatus @default(UNREGISTERED)
+
+    isFilePaymemtUploaded Boolean @default(false)
+
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 }
 
 // Feedback Telemetry
