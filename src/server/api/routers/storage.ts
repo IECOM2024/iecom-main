@@ -15,12 +15,7 @@ export const storageRouter = createTRPCRouter({
   generateURLForDownload: publicProcedure
     .input(
       z.object({
-        folder: z.union([
-          z.literal(FolderEnum.PROFILE),
-          z.literal(FolderEnum.DOCUMENT),
-          z.literal(FolderEnum.COLOR_RUN_PROOF),
-          z.literal(FolderEnum.CASE_COMP_FILES),
-        ]),
+        folder: zodStorageFolderLiteral(),
         filename: z.string()
       })
     )
@@ -55,7 +50,9 @@ export const storageRouter = createTRPCRouter({
         contentType: z.union([
           z.literal(AllowableFileTypeEnum.PDF),
           z.literal(AllowableFileTypeEnum.PNG),
-          z.literal(AllowableFileTypeEnum.JPEG)
+          z.literal(AllowableFileTypeEnum.JPEG),
+          z.literal(AllowableFileTypeEnum.ZIP),
+          z.literal(AllowableFileTypeEnum.PICTURES)
         ])
       })
     )
