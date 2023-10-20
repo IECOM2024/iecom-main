@@ -38,8 +38,7 @@ import { AllowableFileTypeEnum, FolderEnum } from "~/utils/file";
 import { useDownloader } from "~/utils/hooks/useDownloader";
 import { RegistrationStatus } from "@prisma/client";
 
-export default function EventRegistrationPage() {
-  const { data: session } = useSession();
+function EventRegistrationPageComponent() {
   const toaster = useToaster();
   const { uploader } = useUploader();
   const { downloader } = useDownloader();
@@ -65,7 +64,6 @@ export default function EventRegistrationPage() {
       folder: FolderEnum.COLOR_RUN_PROOF,
       filename: `${colorRunTicket.id}.png`,
     }).then(({ url }) => setInitialImgUrl(url));
-
   }, [colorRunTicket, downloader]);
   console.log(initialImgUrl);
 
@@ -133,16 +131,22 @@ export default function EventRegistrationPage() {
   if (colorRunTicketQuery.isLoading) return <Loading />;
 
   return (
-    <AuthorizedRoleLayout session={session}>
-      <ColorRunRegistration
-        initialFormValues={colorRunTicket}
-        submitForm={submitForm}
-        saveForm={saveForm}
-        uploadFile={uploadFile}
-        initialImgUrl={initialImgUrl}
-        status={colorRunTicket?.status ?? RegistrationStatus.FORM_FILLING}
-        cancelRegistration={cancelRegistration}
-      />
-    </AuthorizedRoleLayout>
+    <ColorRunRegistration
+      initialFormValues={colorRunTicket}
+      submitForm={submitForm}
+      saveForm={saveForm}
+      uploadFile={uploadFile}
+      initialImgUrl={initialImgUrl}
+      status={colorRunTicket?.status ?? RegistrationStatus.FORM_FILLING}
+      cancelRegistration={cancelRegistration}
+    />
   );
+}
+
+// Ini gr2 kegoblokan alif yang ga bikin komponen terpisah dari page
+export default function ColorRunRegistrationPage() {
+  const { data: session } = useSession();
+  return <AuthorizedRoleLayout session={session}>
+    <EventRegistrationPageComponent />
+  </AuthorizedRoleLayout>;
 }

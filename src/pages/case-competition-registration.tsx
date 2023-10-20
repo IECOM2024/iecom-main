@@ -38,8 +38,7 @@ import { AllowableFileTypeEnum, FolderEnum } from "~/utils/file";
 import { useDownloader } from "~/utils/hooks/useDownloader";
 import { RegistrationStatus } from "@prisma/client";
 
-export default function EventRegistrationPage() {
-  const { data: session } = useSession();
+function CaseCompetitiontRegistrationPageComponent() {
   const toaster = useToaster();
   const { uploader } = useUploader();
   const { downloader } = useDownloader();
@@ -154,16 +153,24 @@ export default function EventRegistrationPage() {
   if (caseRegistQuery.isLoading) return <Loading />;
 
   return (
+    <CaseCompetitionRegistration
+      initialFormValues={caseRegist}
+      submitForm={submitForm}
+      saveForm={saveForm}
+      uploadFile={uploadFile}
+      initialImgUrl={initialImgUrl}
+      status={caseRegist?.status ?? RegistrationStatus.FORM_FILLING}
+      cancelRegistration={cancelRegistration}
+    />
+  );
+}
+
+// Ini gr2 kegoblokan alif yang ga bikin komponen terpisah dari page
+export default function ColorRunRegistrationPage() {
+  const { data: session } = useSession();
+  return (
     <AuthorizedRoleLayout session={session}>
-      <CaseCompetitionRegistration
-        initialFormValues={caseRegist}
-        submitForm={submitForm}
-        saveForm={saveForm}
-        uploadFile={uploadFile}
-        initialImgUrl={initialImgUrl}
-        status={caseRegist?.status ?? RegistrationStatus.FORM_FILLING}
-        cancelRegistration={cancelRegistration}
-      />
+      <CaseCompetitiontRegistrationPageComponent />
     </AuthorizedRoleLayout>
   );
 }

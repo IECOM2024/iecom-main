@@ -1,5 +1,6 @@
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { Loading } from "../common/Loading";
 
 interface CheckAuthProps {
     children: React.ReactNode;
@@ -10,12 +11,12 @@ export const CheckAuth = ({children} : CheckAuthProps) => {
     const {data: session, status} = useSession({
         required: true,
         onUnauthenticated() {
-            router.push("/signin");
+            signIn();
         }
     });
 
     if (status === "loading") {
-        return <div>Loading...</div>
+        return <Loading/>
     }
     return <>
         {children}
