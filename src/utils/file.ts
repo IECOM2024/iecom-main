@@ -5,7 +5,9 @@ export enum FolderEnum {
   DOCUMENT = "document",
   COLOR_RUN_PROOF = "color-run-payment-proof",
   CASE_COMP_FILES = "case-comp-files",
-  CASE_COMP_PROOF = "case-comp-proof"
+  CASE_COMP_PROOF = "case-comp-proof",
+  ESSAY_COMP_FILES = "essay-comp-files",
+  ESSAY_COMP_PROOF = "essay-comp-proof",
 
 }
 

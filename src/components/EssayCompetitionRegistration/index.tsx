@@ -22,31 +22,18 @@ import { useState } from "react";
 import { RegistrationStatus } from "@prisma/client";
 
 export type FormValues = {
-  teamName: string | null;
-  leaderName: string | null;
-  leaderEmail: string | null;
-  leaderPhoneNumber: string | null;
-  leaderInstitution: string | null;
-  leaderBatch: string | null;
-  leaderMajor: string | null;
-  member1Name: string | null;
-  member1Email: string | null;
-  member1PhoneNumber: string | null;
-  member1Institution: string | null;
-  member1Batch: string | null;
-  member1Major: string | null;
-  member2Name: string | null;
-  member2Email: string | null;
-  member2PhoneNumber: string | null;
-  member2Institution: string | null;
-  member2Batch: string | null;
-  member2Major: string | null;
+  name: string | null
+  email: string | null
+  phoneNumber: string | null
+  institution: string | null
+  major: string | null
+  batch: string | null
   whereDidYouKnowThisCompetitionInformation: string | null;
 };
 
-interface CaseCompetitionRegistrationProps {
+interface EssayCompetitionRegistrationProps {
   initialFormValues?: Partial<FormValues>;
-  initialImgUrl?: string;
+  initialImgUrl?: string
   submitForm: (data: FormValues) => void;
   saveForm: (data: FormValues) => void;
   uploadFile: (file: File) => void;
@@ -56,7 +43,7 @@ interface CaseCompetitionRegistrationProps {
 
 const TWIBPOST_LINK = "https://bit.ly/IECOMTwibbonPoster";
 
-export const CaseCompetitionRegistration = ({
+export const EssayCompetitionRegistration = ({
   initialFormValues,
   initialImgUrl,
   submitForm,
@@ -64,7 +51,7 @@ export const CaseCompetitionRegistration = ({
   uploadFile,
   status,
   cancelRegistration,
-}: CaseCompetitionRegistrationProps) => {
+}: EssayCompetitionRegistrationProps) => {
   const { handleSubmit, register, formState, getValues, setValue } =
     useForm<FormValues>({ defaultValues: initialFormValues });
   const paymentInputStateArr = useState<File | null | undefined>(null);
@@ -109,7 +96,7 @@ export const CaseCompetitionRegistration = ({
               color="blue"
               fontWeight="bold"
             >
-              Case Competition Registration
+              Essay Competition Registration
             </Text>
             <Text
               textAlign="center"
@@ -118,148 +105,43 @@ export const CaseCompetitionRegistration = ({
               fontWeight="bold"
               w="100%"
             >
-              Team Information
+              Personal Information
             </Text>
             <FormTextField
-              field="teamName"
-              title="Team Name"
+              field="name"
+              title="Full Name"
               register={register}
-              error={formState.errors.teamName}
-            />
-            <Text
-              color="blue"
-              fontWeight="bold"
-              fontSize="3xl"
-              mt="1em"
-              mx="auto"
-            >
-              Leader Information
-            </Text>
-            <FormTextField
-              field="leaderName"
-              title="Name"
-              register={register}
-              error={formState.errors.leaderName}
+              error={formState.errors.name}
             />
             <FormTextField
-              field="leaderEmail"
+              field="email"
               title="Email"
               register={register}
-              error={formState.errors.leaderEmail}
+              error={formState.errors.email}
             />
             <FormTextField
-              field="leaderPhoneNumber"
+              field="phoneNumber"
               title="Phone Number"
               register={register}
-              error={formState.errors.leaderPhoneNumber}
+              error={formState.errors.phoneNumber}
             />
             <FormTextField
-              field="leaderInstitution"
+              field="institution"
               title="Institution"
               register={register}
-              error={formState.errors.leaderInstitution}
+              error={formState.errors.institution}
             />
             <FormTextField
-              field="leaderBatch"
-              title="Batch"
-              register={register}
-              error={formState.errors.leaderBatch}
-            />
-            <FormTextField
-              field="leaderMajor"
+              field="major"
               title="Major"
               register={register}
-              error={formState.errors.leaderMajor}
-            />
-            <Text
-              color="blue"
-              fontWeight="bold"
-              fontSize="3xl"
-              mt="1em"
-              mx="auto"
-            >
-              Member 1 Information
-            </Text>
-            <FormTextField
-              field="member1Name"
-              title="Name"
-              register={register}
-              error={formState.errors.member1Name}
+              error={formState.errors.major}
             />
             <FormTextField
-              field="member1Email"
-              title="Email"
-              register={register}
-              error={formState.errors.member1Email}
-            />
-            <FormTextField
-              field="member1PhoneNumber"
-              title="Phone Number"
-              register={register}
-              error={formState.errors.member1PhoneNumber}
-            />
-            <FormTextField
-              field="member1Institution"
-              title="Institution"
-              register={register}
-              error={formState.errors.member1Institution}
-            />
-            <FormTextField
-              field="member1Batch"
+              field="batch"
               title="Batch"
               register={register}
-              error={formState.errors.member1Batch}
-            />
-            <FormTextField
-              field="member1Major"
-              title="Major"
-              register={register}
-              error={formState.errors.member1Major}
-            />
-            <Text
-              color="blue"
-              fontWeight="bold"
-              fontSize="3xl"
-              mt="1em"
-              mx="auto"
-            >
-              Member 2 Information
-            </Text>
-            <FormTextField
-              field="member2Name"
-              title="Name"
-              register={register}
-              error={formState.errors.member1Name}
-            />
-            <FormTextField
-              field="member2Email"
-              title="Email"
-              register={register}
-              error={formState.errors.member2Email}
-            />
-            <FormTextField
-              field="member2PhoneNumber"
-              title="Phone Number"
-              register={register}
-              error={formState.errors.member1PhoneNumber}
-            />
-            <FormTextField
-              field="member2Institution"
-              title="Institution"
-              register={register}
-              error={formState.errors.member2Institution}
-            />
-            <FormTextField
-              field="member2Batch"
-              title="Batch"
-              register={register}
-              error={formState.errors.member2Batch}
-            />
-            <FormTextField
-              field="member2Major"
-              title="Major"
-              register={register}
-              error={formState.errors.member2Major}
+              error={formState.errors.batch}
             />
             <Text color="blue" fontWeight="bold" fontSize="2xl" mt="1em">
               Where did you know this competition's information?
@@ -308,7 +190,7 @@ export const CaseCompetitionRegistration = ({
               my="1em"
             >
               <li>
-                Each member of the team must post twibbon (which can be accessed
+                Participant must post twibbon (which can be accessed
                 through{" "}
                 <a href={TWIBPOST_LINK} style={{ textDecoration: "underline" }}>
                   bit.ly/IECOMTwibbonPoster
@@ -318,7 +200,7 @@ export const CaseCompetitionRegistration = ({
                 form in JPG/PNG/PDF format
               </li>
               <li>
-                Each member of the team must post IECOM 2024 poster (which can
+                Participant must post IECOM 2024 poster (which can
                 be accessed through on their Instagram story) and tag @IECOM2024
                 and 3 friends. The proof of poster upload must be attached in
                 the registration form in JPG/PNG/PDF form.
@@ -336,14 +218,14 @@ export const CaseCompetitionRegistration = ({
               Payment Information
             </Text>
             <Text color="blue" fontWeight="bold" fontSize="xl" mt="1em">
-              Each team must pay registration fee with these following
+              Each participant must pay the registration fee with these following
               requirements.
             </Text>
             <Text color="blue" fontSize="xl" mt="1em">
-              National Students: Rp300,000.00 or USD 20
+              Early Bird Registration (until Oct 31st): IDR 60.000 or USD 4
             </Text>
             <Text color="blue" fontSize="xl" mt="1em">
-              International Students: Rp375,000.00 or USD 24
+              Normal Registration (from Nov 1st): IDR 80.000 or USD 6
             </Text>
             <Text color="blue" fontWeight="bolder" fontSize="xl" mt="1em">
               Please Transfer the Registration Fee to the following account.

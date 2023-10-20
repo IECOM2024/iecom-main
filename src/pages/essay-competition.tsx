@@ -4,12 +4,14 @@ import {
   Flex,
   Image,
   Text,
+  VStack,
   useMediaQuery,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { use, useEffect, useState } from "react";
 import { MdArrowForward } from "react-icons/md";
 import { ComingSoon } from "~/components/ComingSoon";
+import { Timeline, timelineContent } from "~/components/common/Timeline";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import {
   FadeIn,
@@ -19,50 +21,55 @@ import {
 } from "~/utils/animation/entrance-animation";
 
 const COMP_DESCRIPTION =
-  "IECOM’s Essay Competition is designed for those who are thirsty for a challenge! Through this four-stage competition, each team of three will be challenged to implement Industrial Engineering body of knowledge to provide an answer for real life problems. Every team will have a chance to enhance their critical thinking and problem solving skills to make the most of the possibilities that exist from the cases.";
+  "Essay competititon is one of the competitions in IECOM 2024. Every participant that wants to take part in this competition has to make an essay according to the topic that has been decided. Participants who pass this stage will present their essays in front of the judges that are experts in the field. This stage will measure the sensitivity to global issues and the communication skills of the participants.";
 const COMP_REQUIREMENTS = [
-  "Participants must be proficient in English.",
-  "Students from any universities in Southeast Asia are welcome to apply.",
-  "Participants must be an active university student, proven by a valid student identity card.",
-  "Each university or institute is allowed to register any number of teams for Online Selection.",
-  "Participants must form a team of 3 individuals from the same universities and all members must be enrolled as a student of Industrial Engineering or other relevant major.",
+  "All essay participants must be active undergraduate or diploma students from local or international universities/institutions",
+  "Each participant competes individually",
+  "The top 5 participants who pass the first stage (essay judging) will present their essay in front of the judges that experts in the field",
+  "Participants who are selected to present their essays must create a pitch deck and participate in student summit event on the offline pitching day in Bandung",
+  "Submission must be fresh and has never been submitted in previous competition or published in online media. Participants are prohibited from committing acts of plagiarism.",
 ];
 const PRIZE: [number, string][] = [
-  [0.8, "USD 1000"],
-  [1, "USD 2500"],
-  [0.6, "USD 500"],
+  [0.8, "USD 200"],
+  [1, "USD 300"],
+  [0.6, "USD 100"],
 ];
 const REGIST_INFO: [string, number, number, string][] = [
   [
     "Early Bird Registration",
-    15,
-    200000,
-    "Will be opened until 10th of November 2023",
+    4,
+    60000,
+    "Will be opened until October, 31th 2023",
   ],
-  [
-    "Normal Registration",
-    20,
-    250000,
-    "Will be opened until 20th of November 2023",
-  ],
+  ["Normal Registration", 6, 80000, "Will be open on November, 1st 2023"],
 ];
+
+const TIMELINE_CONTENT: timelineContent[] = [
+  ["Early Bird Registration", "21 Oct - 1 Nov 2023"],
+  ["Normal Registration", "2 - 20 November 2023"],
+  ["Last Submission", "1 December 2023"],
+  ["Essay Judging", "2 - 23 December 2023"],
+  ["Finalist Announcement", "4 January2023"],
+  ["Pitching Preparation", "10 - 25 January 2023"],
+  ["Pitching Session", "29 January 2023"],
+].map((content) => ({
+  dateStr: content[1] ?? "",
+  title: content[0] ?? "",
+}));
 
 export default function MainCompetitionPage() {
   const isMobile = useMediaQuery("(max-width: 600px)")[0];
   const router = useRouter();
-
-  return(
-    <PublicLayout>
-      <ComingSoon something="Essay Competition" />
-    </PublicLayout>
-  ); 
 
   return (
     <PublicLayout>
       <Flex flexDir="column" w="100%" pos="relative">
         {/* Main Description Group*/}
 
-        <Flex bgImage="main-comp-1.webp" bgSize="100vw auto">
+        <Flex
+          bgImage="main-comp-1.webp"
+          bgSize={{ base: "auto 100%", lg: "100% auto" }}
+        >
           <Slide from="left">
             <Flex flexDir="column" w="80%" mt="12rem" ml="4.5em">
               <Text
@@ -84,8 +91,16 @@ export default function MainCompetitionPage() {
               >
                 {COMP_DESCRIPTION}
               </Text>
-              <Button w="8em" h="2em" mt="4em" mb="6em" fontSize="2xl">
-                Learn More
+              <Button
+                w={{ base: "90%", md: "12em" }}
+                h="2em"
+                mt="4em"
+                mb="6em"
+                fontSize="2xl"
+                mx={{ base: "auto", md: "0" }}
+                onClick={() => router.push("essay-competition-guidebook.pdf")}
+              >
+                Download Guidebook!
               </Button>
             </Flex>
           </Slide>
@@ -138,7 +153,7 @@ export default function MainCompetitionPage() {
               mt="1em"
               textAlign="center"
             >
-              Requirements
+              Participant Provisions & Essay Rules
             </Text>
             <StaggeredPops delay={0.1}>
               {COMP_REQUIREMENTS.map((requirement, index) => (
@@ -303,7 +318,14 @@ export default function MainCompetitionPage() {
 
         {/* Timeline Group*/}
         <FadeIn>
-          <Box>
+          <VStack
+            color="blue"
+            spacing={{ base: "2rem", md: "3rem" }}
+            width="80%"
+            mb={{ base: "2rem", md: "4rem" }}
+            mt="5rem"
+            mx="auto"
+          >
             <Text
               w="100%"
               fontFamily="body"
@@ -315,8 +337,9 @@ export default function MainCompetitionPage() {
             >
               Timeline
             </Text>
-            <Text w="100%">FIXIN DULU TIMELINE colek @compe</Text>
-          </Box>
+
+            <Timeline timelineContent={TIMELINE_CONTENT} />
+          </VStack>
         </FadeIn>
 
         {/* Registration Group*/}
@@ -372,11 +395,12 @@ export default function MainCompetitionPage() {
                 w="100%"
                 fontFamily="heading"
                 fontSize="5xl"
-                color="white"
+                color="blue"
                 fontWeight="bolder"
                 wordBreak="normal"
                 textAlign="center"
                 className="blue-stroke-1px"
+                py="1em"
               >
                 USD {info[1]}
               </Text>
@@ -391,13 +415,14 @@ export default function MainCompetitionPage() {
                 w="100%"
                 fontFamily="heading"
                 fontSize="5xl"
-                color="white"
+                color="blue"
                 fontWeight="bolder"
                 wordBreak="normal"
                 textAlign="center"
                 className="blue-stroke-1px"
+                py="1em"
               >
-                RP. {info[2]}
+                IDR {info[2]}
               </Text>
               <Text
                 w="100%"
@@ -418,8 +443,12 @@ export default function MainCompetitionPage() {
                 color="blue"
                 border="0.5px solid black"
                 onClick={() => router.push("essay-competition-registration")}
+                isDisabled={index == 1}
               >
-                <Text mr="1em">Register</Text> <MdArrowForward size="1.5em" />
+                <Text mr="1em">
+                  {index == 0 ? "Register" : "Not Opened Yet"}
+                </Text>{" "}
+                {index == 0 && <MdArrowForward size="1.5em" />}
               </Button>
             </Flex>
           ))}

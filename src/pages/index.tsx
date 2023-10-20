@@ -27,6 +27,7 @@ import {
 import { NewsModal } from "~/components/landing-page/NewsModal";
 import { useIsMobile } from "~/utils/hooks/useIsMobile";
 import { Timeline } from "~/components/common/Timeline";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -145,6 +146,12 @@ export default function Home() {
                 title="Pre Event"
                 content={PRE_EVENT_DESCRIPTION}
                 img="landing-page/pre-event.webp"
+                buttons={[
+                  <Button key="1" size={isMobile ? "sm" : "md"}>
+                    Learn More
+                  </Button>,
+                ]}
+                linkTo="/pre-event"
               />
             </Slide>
             <Slide from={!isMobile ? "left" : "right"}>
@@ -152,6 +159,19 @@ export default function Home() {
                 title="Case Competition"
                 content={CASE_COMPETITION_DESCRIPTION}
                 img="landing-page/case-competition.webp"
+                buttons={[
+                  <Link href="/case-competition" key="1">
+                    <Button  size={isMobile ? "sm" : "md"}>
+                      Learn More
+                    </Button>
+                  </Link>,
+                  <Link href="/case-competition-registration" key="2">
+                    <Button  size={isMobile ? "sm" : "md"} variant="blue">
+                      Register
+                    </Button>
+                  </Link>,
+                ]}
+                linkTo="/case-competition"
               />
             </Slide>
             <Slide from="right">
@@ -159,6 +179,19 @@ export default function Home() {
                 title="Essay Competition"
                 content={ESSAY_COMPETITION_DESCRIPTION}
                 img="landing-page/essay-competition.webp"
+                buttons={[
+                  <Link href="/essay-competition" key="1">
+                    <Button  size={isMobile ? "sm" : "md"}>
+                      Learn More
+                    </Button>
+                  </Link>,
+                  <Link href="/essay-competition-registration" key="2">
+                    <Button  size={isMobile ? "sm" : "md"} variant="blue">
+                      Register
+                    </Button>
+                  </Link>,
+                ]}
+                linkTo="/essay-competition"
               />
             </Slide>
             <Slide from={!isMobile ? "left" : "right"}>
@@ -178,7 +211,7 @@ export default function Home() {
             <Heading fontSize={fontSizes.xxl} fontFamily="body">
               PHASE & TIMELINE
             </Heading>
-            <Timeline timelineContent={timelineContent}/>
+            <Timeline timelineContent={timelineContent} />
             {/* <Show below="md">
               <Flex
                 position="relative"
@@ -287,14 +320,6 @@ const timelineContent: {
   title: string;
 }[] = [
   {
-    dateStr: "16 October 2023",
-    title: "Pre-event Open Registration",
-  },
-  {
-    dateStr: "21 October 2023",
-    title: "Competition Open Registration",
-  },
-  {
     dateStr: "5 November 2023",
     title: "Color Run",
   },
@@ -304,11 +329,23 @@ const timelineContent: {
   },
   {
     dateStr: "25 November 2023",
-    title: "Preliminary",
+    title: "Case Competition Preliminary",
+  },
+  {
+    dateStr: "16 December 2023",
+    title: "Case Competition Simulation",
   },
   {
     dateStr: "1 December 2023",
     title: "Essay Last Submission",
+  },
+  {
+    dateStr: "26 January 2023",
+    title: "Amazing Race",
+  },
+  {
+    dateStr: "30 January 2023",
+    title: "Grand Final & Winner Announcement",
   },
 ];
 
@@ -316,19 +353,27 @@ const EventCard = ({
   title,
   content,
   img,
+  buttons,
+  linkTo,
 }: {
   title: string;
   content: string;
   img: string;
+  buttons?: JSX.Element[];
+  linkTo?: string;
 }) => {
+  const isMobile = useIsMobile();
+  const router = useRouter();
+
   return (
     <Flex
       direction={{ base: "column", md: "row" }}
       alignItems="center"
       bgColor="brown.5"
-      padding= "0 0 0 3rem"
+      padding="0 0 0 3rem"
       width="100%"
       gap={{ base: "1.25rem", md: "2rem" }}
+      onClick={linkTo && isMobile ? () => router.push(linkTo) : undefined}
     >
       <VStack align="flex-start">
         <Heading
@@ -347,18 +392,18 @@ const EventCard = ({
         >
           {content}
         </Text>
+        {buttons && !isMobile && <Flex gap="1rem" alignItems="center">{buttons}</Flex>}
       </VStack>
       <Image
         alt="image"
         src={img}
-        aspectRatio={16 / 9}
-        height={{ base: "auto", md: "16rem" }}
+        height={{ base: "auto", md: "100%" }}
+        w={{ base: "100%", md: "40%" }}
+        objectFit="contain"
       />
     </Flex>
   );
 };
-
-
 
 const TestimonialCard = ({
   content,

@@ -8,6 +8,7 @@ interface TimelineProps {
 export type timelineContent = {
     title: string;
     dateStr: string;
+    linkTo?: string;
 }
 
 export const Timeline = ({ timelineContent }: TimelineProps) => {
@@ -52,6 +53,7 @@ export const Timeline = ({ timelineContent }: TimelineProps) => {
               key={index}
               title={e.title}
               date={e.dateStr}
+              linkTo={e.linkTo}
               bottom="-1rem"
               left={`calc(${index * 20}rem )`}
             />

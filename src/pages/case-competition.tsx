@@ -4,6 +4,7 @@ import {
   Flex,
   Image,
   Text,
+  VStack,
   useMediaQuery,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -16,39 +17,57 @@ import {
   StaggeredPops,
   VisGrow,
 } from "~/utils/animation/entrance-animation";
-import {ComingSoon} from '~/components/ComingSoon';
+import { ComingSoon } from "~/components/ComingSoon";
+import { Timeline, timelineContent } from "~/components/common/Timeline";
 
 const COMP_DESCRIPTION =
   "IECOM’s main competition is designed for those who are thirsty for a challenge! Through this four-stage competition, each team of three will be challenged to implement Industrial Engineering body of knowledge to provide an answer for real life problems. Every team will have a chance to enhance their critical thinking and problem solving skills to make the most of the possibilities that exist from the cases.";
 const COMP_REQUIREMENTS = [
-  "Participants must be proficient in English.",
-  "Students from any universities in Southeast Asia are welcome to apply.",
-  "Participants must be an active university student, proven by a valid student identity card.",
-  "Each university or institute is allowed to register any number of teams for Online Selection.",
-  "Participants must form a team of 3 individuals from the same universities and all members must be enrolled as a student of Industrial Engineering or other relevant major.",
+  "Applicants should be currently enrolled university students, and this must be confirmed by presenting a valid student ID",
+  "Students from universities across Southeast Asia are welcomed to participate",
+  "Each team should consist of three members (can be from different universities), all of whom are pursuing a degree in Industrial Engineering or a related field.",
+  "Any member change in the team is not allowed once the team is registered",
+  "Proficiency in the English language is required",
+  "The IECOM 2024 committee reserves the right to disqualify participants who violate said rules",
 ];
-const PRIZE: [number, string][] = [
-  [0.8, "USD 1000"],
-  [1, "USD 2500"],
-  [0.6, "USD 500"],
+const PRIZE: [number, string, string][] = [
+  [0.8, "USD 1500", "2nd"],
+  [1, "USD 2000", "1st"],
+  [0.6, "USD 1000", "3rd"],
 ];
 const REGIST_INFO: [string, number, string, string][] = [
   [
     "Early Bird Registration",
-    15,
-    "200000",
-    "Will be opened until 10th of November 2023",
+    20,
+    "300000",
+    "Will be opened until 21th of November 2023",
   ],
   [
     "Normal Registration",
-    20,
-    "250000",
-    "Will be opened until 20th of November 2023",
+    26,
+    "375000",
+    "Will be opened on 22th of November 2023",
   ],
 ];
 
+const TIMLINE_CONTENT: timelineContent[] = [
+  ["Early Bird Registration", "21-31 October 2023"],
+  ["Regular Registration", "1-21 November 2023"],
+  ["D-Day Preliminary Stage", "25 November 2023"],
+  ["Preliminary Stage Announcement", "1 December 2023"],
+  ["D-Day Simulation Stage", "16 December 2023"],
+  ["Simulation Stage Announcement", "30 December 2023"],
+  ["D-day Amazing Race", " 26 January 2024"],
+  ["Finalist Announcement", "28 January 2024"],
+  ["D-Day Grand Final", " 30 January 2024"],
+  ["Awarding Night", "30 January 2024"],
+].map((e) => ({
+  title: e[0] ?? "",
+  dateStr: e[1] ?? "",
+}));
+
 export default function MainCompetitionPage() {
-  const isMobile = useMediaQuery("(max-width: 600px)")[0];
+  const isMobile = useMediaQuery("(max-width: 740px)")[0];
   const router = useRouter();
 
   return (
@@ -56,7 +75,7 @@ export default function MainCompetitionPage() {
       <Flex flexDir="column" w="100%" pos="relative">
         {/* Main Description Group*/}
 
-        <Flex bgImage="main-comp-1.webp" bgSize="100vw auto">
+        <Flex bgImage="main-comp-1.webp" bgSize={{base: "auto 100%",lg: "100% auto"}}>
           <Slide from="left">
             <Flex flexDir="column" w="80%" mt="12rem" ml="4.5em">
               <Text
@@ -66,7 +85,7 @@ export default function MainCompetitionPage() {
                 color="blue"
                 fontWeight="bold"
               >
-                Main Competition
+                Case Competition
               </Text>
               <Text
                 w="100%"
@@ -78,7 +97,15 @@ export default function MainCompetitionPage() {
               >
                 {COMP_DESCRIPTION}
               </Text>
-              <Button w="8em" h="2em" mt="4em" mb="6em" fontSize="2xl">
+              <Button
+                w={{ base: "90%", md: "12em" }}
+                h="2em"
+                mt="4em"
+                mb="6em"
+                fontSize="2xl"
+                mx={{ base: "auto", md: "0" }}
+                onClick={() => router.push("case-competition-guidebook.pdf")}
+              >
                 Download Guidebook!
               </Button>
             </Flex>
@@ -205,19 +232,7 @@ export default function MainCompetitionPage() {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        {index == 0 ? (
-                          <Text>
-                            1<Text as="sup">st</Text>
-                          </Text>
-                        ) : index == 1 ? (
-                          <Text>
-                            2<Text as="sup">nd</Text>
-                          </Text>
-                        ) : (
-                          <Text>
-                            3<Text as="sup">rd</Text>
-                          </Text>
-                        )}
+                        {prize[2]}
                       </Flex>
                       <Text
                         w="100%"
@@ -260,19 +275,7 @@ export default function MainCompetitionPage() {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        {index == 0 ? (
-                          <Text>
-                            1<Text as="sup">st</Text>
-                          </Text>
-                        ) : index == 1 ? (
-                          <Text>
-                            2<Text as="sup">nd</Text>
-                          </Text>
-                        ) : (
-                          <Text>
-                            3<Text as="sup">rd</Text>
-                          </Text>
-                        )}
+                        {prize[2]}
                       </Flex>
                       <Text
                         w="100%"
@@ -287,7 +290,7 @@ export default function MainCompetitionPage() {
                         {prize[1]}
                       </Text>
                     </Flex>
-                    <Box w="100%" h="1em"/>
+                    <Box w="100%" h="1em" />
                   </VisGrow>
                 );
               })}
@@ -297,7 +300,14 @@ export default function MainCompetitionPage() {
 
         {/* Timeline Group*/}
         <FadeIn>
-          <Box>
+          <VStack
+            color="blue"
+            spacing={{ base: "2rem", md: "3rem" }}
+            width="80%"
+            mb={{ base: "2rem", md: "4rem" }}
+            mt="5rem"
+            mx="auto"
+          >
             <Text
               w="100%"
               fontFamily="body"
@@ -309,8 +319,9 @@ export default function MainCompetitionPage() {
             >
               Timeline
             </Text>
-            <Text w="100%">FIXIN DULU TIMELINE colek @compe</Text>
-          </Box>
+
+            <Timeline timelineContent={TIMLINE_CONTENT} />
+          </VStack>
         </FadeIn>
 
         {/* Registration Group*/}
@@ -366,11 +377,11 @@ export default function MainCompetitionPage() {
                 w="100%"
                 fontFamily="heading"
                 fontSize="5xl"
-                color="white"
+                color="blue"
                 fontWeight="bolder"
                 wordBreak="normal"
                 textAlign="center"
-                className="blue-stroke-1px"
+                py="0.5em"
               >
                 USD {info[1]}
               </Text>
@@ -385,13 +396,17 @@ export default function MainCompetitionPage() {
                 w="100%"
                 fontFamily="heading"
                 fontSize="5xl"
-                color="white"
+                color="blue"
                 fontWeight="bolder"
                 wordBreak="normal"
                 textAlign="center"
-                className="blue-stroke-1px"
+                py="0.5em"
               >
-                RP. {info[2]}
+                IDR {info[2]}
+              </Text>
+              <Text>
+                *Registration fee will be slighty different for international
+                students
               </Text>
               <Text
                 w="100%"
@@ -411,9 +426,13 @@ export default function MainCompetitionPage() {
                 mt="2em"
                 color="blue"
                 border="0.5px solid black"
-                onClick={() => router.push("main-competition-registration")}
+                onClick={() => router.push("case-competition-registration")}
+                isDisabled={index == 1}
               >
-                <Text mr="1em">Register</Text> <MdArrowForward size="1.5em" />
+                <Text mr="1em">
+                  {index == 0 ? "Register" : "Not Opened Yet"}
+                </Text>{" "}
+                {index == 0 && <MdArrowForward size="1.5em" />}
               </Button>
             </Flex>
           ))}

@@ -75,14 +75,15 @@ model User {
 
     role UserRole @default(PARTICIPANT)
 
-    accounts                        Account[]
-    sessions                        Session[]
-    ParticipantData                 ParticipantData[]
-    PrelimAttendance                PrelimAttendance[]
-    EventTicket                     EventTicket[]
-    MainCompetitionRegistrationData MainCompetitionRegistrationData[]
-    ExamEnrollment                  ExamEnrollment[]
-    ColorRunParticipantData         ColorRunParticipantData[]
+    accounts                         Account[]
+    sessions                         Session[]
+    ParticipantData                  ParticipantData[]
+    PrelimAttendance                 PrelimAttendance[]
+    EventTicket                      EventTicket[]
+    MainCompetitionRegistrationData  MainCompetitionRegistrationData[]
+    ExamEnrollment                   ExamEnrollment[]
+    ColorRunParticipantData          ColorRunParticipantData[]
+    EssayCompetitionRegistrationData EssayCompetitionRegistrationData[]
 }
 
 model VerificationToken {
@@ -144,7 +145,29 @@ model MainCompetitionRegistrationData {
     member3Name                               String?
     whereDidYouKnowThisCompetitionInformation String?
 
-    messageFromAdmin String?
+    messageFromAdmin      String?
+    isFilePaymentUploaded Boolean @default(false)
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model EssayCompetitionRegistrationData {
+    id String @id @default(cuid())
+
+    userId String
+
+    status CompetitionRegistrationStatus @default(UNREGISTERED)
+
+    teamName                                  String?
+    name                                      String?
+    institution                               String?
+    major                                     String?
+    batch                                     String?
+    email                                     String?
+    phoneNumber                               String?
+    whereDidYouKnowThisCompetitionInformation String?
+
+    messageFromAdmin      String?
     isFilePaymentUploaded Boolean @default(false)
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
