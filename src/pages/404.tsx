@@ -1,5 +1,6 @@
 import { Button, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { NotFound } from "~/components/NotFound";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 
 export default function Page404() {
@@ -7,8 +8,7 @@ export default function Page404() {
 
     return (
         <PublicLayout>
-            <Text mt="1em" textAlign="center" fontSize="2xl" w="100%" mb="1em">Page Not Found</Text>
-            <Button onClick={() => router.push('/')} m="auto" >Home</Button>
+            <NotFound/>
         </PublicLayout>
     );
 }

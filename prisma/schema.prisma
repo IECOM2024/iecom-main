@@ -144,6 +144,13 @@ model MainCompetitionRegistrationData {
     member2PhoneNumber                        String?
     member3Name                               String?
     whereDidYouKnowThisCompetitionInformation String?
+    leaderPostLink                            String?
+    member1PostLink                           String?
+    member2PostLink                           String?
+    leaderTwibbonLink                         String?
+    member1TwibbonLink                        String?
+    member2TwibbonLink                        String?
+    
 
     messageFromAdmin      String?
     isFilePaymentUploaded Boolean @default(false)
@@ -166,6 +173,8 @@ model EssayCompetitionRegistrationData {
     email                                     String?
     phoneNumber                               String?
     whereDidYouKnowThisCompetitionInformation String?
+    postLink                                  String?
+    twibbonLink                               String?
 
     messageFromAdmin      String?
     isFilePaymentUploaded Boolean @default(false)

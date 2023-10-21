@@ -58,10 +58,8 @@ export const NewsModal = () => {
             })}
           </Flex>
         </ModalBody>
-        <ModalFooter>
-          <Button onClick={onClose} w="8em">
-            Close
-          </Button>
+        <ModalFooter h="3em">
+          
         </ModalFooter>
       </ModalContent>
     </Modal>

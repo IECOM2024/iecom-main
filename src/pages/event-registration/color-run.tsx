@@ -56,7 +56,7 @@ function EventRegistrationPageComponent() {
     api.colorRun.participantDeleteColorRunTicket.useMutation();
 
   useEffect(() => {
-    if (!colorRunTicket) {
+    if (!colorRunTicket || !colorRunTicket.isFilePaymemtUploaded) {
       return;
     }
 
@@ -65,7 +65,6 @@ function EventRegistrationPageComponent() {
       filename: `${colorRunTicket.id}.png`,
     }).then(({ url }) => setInitialImgUrl(url));
   }, [colorRunTicket, downloader]);
-  console.log(initialImgUrl);
 
   const submitForm = async (data: FormValues) => {
     toaster(
@@ -105,23 +104,21 @@ function EventRegistrationPageComponent() {
 
   const uploadFile = async (file: File) => {
     if (!colorRunTicket) return;
-    toaster(
-      uploader(
-        `${colorRunTicket.id}.png`,
-        FolderEnum.COLOR_RUN_PROOF,
-        AllowableFileTypeEnum.PNG,
-        file
-      ).then(() => {
-        colorRunTicketSaveMutation.mutateAsync({
-          isFilePaymentUploaded: true,
-        });
-      }),
+    await uploader(
+      `${colorRunTicket.id}.png`,
+      FolderEnum.COLOR_RUN_PROOF,
+      AllowableFileTypeEnum.PNG,
+      file
+    ).then(() => {
+      colorRunTicketSaveMutation.mutateAsync({
+        isFilePaymentUploaded: true,
+      });
+    }),
       {
         thenFn: () => {
           colorRunTicketQuery.refetch();
         },
-      }
-    );
+      };
   };
 
   const cancelRegistration = async () => {
@@ -146,7 +143,9 @@ function EventRegistrationPageComponent() {
 // Ini gr2 kegoblokan alif yang ga bikin komponen terpisah dari page
 export default function ColorRunRegistrationPage() {
   const { data: session } = useSession();
-  return <AuthorizedRoleLayout session={session}>
-    <EventRegistrationPageComponent />
-  </AuthorizedRoleLayout>;
+  return (
+    <AuthorizedRoleLayout session={session}>
+      <EventRegistrationPageComponent />
+    </AuthorizedRoleLayout>
+  );
 }

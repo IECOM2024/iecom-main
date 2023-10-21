@@ -40,6 +40,8 @@ export const essayRegistRouter = createTRPCRouter({
         major: z.string().optional(),
         batch: z.string().optional(),
         whereDidYouKnowThisCompetitionInformation: z.string().optional(),
+        postLink: z.string().optional(),
+        twibbonLink: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
       })
     )
@@ -67,6 +69,8 @@ export const essayRegistRouter = createTRPCRouter({
               batch: input.batch,
               whereDidYouKnowThisCompetitionInformation:
                 input.whereDidYouKnowThisCompetitionInformation,
+              postLink: input.postLink,
+              twibbonLink: input.twibbonLink,
               isFilePaymentUploaded: input.isFilePaymentUploaded,
             },
           });
@@ -84,6 +88,8 @@ export const essayRegistRouter = createTRPCRouter({
             institution: input.institution,
             major: input.major,
             batch: input.batch,
+            postLink: input.postLink,
+            twibbonLink: input.twibbonLink,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
           },
@@ -155,6 +161,8 @@ export const essayRegistRouter = createTRPCRouter({
             institution: null,
             major: null,
             batch: null,
+            postLink: null,
+            twibbonLink: null,
             whereDidYouKnowThisCompetitionInformation: null,
           },
         });
@@ -180,6 +188,8 @@ export const essayRegistRouter = createTRPCRouter({
         institution: z.string().optional(),
         major: z.string().optional(),
         batch: z.string().optional(),
+        postLink: z.string().optional(),
+        twibbonLink: z.string().optional(),
         whereDidYouKnowThisCompetitionInformation: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
       })
@@ -197,6 +207,8 @@ export const essayRegistRouter = createTRPCRouter({
             institution: input.institution,
             major: input.major,
             batch: input.batch,
+            postLink: input.postLink,
+            twibbonLink: input.twibbonLink,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
           },
@@ -226,6 +238,8 @@ export const essayRegistRouter = createTRPCRouter({
             institution: null,
             major: null,
             batch: null,
+            postLink: null,
+            twibbonLink: null,
             whereDidYouKnowThisCompetitionInformation: null,
           },
         });

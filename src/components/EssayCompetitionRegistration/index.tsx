@@ -16,24 +16,39 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
-import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
+import {
+  useForm,
+  UseFormRegister,
+  FieldErrors,
+  Resolver,
+} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FileInput } from "~/components/common/CustomForm/FileInput";
 import { useState } from "react";
 import { RegistrationStatus } from "@prisma/client";
+import { z } from "zod";
 
-export type FormValues = {
-  name: string | null
-  email: string | null
-  phoneNumber: string | null
-  institution: string | null
-  major: string | null
-  batch: string | null
-  whereDidYouKnowThisCompetitionInformation: string | null;
-};
+const schema = z.object({
+  name: z.string().nonempty().optional().nullable(),
+  email: z.string().nonempty().email().optional().nullable(),
+  phoneNumber: z.string().nonempty().optional().nullable(),
+  institution: z.string().nonempty().optional().nullable(),
+  major: z.string().nonempty().optional().nullable(),
+  batch: z.string().nonempty().optional().nullable(),
+  postLink: z.string().nonempty().optional().nullable(),
+  twibbonLink: z.string().nonempty().optional().nullable(),
+  whereDidYouKnowThisCompetitionInformation: z
+    .string()
+    .nonempty()
+    .optional()
+    .nullable(),
+});
+
+export type FormValues = z.infer<typeof schema>;
 
 interface EssayCompetitionRegistrationProps {
   initialFormValues?: Partial<FormValues>;
-  initialImgUrl?: string
+  initialImgUrl?: string;
   submitForm: (data: FormValues) => void;
   saveForm: (data: FormValues) => void;
   uploadFile: (file: File) => void;
@@ -52,9 +67,15 @@ export const EssayCompetitionRegistration = ({
   status,
   cancelRegistration,
 }: EssayCompetitionRegistrationProps) => {
-  const { handleSubmit, register, formState, getValues, setValue } =
-    useForm<FormValues>({ defaultValues: initialFormValues });
+  const { handleSubmit, register, formState, getValues, setValue, trigger } =
+    useForm<FormValues>({
+      defaultValues: initialFormValues,
+      resolver: zodResolver(schema),
+    });
   const paymentInputStateArr = useState<File | null | undefined>(null);
+  const isFrozen =
+    status === RegistrationStatus.SUBMITTED_UNCONFIRMED ||
+    status === RegistrationStatus.SUBMITTED_CONFIRMED;
 
   const onSubmit = handleSubmit((data) => {
     submitForm(data);
@@ -66,7 +87,8 @@ export const EssayCompetitionRegistration = ({
     }
   });
 
-  const onSave = handleSubmit((data) => {
+  const onSave = () => {
+    const data = getValues();
     saveForm(data);
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
@@ -74,7 +96,7 @@ export const EssayCompetitionRegistration = ({
         uploadFile(file);
       }
     }
-  });
+  };
 
   return (
     <Flex
@@ -124,30 +146,34 @@ export const EssayCompetitionRegistration = ({
               title="Phone Number"
               register={register}
               error={formState.errors.phoneNumber}
+              desc="use international format, ex: +6281234567890"
             />
             <FormTextField
               field="institution"
               title="Institution"
               register={register}
               error={formState.errors.institution}
+              desc="ex: Bandung Institute of Technology"
             />
             <FormTextField
               field="major"
               title="Major"
               register={register}
               error={formState.errors.major}
+              desc="ex: Industrial Engineering"
             />
             <FormTextField
               field="batch"
               title="Batch"
               register={register}
               error={formState.errors.batch}
+              desc="ex: 2020"
             />
             <Text color="blue" fontWeight="bold" fontSize="2xl" mt="1em">
               Where did you know this competition's information?
             </Text>
             <Select
-              mx="auto"
+              w="40%"
               mt="0.5em"
               {...register("whereDidYouKnowThisCompetitionInformation")}
               placeholder="Select option"
@@ -190,22 +216,38 @@ export const EssayCompetitionRegistration = ({
               my="1em"
             >
               <li>
-                Participant must post twibbon (which can be accessed
-                through{" "}
-                <a href={TWIBPOST_LINK} style={{ textDecoration: "underline" }}>
-                  bit.ly/IECOMTwibbonPoster
-                </a>
-                ) on their Instagram account and tag @IECOM2024 and 3 friends.
-                The proof of twibbon upload must be attached in the registration
-                form in JPG/PNG/PDF format
+                Participant must post twibbon (which can be accessed through{" "}
+                <a href={TWIBPOST_LINK}>bit.ly/IECOMTwibbonPoster</a>) on their
+                Instagram account and tag @IECOM2024 and 3 friends. The proof of
+                twibbon upload must be attached in the registration form in
+                JPG/PNG/PDF format
               </li>
               <li>
-                Participant must post IECOM 2024 poster (which can
-                be accessed through on their Instagram story) and tag @IECOM2024
-                and 3 friends. The proof of poster upload must be attached in
-                the registration form in JPG/PNG/PDF form.
+                Participant must post IECOM 2024 poster (which can be accessed
+                through on their Instagram story) and tag{" "}
+                <a href="https://www.instagram.com/iecom2024">@IECOM2024</a> and
+                3 friends. The proof of poster upload must be attached in the
+                registration form in JPG/PNG/PDF form and the link must be
+                entered below.
               </li>
             </UnorderedList>
+            
+            <FormTextField
+              field="twibbonLink"
+              title="Twibbon Upload Link"
+              register={register}
+              error={formState.errors.twibbonLink}
+              isFrozen={isFrozen}
+              desc="ex: https://www.instagram.com/p/CyqRn72RzhP"
+            />
+            <FormTextField
+              field="postLink"
+              title="Repost Link"
+              register={register}
+              error={formState.errors.postLink}
+              isFrozen={isFrozen}
+              desc="ex: https://www.instagram.com/p/CyqRn72RzhP"
+            />
 
             {/* Payment Information */}
             <Text
@@ -218,8 +260,8 @@ export const EssayCompetitionRegistration = ({
               Payment Information
             </Text>
             <Text color="blue" fontWeight="bold" fontSize="xl" mt="1em">
-              Each participant must pay the registration fee with these following
-              requirements.
+              Each participant must pay the registration fee with these
+              following requirements.
             </Text>
             <Text color="blue" fontSize="xl" mt="1em">
               Early Bird Registration (until Oct 31st): IDR 60.000 or USD 4
@@ -249,8 +291,21 @@ export const EssayCompetitionRegistration = ({
               File Upload
             </Text>
             <Text color="blue" fontSize="xl" mt="1em" mx="auto">
-              Please zip all the required files into one zip file and upload it by the button below
+              Please zip all the required files into one zip file and upload it
+              by the button below
             </Text>
+            <Text color="blue" mt="1em">
+              Files to be included in zip :
+            </Text>
+            <UnorderedList color="blue" fontSize="md" textAlign="justify">
+              <li>
+                Twibbon upload proof (JPG/PNG/PDF format) (max file size 5 MB)
+              </li>
+              <li>
+                Poster upload proof (JPG/PNG/PDF format) (max file size 5 MB)
+              </li>
+              <li>Payment proof (JPG/PNG/PDF format) (max file size 5 MB)</li>
+            </UnorderedList>
             <Flex mt="1em" w="100%" justifyContent="center">
               <FileInput
                 fileStateArr={paymentInputStateArr}
@@ -272,7 +327,11 @@ export const EssayCompetitionRegistration = ({
                 >
                   Save
                 </Button>
-                <SubmitFormModal onSubmit={onSubmit} />
+                <SubmitFormModal
+                  onSubmit={onSubmit}
+                  isDirty={formState.isDirty}
+                  trigger={trigger}
+                />
               </>
             ) : (
               <Text color="blue" mt="1em">
@@ -282,7 +341,7 @@ export const EssayCompetitionRegistration = ({
             {(status === RegistrationStatus.FORM_FILLING ||
               status === RegistrationStatus.UNREGISTERED ||
               status === RegistrationStatus.SUBMITTED_UNCONFIRMED) && (
-              <CancelFormModal onCancel={cancelRegistration} />
+              <CancelFormModal onCancel={async () => cancelRegistration()} />
             )}
           </Flex>
         </FormControl>
@@ -291,7 +350,15 @@ export const EssayCompetitionRegistration = ({
   );
 };
 
-const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
+const SubmitFormModal = ({
+  onSubmit,
+  isDirty,
+  trigger,
+}: {
+  onSubmit: () => Promise<void>;
+  isDirty: boolean;
+  trigger: () => void;
+}) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
 
   return (
@@ -304,7 +371,13 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
         bg="blue"
         fontSize="lg"
         _hover={{ color: "blue", bg: "white" }}
-        onClick={onOpen}
+        onClick={() => {
+          trigger();
+          if (!isDirty) {
+            onOpen();
+          }
+        }}
+        isDisabled={!isDirty}
       >
         Submit
       </Button>
@@ -330,7 +403,7 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
                 Cancel
               </Button>
               <Button
-                onClick={onSubmit}
+                onClick={() => onSubmit().then(onClose)}
                 variant="blue"
                 w={{ base: "100%", md: "5em" }}
               >
@@ -344,7 +417,7 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
   );
 };
 
-const CancelFormModal = ({ onCancel }: { onCancel: () => void }) => {
+const CancelFormModal = ({ onCancel }: { onCancel: () => Promise<void> }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
 
   return (
@@ -385,7 +458,7 @@ const CancelFormModal = ({ onCancel }: { onCancel: () => void }) => {
                 No
               </Button>
               <Button
-                onClick={onCancel}
+                onClick={() => onCancel().then(onClose)}
                 variant="salmon-outline"
                 w={{ base: "100%", md: "10em" }}
               >
@@ -405,19 +478,21 @@ const FormTextField = <T extends keyof FormValues>({
   register,
   error,
   desc,
+  isFrozen = false,
 }: {
   field: T;
   title: string | null;
   register: UseFormRegister<FormValues>;
   error: FieldErrors<FormValues>[T];
   desc?: string | null;
+  isFrozen?: boolean;
 }) => (
   <>
     <Text color="blue" fontWeight="bold" fontSize="2xl" mt="1em">
       {title}
     </Text>
     {desc && (
-      <Text color="blue" fontWeight="bold" fontSize="md" mt="0.5em">
+      <Text color="blue" fontWeight="bold" fontSize="md" mb="0.5em">
         {desc}
       </Text>
     )}
@@ -427,6 +502,7 @@ const FormTextField = <T extends keyof FormValues>({
       mt="0.5em"
       {...register(field)}
       borderColor={error?.message ? "salmon" : undefined}
+      isDisabled={isFrozen}
     />
     <Text color="salmon" h="1em">
       {error?.message ? error.message : undefined}

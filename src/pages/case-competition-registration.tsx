@@ -56,7 +56,7 @@ function CaseCompetitiontRegistrationPageComponent() {
     api.caseRegist.participantDeleteCaseRegistData.useMutation();
 
   useEffect(() => {
-    if (!caseRegist) {
+    if (!caseRegist || !caseRegist.isFilePaymentUploaded) {
       return;
     }
 
@@ -65,7 +65,6 @@ function CaseCompetitiontRegistrationPageComponent() {
       filename: `${caseRegist.id}.png`,
     }).then(({ url }) => setInitialImgUrl(url));
   }, [caseRegist, downloader]);
-  console.log(initialImgUrl);
 
   const submitForm = async (data: FormValues) => {
     toaster(
@@ -127,23 +126,22 @@ function CaseCompetitiontRegistrationPageComponent() {
 
   const uploadFile = async (file: File) => {
     if (!caseRegist) return;
-    toaster(
-      uploader(
-        `${caseRegist.id}.png`,
-        FolderEnum.COLOR_RUN_PROOF,
-        AllowableFileTypeEnum.PNG,
-        file
-      ).then(() => {
-        caseRegistSaveMutation.mutateAsync({
-          isFilePaymentUploaded: true,
-        });
-      }),
+    // upload file didnt have toaster
+    await uploader(
+      `${caseRegist.id}.png`,
+      FolderEnum.COLOR_RUN_PROOF,
+      AllowableFileTypeEnum.PNG,
+      file
+    ).then(() => {
+      caseRegistSaveMutation.mutateAsync({
+        isFilePaymentUploaded: true,
+      });
+    }),
       {
         thenFn: () => {
           caseRegistQuery.refetch();
         },
-      }
-    );
+      };
   };
 
   const cancelRegistration = async () => {

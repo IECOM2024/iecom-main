@@ -56,7 +56,7 @@ function EssayCompetitiontRegistrationPageComponent() {
     api.essayRegist.participantDeleteEssayRegistData.useMutation();
 
   useEffect(() => {
-    if (!essayRegist) {
+    if (!essayRegist || !essayRegist.isFilePaymentUploaded) {
       return;
     }
 
@@ -65,13 +65,11 @@ function EssayCompetitiontRegistrationPageComponent() {
       filename: `${essayRegist.id}.png`,
     }).then(({ url }) => setInitialImgUrl(url));
   }, [essayRegist, downloader]);
-  console.log(initialImgUrl);
 
   const submitForm = async (data: FormValues) => {
     toaster(
       essayRegistSaveMutation
         .mutateAsync({
-          
           whereDidYouKnowThisCompetitionInformation:
             data.whereDidYouKnowThisCompetitionInformation ?? "",
         })
@@ -88,6 +86,7 @@ function EssayCompetitiontRegistrationPageComponent() {
         institution: data.institution ?? "",
         major: data.major ?? "",
         batch: data.batch ?? "",
+        postLink: data.postLink ?? "",
         whereDidYouKnowThisCompetitionInformation:
           data.whereDidYouKnowThisCompetitionInformation ?? "",
       })
@@ -96,23 +95,21 @@ function EssayCompetitiontRegistrationPageComponent() {
 
   const uploadFile = async (file: File) => {
     if (!essayRegist) return;
-    toaster(
-      uploader(
-        `${essayRegist.id}.png`,
-        FolderEnum.COLOR_RUN_PROOF,
-        AllowableFileTypeEnum.PNG,
-        file
-      ).then(() => {
-        essayRegistSaveMutation.mutateAsync({
-          isFilePaymentUploaded: true,
-        });
-      }),
+    await uploader(
+      `${essayRegist.id}.png`,
+      FolderEnum.COLOR_RUN_PROOF,
+      AllowableFileTypeEnum.PNG,
+      file
+    ).then(() => {
+      essayRegistSaveMutation.mutateAsync({
+        isFilePaymentUploaded: true,
+      });
+    }),
       {
         thenFn: () => {
           essayRegistQuery.refetch();
         },
-      }
-    );
+      };
   };
 
   const cancelRegistration = async () => {

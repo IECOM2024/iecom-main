@@ -20,29 +20,44 @@ import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
 import { FileInput } from "~/components/common/CustomForm/FileInput";
 import { useState } from "react";
 import { RegistrationStatus } from "@prisma/client";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export type FormValues = {
-  teamName: string | null;
-  leaderName: string | null;
-  leaderEmail: string | null;
-  leaderPhoneNumber: string | null;
-  leaderInstitution: string | null;
-  leaderBatch: string | null;
-  leaderMajor: string | null;
-  member1Name: string | null;
-  member1Email: string | null;
-  member1PhoneNumber: string | null;
-  member1Institution: string | null;
-  member1Batch: string | null;
-  member1Major: string | null;
-  member2Name: string | null;
-  member2Email: string | null;
-  member2PhoneNumber: string | null;
-  member2Institution: string | null;
-  member2Batch: string | null;
-  member2Major: string | null;
-  whereDidYouKnowThisCompetitionInformation: string | null;
-};
+const schema = z.object({
+  teamName: z.string().nonempty().optional().nullable(),
+  leaderName: z.string().nonempty().optional().nullable(),
+  leaderEmail: z.string().email().optional().nullable(),
+  leaderPhoneNumber: z.string().nonempty().optional().nullable(),
+  leaderInstitution: z.string().nonempty().optional().nullable(),
+  leaderBatch: z.string().nonempty().optional().nullable(),
+  leaderMajor: z.string().nonempty().optional().nullable(),
+  member1Name: z.string().nonempty().optional().nullable(),
+  member1Email: z.string().email().optional().nullable(),
+  member1PhoneNumber: z.string().nonempty().optional().nullable(),
+  member1Institution: z.string().nonempty().optional().nullable(),
+  member1Batch: z.string().nonempty().optional().nullable(),
+  member1Major: z.string().nonempty().optional().nullable(),
+  member2Name: z.string().nonempty().optional().nullable(),
+  member2Email: z.string().email().optional().nullable(),
+  member2PhoneNumber: z.string().nonempty().optional().nullable(),
+  member2Institution: z.string().nonempty().optional().nullable(),
+  member2Batch: z.string().nonempty().optional().nullable(),
+  member2Major: z.string().nonempty().optional().nullable(),
+  whereDidYouKnowThisCompetitionInformation: z
+    .string()
+    .nonempty()
+    .optional()
+    .nullable(),
+  isFilePaymentUploaded: z.boolean().optional().nullable(),
+  leaderTwibbonLink: z.string().nonempty().optional().nullable(),
+  member1TwibbonLink: z.string().nonempty().optional().nullable(),
+  member2TwibbonLink: z.string().nonempty().optional().nullable(),
+  leaderPostLink: z.string().nonempty().optional().nullable(),
+  member1PostLink: z.string().nonempty().optional().nullable(),
+  member2PostLink: z.string().nonempty().optional().nullable(),
+});
+
+export type FormValues = z.infer<typeof schema>;
 
 interface CaseCompetitionRegistrationProps {
   initialFormValues?: Partial<FormValues>;
@@ -66,7 +81,10 @@ export const CaseCompetitionRegistration = ({
   cancelRegistration,
 }: CaseCompetitionRegistrationProps) => {
   const { handleSubmit, register, formState, getValues, setValue } =
-    useForm<FormValues>({ defaultValues: initialFormValues });
+    useForm<FormValues>({
+      defaultValues: initialFormValues,
+      resolver: zodResolver(schema),
+    });
   const paymentInputStateArr = useState<File | null | undefined>(null);
 
   const onSubmit = handleSubmit((data) => {
@@ -79,7 +97,8 @@ export const CaseCompetitionRegistration = ({
     }
   });
 
-  const onSave = handleSubmit((data) => {
+  const onSave = () => {
+    const data = getValues();
     saveForm(data);
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
@@ -87,7 +106,7 @@ export const CaseCompetitionRegistration = ({
         uploadFile(file);
       }
     }
-  });
+  };
 
   return (
     <Flex
@@ -152,24 +171,28 @@ export const CaseCompetitionRegistration = ({
               title="Phone Number"
               register={register}
               error={formState.errors.leaderPhoneNumber}
+              desc="Please include your country code (e.g. +62)"
             />
             <FormTextField
               field="leaderInstitution"
               title="Institution"
               register={register}
               error={formState.errors.leaderInstitution}
+              desc="e.g. Bandung Institute of Technology"
             />
             <FormTextField
               field="leaderBatch"
               title="Batch"
               register={register}
               error={formState.errors.leaderBatch}
+              desc="e.g. 2020"
             />
             <FormTextField
               field="leaderMajor"
               title="Major"
               register={register}
               error={formState.errors.leaderMajor}
+              desc="e.g. Industrial Engineering"
             />
             <Text
               color="blue"
@@ -197,24 +220,28 @@ export const CaseCompetitionRegistration = ({
               title="Phone Number"
               register={register}
               error={formState.errors.member1PhoneNumber}
+              desc="Please include your country code (e.g. +62)"
             />
             <FormTextField
               field="member1Institution"
               title="Institution"
               register={register}
               error={formState.errors.member1Institution}
+              desc="e.g. Bandung Institute of Technology"
             />
             <FormTextField
               field="member1Batch"
               title="Batch"
               register={register}
               error={formState.errors.member1Batch}
+              desc="e.g. 2020"
             />
             <FormTextField
               field="member1Major"
               title="Major"
               register={register}
               error={formState.errors.member1Major}
+              desc="e.g. Industrial Engineering"
             />
             <Text
               color="blue"
@@ -242,30 +269,34 @@ export const CaseCompetitionRegistration = ({
               title="Phone Number"
               register={register}
               error={formState.errors.member1PhoneNumber}
+              desc="Please include your country code (e.g. +62)"
             />
             <FormTextField
               field="member2Institution"
               title="Institution"
               register={register}
               error={formState.errors.member2Institution}
+              desc="e.g. Bandung Institute of Technology"
             />
             <FormTextField
               field="member2Batch"
               title="Batch"
               register={register}
               error={formState.errors.member2Batch}
+              desc="e.g. 2020"
             />
             <FormTextField
               field="member2Major"
               title="Major"
               register={register}
               error={formState.errors.member2Major}
+              desc="e.g. Industrial Engineering"
             />
             <Text color="blue" fontWeight="bold" fontSize="2xl" mt="1em">
               Where did you know this competition's information?
             </Text>
             <Select
-              mx="auto"
+              w="40%"
               mt="0.5em"
               {...register("whereDidYouKnowThisCompetitionInformation")}
               placeholder="Select option"
@@ -308,22 +339,64 @@ export const CaseCompetitionRegistration = ({
               my="1em"
             >
               <li>
-                Each member of the team must post twibbon (which can be accessed
-                through{" "}
-                <a href={TWIBPOST_LINK} style={{ textDecoration: "underline" }}>
-                  bit.ly/IECOMTwibbonPoster
-                </a>
-                ) on their Instagram account and tag @IECOM2024 and 3 friends.
-                The proof of twibbon upload must be attached in the registration
-                form in JPG/PNG/PDF format
+                Participant must post twibbon (which can be accessed through{" "}
+                <a href={TWIBPOST_LINK}>bit.ly/IECOMTwibbonPoster</a>) on their
+                Instagram account and tag @IECOM2024 and 3 friends. The proof of
+                twibbon upload must be attached in the registration form in
+                JPG/PNG/PDF format
               </li>
               <li>
-                Each member of the team must post IECOM 2024 poster (which can
-                be accessed through on their Instagram story) and tag @IECOM2024
-                and 3 friends. The proof of poster upload must be attached in
-                the registration form in JPG/PNG/PDF form.
+                Participant must post IECOM 2024 poster (which can be accessed
+                through on their Instagram story) and tag{" "}
+                <a href="https://www.instagram.com/iecom2024">@IECOM2024</a> and
+                3 friends. The proof of poster upload must be attached in the
+                registration form in JPG/PNG/PDF form and the link must be
+                entered below.
               </li>
             </UnorderedList>
+
+            <FormTextField
+              field="leaderTwibbonLink"
+              title="Leader Twibbon Link"
+              register={register}
+              error={formState.errors.leaderTwibbonLink}
+              desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
+            />
+            <FormTextField
+              field="member1TwibbonLink"
+              title="Member 1 Twibbon Link"
+              register={register}
+              error={formState.errors.member1TwibbonLink}
+              desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
+            />
+            <FormTextField
+              field="member2TwibbonLink"
+              title="Member 2 Twibbon Link"
+              register={register}
+              error={formState.errors.member2TwibbonLink}
+              desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
+            />
+            <FormTextField
+              field="leaderPostLink"
+              title="Leader Post Link"
+              register={register}
+              error={formState.errors.leaderPostLink}
+              desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
+            />
+            <FormTextField
+              field="member1PostLink"
+              title="Member 1 Post Link"
+              register={register}
+              error={formState.errors.member1PostLink}
+              desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
+            />
+            <FormTextField
+              field="member2PostLink"
+              title="Member 2 Post Link"
+              register={register}
+              error={formState.errors.member2PostLink}
+              desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
+            />
 
             {/* Payment Information */}
             <Text
@@ -367,8 +440,34 @@ export const CaseCompetitionRegistration = ({
               File Upload
             </Text>
             <Text color="blue" fontSize="xl" mt="1em" mx="auto">
-              Please zip all the required files into one zip file and upload it by the button below
+              Please zip all the required files into one zip file and upload it
+              by the button below
             </Text>
+            <Text color="blue" fontSize="md" mt="1em">
+              Required files:
+            </Text>
+            <UnorderedList
+              color="blue"
+              textAlign="justify"
+              gap="2em"
+              my="1em"
+            >
+              <li>
+                Payment proof (in JPG/PNG/PDF format) with name of the team_payment
+                as the file name
+              </li>
+              <li>
+                Twibbon post proof (in JPG/PNG/PDF format) with name of the team_the member's position_Twibbon
+                as the file name
+              </li>
+              <li>
+                Repost proof (in JPG/PNG/PDF format) with name of the team_the member's position_Repost
+                as the file name
+              </li>
+              <li>
+                Student ID (in JPG/PNG/PDF format) with name of the team_the member's position_Student ID
+              </li>
+            </UnorderedList>
             <Flex mt="1em" w="100%" justifyContent="center">
               <FileInput
                 fileStateArr={paymentInputStateArr}

@@ -19,7 +19,7 @@ const IECOM_DOCS: string[] = [
   "iecom-docs/iecom-docs-8.webp",
 ];
 
-export const ComingSoon = ({ something }: ComingSoonProps) => {
+export const NotFound = ({ something }: ComingSoonProps) => {
   const router = useRouter();
   const [randArr, setRandArr] = useState<(string | undefined)[]>();
   useEffect(() => {

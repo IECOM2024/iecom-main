@@ -59,7 +59,7 @@ a {
 }
 
 .file-input-default {
-  border: 1px solid #054e84;;
+  border: 1px solid #054e84;
   height: 5rem;
 }
 
@@ -67,7 +67,6 @@ a {
   border: none;
   height: 5rem;
 }
-
 
 .file-input-default::file-selector-button {
   width: 100%;
@@ -80,6 +79,15 @@ a {
   font-weight: 700;
   color: #054e84;
   cursor: pointer;
+}
+
+.file-input-default-file-exists::file-selector-button {
+  display: none;
+}
+
+.file-input-default-file-exists{
+  color: blue;
+  font-size: large;
 }
 
 .privpol {
@@ -104,4 +112,8 @@ a {
 
 .privpol li {
   margin-left: 1em;
+}
+
+a {
+  text-decoration: underline !important;
 }

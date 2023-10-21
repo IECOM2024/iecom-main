@@ -24,8 +24,12 @@ export const FileInput = ({
   };
 
   const downloadTheFile = () => {
-    imgUrl &&
-      downloadFile(imgUrl).then((data) => FileSaver.saveAs(data, data.name));
+    if (document && imgUrl) {
+      const x = document.createElement("a");
+      x.href = imgUrl;
+      x.download = imgUrl;
+      x.click();
+    }
   };
 
   return (
@@ -34,14 +38,16 @@ export const FileInput = ({
         {...rest}
         type="file"
         onChange={fileChangeHandler}
-        color={"transparent"}
+        color={fileState ? "blue" : "transparent"}
         h="4em"
         display="flex"
         alignItems="center"
         justifyContent="center"
-        className={"file-input-default"}
+        className={
+          fileState ? "file-input-default-file-exists" : "file-input-default"
+        }
         cursor="pointer"
-        accept={AllowableFileTypeEnum.PICTURES}
+        accept={AllowableFileTypeEnum.PICTURES || AllowableFileTypeEnum.ZIP} // TODO : Kasih input props untuk menerima file type apa aja
       />
       {imgUrl && (
         <>
