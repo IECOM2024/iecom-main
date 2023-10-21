@@ -81,3 +81,27 @@ a {
   color: #054e84;
   cursor: pointer;
 }
+
+.privpol {
+  font-family: Alsans;
+  text-align: justify;
+}
+
+.privpol h1 {
+  font-size: 3em;
+  font-weight: 500;
+}
+
+.privpol h2 {
+  font-size: 2em;
+  font-weight: 500;
+}
+
+.privpol h3 {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.privpol li {
+  margin-left: 1em;
+}
