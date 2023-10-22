@@ -10,7 +10,10 @@ const defaultButton: SystemStyleFunction = () => {
     my: "10px",
     _hover: {
       shadow: "0 0 10px rgba(40,40,200,0.6)",
-      _disabled: {}
+      _disabled: {
+        color: "white",
+        bg: "gray.400",
+      },
     },
     _active: {
       shadow: "none",
@@ -18,7 +21,7 @@ const defaultButton: SystemStyleFunction = () => {
     _disabled: {
       color: "white",
       bg: "gray.400",
-      _hover: {}
+      _hover: {},
     },
   };
 };

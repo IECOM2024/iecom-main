@@ -3,18 +3,26 @@ import { useState } from "react";
 import { Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
 import { useToaster } from "~/utils/hooks/useToaster";
 import { PasswordInput } from "~/utils/elements/PasswordInput";
+import { router } from "@trpc/server";
+import { useRouter } from "next/router";
 
 interface SignUpProps {
-  csrfToken: string
+  csrfToken: string;
 }
 
-export const SignUp = ({csrfToken}: SignUpProps) => {
+export const SignUp = ({ csrfToken }: SignUpProps) => {
   const toast = useToast();
   const toaster = useToaster();
+  const router = useRouter();
 
+  const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [confirmPasswordInput, setConfirmPasswordInput] = useState("");
+
+  const nameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNameInput(e.target.value);
+  };
 
   const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailInput(e.target.value);
@@ -32,10 +40,13 @@ export const SignUp = ({csrfToken}: SignUpProps) => {
 
   const createUserMutation = api.user.createUser.useMutation();
 
-  const credentialSignUp = (email: string, password: string) => {
-
+  const credentialSignUp = (email: string, password: string, name: string) => {
     // TODO: Kasih CSRF Validation & reCAPTCHA
-    toaster(createUserMutation.mutateAsync({ email, password }));
+    toaster(
+      createUserMutation
+        .mutateAsync({ email, password, name })
+        .then(() => router.replace("/"))
+    );
   };
 
   const credentialButtonClickHandler = () => {
@@ -88,50 +99,57 @@ export const SignUp = ({csrfToken}: SignUpProps) => {
       });
       return;
     }
-    credentialSignUp(emailInput, passwordInput);
+    credentialSignUp(emailInput, passwordInput, nameInput);
   };
 
   return (
-      <Flex justifyContent="center">
-        <Flex
-          flexDirection="column"
-          border="1px solid black"
-          borderRadius="10px"
-          p="1em"
-          w="min(30em,95%)"
-        >
-          <Text textAlign="center">Sign Up</Text>
-          <Input
-            mt="1em"
-            w="100%"
-            value={emailInput}
-            onChange={emailChangeHandler}
-            placeholder="Email"
-          />
-          <PasswordInput
-            mt="1em"
-            w="100%"
-            value={passwordInput}
-            onChange={passwordChangeHandler}
-            placeholder="Password"
-          />
-          <PasswordInput
-            mt="1em"
-            w="100%"
-            value={confirmPasswordInput}
-            onChange={confirmPasswordChangeHandler}
-            placeholder="Confirm Password"
-          />
+    <Flex justifyContent="center" mt="2em" mb="40vh">
+      <Flex
+        flexDirection="column"
+        border="1px solid black"
+        borderRadius="10px"
+        p="1em"
+        w="min(30em,95%)"
+      >
+        <Text textAlign="center">Sign Up</Text>
+        <Input
+          mt="1em"
+          w="100%"
+          value={nameInput}
+          onChange={nameChangeHandler}
+          placeholder="Name"
+        />
+        <Input
+          mt="1em"
+          w="100%"
+          value={emailInput}
+          onChange={emailChangeHandler}
+          placeholder="Email"
+        />
+        <PasswordInput
+          mt="1em"
+          w="100%"
+          value={passwordInput}
+          onChange={passwordChangeHandler}
+          placeholder="Password"
+        />
+        <PasswordInput
+          mt="1em"
+          w="100%"
+          value={confirmPasswordInput}
+          onChange={confirmPasswordChangeHandler}
+          placeholder="Confirm Password"
+        />
 
-          <Button
-            onClick={credentialButtonClickHandler}
-            w="50%"
-            m="auto"
-            mt="1em"
-          >
-            Sign Up
-          </Button>
-        </Flex>
+        <Button
+          onClick={credentialButtonClickHandler}
+          w="50%"
+          m="auto"
+          mt="1em"
+        >
+          Sign Up
+        </Button>
       </Flex>
+    </Flex>
   );
 };

@@ -97,8 +97,8 @@ interface ButtonGroupProps {
 }
 
 const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
-  const eventHoverMenu = useHoverMenu()
-  const compeHoverMenu = useHoverMenu()
+  const eventHoverMenu = useHoverMenu();
+  const compeHoverMenu = useHoverMenu();
 
   return (
     <>
@@ -185,29 +185,28 @@ const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
               px="0.7em"
               py="0.5em"
             >
-              {session.user.role === "ADMIN" ? (
-                <Button
-                  variant="no-border"
-                  onClick={() => router.push("/event-administration")}
-                >
-                  Manage Event
-                </Button>
-              ) : (
-                <Button
-                  variant="no-border"
-                  onClick={() => router.push("/event-registration")}
-                >
-                  Register Event
-                </Button>
+              {session.user.role === "ADMIN" && (
+                <>
+                  <Button
+                    variant="no-border"
+                    onClick={() => router.push("/regist-administration")}
+                  >
+                    Manage Event
+                  </Button>
+                  <Box bg="black" w="80%" m="auto" h="1px" my="1em" />
+                </>
               )}
-              <Box bg="black" w="80%" m="auto" h="1px" my="1em" />
+
               <Button onClick={() => router.push("/profile")}>Profile</Button>
-              <SignOutBtn/>
+              <SignOutBtn />
             </Flex>
           </MenuList>
         </Menu>
       ) : type !== "signin" ? (
-        <Button onClick={() => signIn(undefined, {callbackUrl: "/"})}> Sign In </Button>
+        <Button onClick={() => signIn(undefined, { callbackUrl: "/" })}>
+          {" "}
+          Sign In{" "}
+        </Button>
       ) : (
         <Box />
       )}
@@ -280,10 +279,12 @@ const ButtonGroupMobile = ({ session, router, type }: ButtonGroupProps) => {
           {!!session ? (
             <>
               <Button onClick={() => router.push("/profile")}>Profile</Button>
-              <SignOutBtn/>
+              <SignOutBtn />
             </>
           ) : (
-            <Button onClick={() => signIn(undefined, {callbackUrl: "/"})}>Sign In</Button>
+            <Button onClick={() => signIn(undefined, { callbackUrl: "/" })}>
+              Sign In
+            </Button>
           )}
         </MenuList>
       </Menu>
