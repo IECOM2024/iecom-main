@@ -113,9 +113,10 @@ export default function EventPage() {
                 h="2em"
                 mx={{base: "auto", md:"0"}}
                 mt="3em"
-                mb="6em"
+                mb="3em"
                 fontSize="xl"
                 color="blue"
+                onClick={() => router.push("/pre-event#color-run")}
               >
                 Register Now!
               </Button>

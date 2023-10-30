@@ -1,4 +1,4 @@
-import { RegistrationStatus } from "@prisma/client";
+import { ParticipantType, RegisFor, RegistrationStatus } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import {
@@ -42,6 +42,16 @@ export const colorRunRouter = createTRPCRouter({
         emergencyContactNumber: z.string().optional(),
         emergencyContactName: z.string().optional(),
         emergencyContactRelationship: z.string().optional(),
+        type: z
+          .union([
+            z.literal(ParticipantType.ITB_STUDENT),
+            z.literal(ParticipantType.PUBLIC),
+          ])
+          .optional(),
+        registFor: z
+          .union([z.literal(RegisFor.INDIVIDUAL), z.literal(RegisFor.BUNDLE)])
+          .optional(),
+        paidby: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
       })
     )
@@ -70,8 +80,11 @@ export const colorRunRouter = createTRPCRouter({
               emergencyContactNumber: input.emergencyContactNumber,
               emergencyContactName: input.emergencyContactName,
               emergencyContactRelationship: input.emergencyContactRelationship,
+              type: input.type,
+              registFor: input.registFor,
+              paidby: input.paidby,
               isFilePaymemtUploaded: input.isFilePaymentUploaded,
-              
+              status: RegistrationStatus.FORM_FILLING,
             },
           });
 
@@ -92,7 +105,11 @@ export const colorRunRouter = createTRPCRouter({
             emergencyContactNumber: input.emergencyContactNumber,
             emergencyContactName: input.emergencyContactName,
             emergencyContactRelationship: input.emergencyContactRelationship,
+            type: input.type,
+            registFor: input.registFor,
+            paidby: input.paidby,
             isFilePaymemtUploaded: input.isFilePaymentUploaded,
+            status: RegistrationStatus.FORM_FILLING,
           },
         }
       );
@@ -167,6 +184,9 @@ export const colorRunRouter = createTRPCRouter({
             emergencyContactNumber: null,
             emergencyContactName: null,
             emergencyContactRelationship: null,
+            type: ParticipantType.ITB_STUDENT,
+            registFor: RegisFor.INDIVIDUAL,
+            paidby: null,
           },
         });
 
@@ -174,12 +194,60 @@ export const colorRunRouter = createTRPCRouter({
     }
   ),
 
-  adminGetColorRunTicketList: adminProcedure.query(async ({ ctx }) => {
-    const colorRunTicketList =
-      await ctx.prisma.colorRunParticipantData.findMany();
+  adminGetColorRunTicketList: adminProcedure
+    .input(
+      z.object({
+        currentPage: z.number(),
+        limitPerPage: z.number(),
+        filterBy: z.string().optional(),
+        searchQuery: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const currentPage = input.currentPage;
+      const limitPerPage = input.limitPerPage;
+      const offset = (currentPage - 1) * limitPerPage;
 
-    return colorRunTicketList;
-  }),
+      const colorRunTicketList =
+        await ctx.prisma.colorRunParticipantData.findMany({
+          where: {
+            name: {
+              contains:
+                input.filterBy === "name" ? input.searchQuery : undefined,
+              mode: "insensitive",
+              not: null,
+            },
+            email: {
+              contains:
+                input.filterBy === "email" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            phoneNumber: {
+              contains:
+                input.filterBy === "phoneNumber"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+            institution: {
+              contains:
+                input.filterBy === "institution"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+          },
+        });
+
+      return {
+        data: colorRunTicketList,
+        metadata: {
+          currentPage: currentPage,
+          limitPerPage: limitPerPage,
+          total: colorRunTicketList.length,
+        },
+      };
+    }),
 
   adminUpdateColorRunTicket: adminProcedure
     .input(
@@ -195,6 +263,22 @@ export const colorRunRouter = createTRPCRouter({
         emergencyContactNumber: z.string().optional(),
         emergencyContactName: z.string().optional(),
         emergencyContactRelationship: z.string().optional(),
+        type: z
+          .union([
+            z.literal(ParticipantType.ITB_STUDENT),
+            z.literal(ParticipantType.PUBLIC),
+          ])
+          .optional(),
+        registFor: z
+          .union([z.literal(RegisFor.INDIVIDUAL), z.literal(RegisFor.BUNDLE)])
+          .optional(),
+        paidby: z.string().optional(),
+        status: z.union([
+          z.literal(RegistrationStatus.UNREGISTERED),
+          z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
+          z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
+          z.literal(RegistrationStatus.FORM_FILLING),
+        ]).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -214,6 +298,10 @@ export const colorRunRouter = createTRPCRouter({
             emergencyContactNumber: input.emergencyContactNumber,
             emergencyContactName: input.emergencyContactName,
             emergencyContactRelationship: input.emergencyContactRelationship,
+            type: input.type,
+            registFor: input.registFor,
+            paidby: input.paidby,
+            status: input.status,
           },
         });
 
@@ -244,6 +332,9 @@ export const colorRunRouter = createTRPCRouter({
             emergencyContactNumber: null,
             emergencyContactName: null,
             emergencyContactRelationship: null,
+            type: ParticipantType.ITB_STUDENT,
+            registFor: RegisFor.INDIVIDUAL,
+            paidby: null,
           },
         });
 

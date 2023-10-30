@@ -40,13 +40,13 @@ const REGIST_INFO: [string, number, string, string][] = [
     "Early Bird Registration",
     20,
     "300000",
-    "Will be opened until 21th of November 2023",
+    "Will be opened until October 31th 2023",
   ],
   [
     "Normal Registration",
     26,
     "375000",
-    "Will be opened on 22th of November 2023",
+    "Will be opened on November 1st 2023",
   ],
 ];
 

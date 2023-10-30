@@ -10,28 +10,48 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
   Select,
+  Stack,
   Text,
+  UnorderedList,
   useDisclosure,
 } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
 import { FileInput } from "~/components/common/CustomForm/FileInput";
 import { useState } from "react";
-import { RegistrationStatus } from "@prisma/client";
+import { ParticipantType, RegisFor, RegistrationStatus } from "@prisma/client";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export type FormValues = {
-  name: string | null;
-  email: string | null;
-  phoneNumber: string | null;
-  address: string | null;
-  institution: string | null;
-  bloodType: string | null;
-  healthHistory: string | null;
-  emergencyContactNumber: string | null;
-  emergencyContactName: string | null;
-  emergencyContactRelationship: string | null;
-};
+const schema = z.object({
+  name: z.string().nonempty().optional().nullable(),
+  email: z.string().email().nonempty().optional().nullable(),
+  phoneNumber: z.string().nonempty().optional().nullable(),
+  address: z.string().nonempty().optional().nullable(),
+  institution: z.string().nonempty().optional().nullable(),
+  bloodType: z.string().nonempty().optional().nullable(),
+  healthHistory: z.string().nonempty().optional().nullable(),
+  emergencyContactNumber: z.string().nonempty().optional().nullable(),
+  emergencyContactName: z.string().nonempty().optional().nullable(),
+  emergencyContactRelationship: z.string().nonempty().optional().nullable(),
+  partType: z
+    .union([
+      z.literal(ParticipantType.ITB_STUDENT),
+      z.literal(ParticipantType.PUBLIC),
+    ])
+    .optional()
+    .nullable(),
+  registFor: z
+    .union([z.literal(RegisFor.INDIVIDUAL), z.literal(RegisFor.BUNDLE)])
+    .optional()
+    .nullable(),
+  paidby: z.string().nonempty().optional().nullable(),
+});
+
+export type FormValues = z.infer<typeof schema>;
 
 interface ColorRunProps {
   initialFormValues?: Partial<FormValues>;
@@ -52,8 +72,11 @@ export const ColorRunRegistration = ({
   status,
   cancelRegistration,
 }: ColorRunProps) => {
-  const { handleSubmit, register, formState, getValues, setValue } =
-    useForm<FormValues>({ defaultValues: initialFormValues });
+  const { handleSubmit, register, formState, getValues, setValue, watch } =
+    useForm<FormValues>({
+      defaultValues: initialFormValues,
+      resolver: zodResolver(schema),
+    });
   const paymentInputStateArr = useState<File | null | undefined>(null);
 
   const onSubmit = handleSubmit((data) => {
@@ -66,7 +89,8 @@ export const ColorRunRegistration = ({
     }
   });
 
-  const onSave = handleSubmit((data) => {
+  const onSave = async () => {
+    const data = getValues();
     saveForm(data);
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
@@ -74,7 +98,7 @@ export const ColorRunRegistration = ({
         uploadFile(file);
       }
     }
-  });
+  };
 
   return (
     <Flex
@@ -145,8 +169,7 @@ export const ColorRunRegistration = ({
 
             <Select
               placeholder="Select"
-              value={getValues("bloodType") ?? ""}
-              onChange={(e) => setValue("bloodType", e.target.value)}
+              {...register("bloodType")}
               mt="0.5em"
               w="50%"
             >
@@ -199,16 +222,91 @@ export const ColorRunRegistration = ({
             >
               Payment Information
             </Text>
+            <UnorderedList color="blue" fontWeight="bold" mt="1em">
+              <li>For ITB Student, the registration fee is IDR 125.000</li>
+              <li>For Non-ITB Student :</li>
+              <UnorderedList>
+                <li>Individual : IDR 165.000</li>
+                <li>Bundled (for 3 person) : IDR 150.000 per person</li>
+              </UnorderedList>
+            </UnorderedList>
             <Text color="blue" fontWeight="bold" fontSize="xl" mt="1em">
-              To Complete Color Run Registration, Please Transfer an amount of
-              IDR XXX to any of the following accounts:
+              To Complete Color Run Registration, Please Transfer the required
+              amount to any of the following accounts:
             </Text>
-            <Text color="blue" fontWeight="bold" fontSize="xl" mt="1em">
-              BCA 1234567890 a/n John Doe
+            <Text color="blue" fontSize="xl" mt="1em">
+              Bank Name: Bank Central Asia
             </Text>
-            <Text color="blue" fontWeight="bold" fontSize="xl" mt="1em">
-              BNI 1234567890 a/n John Doe
+            <Text color="blue" fontSize="xl" mt="1em">
+              Account Holder: Carissa Raynadhira
             </Text>
+            <Text color="blue" fontSize="xl" mt="1em">
+              Account Number: 7772755085
+            </Text>
+            <Text color="blue" fontWeight="bold" fontSize="2xl" mt="1em">
+              Participant Type
+            </Text>
+
+            <Select
+              placeholder="Select"
+              {...register("partType")}
+              mt="0.5em"
+              w="50%"
+            >
+              <option value="ITB_STUDENT">ITB_STUDENT</option>
+              <option value="PUBLIC">PUBLIC</option>
+            </Select>
+            {watch("partType") === ParticipantType.PUBLIC && (
+              <>
+                <Text color="blue" fontWeight="bold" fontSize="2xl" mt="1em">
+                  Participant Type
+                </Text>
+
+                <Select
+                  placeholder="Select"
+                  {...register("registFor")}
+                  mt="0.5em"
+                  w="50%"
+                >
+                  <option value="INDIVIDUAL">INDIVIDUAL</option>
+                  <option value="BUNDLE">BUNDLE</option>
+                </Select>
+                {watch("registFor") === RegisFor.BUNDLE && (
+                  <FormTextField
+                    field="paidby"
+                    title="Participant who paid for the registration"
+                    register={register}
+                    error={formState.errors.paidby}
+                  />
+                )}
+              </>
+            )}
+            <Text
+              textAlign="center"
+              fontSize="3xl"
+              color="blue"
+              fontWeight="bold"
+              w="100%"
+            >
+              File Upload
+            </Text>
+            <Text color="blue" fontSize="xl" mt="1em" mx="auto">
+              Please zip all the required files into one zip file and upload it
+              by the button below
+            </Text>
+            <Text color="blue" fontSize="md" mt="1em">
+              Required files:
+            </Text>
+            <UnorderedList color="blue" textAlign="justify" gap="2em" my="1em">
+              <li>
+                Payment proof (in JPG/PNG/PDF format) with name of the
+                participant as the file name
+              </li>
+              <li>
+                For ITB participants : Student ID (in JPG/PNG/PDF format) with
+                name of the team_the member's position_Student ID
+              </li>
+            </UnorderedList>
             <Flex mt="1em" w="100%" justifyContent="center">
               <FileInput
                 fileStateArr={paymentInputStateArr}
@@ -275,7 +373,11 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
             contact you via registered email.
           </ModalBody>
           <ModalFooter>
-            <Flex flexDir={{ base: "column", md: "row" }} gap="1em" w={{base: "100%", md:"auto"}}>
+            <Flex
+              flexDir={{ base: "column", md: "row" }}
+              gap="1em"
+              w={{ base: "100%", md: "auto" }}
+            >
               <Button
                 onClick={onClose}
                 variant="mono-gray"
@@ -326,7 +428,11 @@ const CancelFormModal = ({ onCancel }: { onCancel: () => void }) => {
             Once you have deleted your registration, your data will be lost.
           </ModalBody>
           <ModalFooter>
-            <Flex flexDir={{ base: "column", md: "row" }} gap="1em" w={{base: "100%", md:"auto"}}>
+            <Flex
+              flexDir={{ base: "column", md: "row" }}
+              gap="1em"
+              w={{ base: "100%", md: "auto" }}
+            >
               <Button
                 onClick={onClose}
                 variant="mono-gray"

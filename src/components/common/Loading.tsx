@@ -16,8 +16,8 @@ export const Loading = () => {
         py="5em"
         mb="70vh"
       >
-        <Spinner color="blue" mx="auto" size="2xl" />
-        <Text textAlign="center" mx="auto" mt="1em" fontSize={{base: "xl",md: "3xl"}}>
+        <Spinner color="blue" mx="auto" size="2em" thickness="3px" />
+        <Text textAlign="center" mx="auto" mt="1em" fontSize={{base: "xl",md: "3xl"}} fontWeight="bold">
           Loading...
         </Text>
       </Flex>

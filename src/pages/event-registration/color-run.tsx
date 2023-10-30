@@ -37,6 +37,7 @@ import { useUploader } from "~/utils/hooks/useUploader";
 import { AllowableFileTypeEnum, FolderEnum } from "~/utils/file";
 import { useDownloader } from "~/utils/hooks/useDownloader";
 import { RegistrationStatus } from "@prisma/client";
+import { ComingSoon } from "~/components/ComingSoon";
 
 function EventRegistrationPageComponent() {
   const toaster = useToaster();
@@ -80,6 +81,9 @@ function EventRegistrationPageComponent() {
           emergencyContactName: data.emergencyContactName ?? "",
           emergencyContactNumber: data.emergencyContactNumber ?? "",
           emergencyContactRelationship: data.emergencyContactRelationship ?? "",
+          type: data.partType ?? undefined,
+          registFor: data.registFor ?? undefined,
+          paidby: data.paidby ?? undefined,
         })
         .then(() => colorRunTicketSubmitMutation.mutateAsync())
     );
@@ -98,6 +102,9 @@ function EventRegistrationPageComponent() {
         emergencyContactName: data.emergencyContactName ?? "",
         emergencyContactNumber: data.emergencyContactNumber ?? "",
         emergencyContactRelationship: data.emergencyContactRelationship ?? "",
+        type: data.partType ?? undefined,
+        registFor: data.registFor ?? undefined,
+        paidby: data.paidby ?? undefined,
       })
     );
   };
@@ -143,6 +150,7 @@ function EventRegistrationPageComponent() {
 // Ini gr2 kegoblokan alif yang ga bikin komponen terpisah dari page
 export default function ColorRunRegistrationPage() {
   const { data: session } = useSession();
+
   return (
     <AuthorizedRoleLayout session={session}>
       <EventRegistrationPageComponent />

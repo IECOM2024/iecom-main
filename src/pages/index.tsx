@@ -147,9 +147,11 @@ export default function Home() {
                 content={PRE_EVENT_DESCRIPTION}
                 img="landing-page/pre-event.webp"
                 buttons={[
-                  <Button key="1" size={isMobile ? "sm" : "md"}>
-                    Learn More
-                  </Button>,
+                  <Link href="/pre-event#color-run" key="1">
+                    <Button key="1" size={isMobile ? "sm" : "md"}>
+                      Learn More
+                    </Button>
+                  </Link>,
                 ]}
                 linkTo="/pre-event"
               />
@@ -161,12 +163,10 @@ export default function Home() {
                 img="landing-page/case-competition.webp"
                 buttons={[
                   <Link href="/case-competition" key="1">
-                    <Button  size={isMobile ? "sm" : "md"}>
-                      Learn More
-                    </Button>
+                    <Button size={isMobile ? "sm" : "md"}>Learn More</Button>
                   </Link>,
                   <Link href="/case-competition-registration" key="2">
-                    <Button  size={isMobile ? "sm" : "md"} variant="blue">
+                    <Button size={isMobile ? "sm" : "md"} variant="blue">
                       Register
                     </Button>
                   </Link>,
@@ -181,12 +181,10 @@ export default function Home() {
                 img="landing-page/essay-competition.webp"
                 buttons={[
                   <Link href="/essay-competition" key="1">
-                    <Button  size={isMobile ? "sm" : "md"}>
-                      Learn More
-                    </Button>
+                    <Button size={isMobile ? "sm" : "md"}>Learn More</Button>
                   </Link>,
                   <Link href="/essay-competition-registration" key="2">
-                    <Button  size={isMobile ? "sm" : "md"} variant="blue">
+                    <Button size={isMobile ? "sm" : "md"} variant="blue">
                       Register
                     </Button>
                   </Link>,
@@ -392,7 +390,11 @@ const EventCard = ({
         >
           {content}
         </Text>
-        {buttons && !isMobile && <Flex gap="1rem" alignItems="center">{buttons}</Flex>}
+        {buttons && !isMobile && (
+          <Flex gap="1rem" alignItems="center">
+            {buttons}
+          </Flex>
+        )}
       </VStack>
       <Image
         alt="image"

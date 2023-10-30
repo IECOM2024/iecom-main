@@ -189,9 +189,9 @@ const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
                 <>
                   <Button
                     variant="no-border"
-                    onClick={() => router.push("/regist-administration")}
+                    onClick={() => router.push("/admin/color-run")}
                   >
-                    Manage Event
+                    Color Run Admin
                   </Button>
                   <Box bg="black" w="80%" m="auto" h="1px" my="1em" />
                 </>

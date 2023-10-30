@@ -150,7 +150,6 @@ model MainCompetitionRegistrationData {
     leaderTwibbonLink                         String?
     member1TwibbonLink                        String?
     member2TwibbonLink                        String?
-    
 
     messageFromAdmin      String?
     isFilePaymentUploaded Boolean @default(false)
@@ -241,6 +240,16 @@ enum RegistrationStatus {
     SUBMITTED_CONFIRMED
 }
 
+enum RegisFor {
+    INDIVIDUAL
+    BUNDLE
+}
+
+enum ParticipantType {
+    ITB_STUDENT
+    PUBLIC
+}
+
 // Color Run Models
 
 model ColorRunParticipantData {
@@ -256,6 +265,11 @@ model ColorRunParticipantData {
     emergencyContactNumber       String?
     emergencyContactName         String?
     emergencyContactRelationship String?
+
+    // For payment
+    type      ParticipantType @default(ITB_STUDENT)
+    registFor RegisFor        @default(INDIVIDUAL)
+    paidby    String?
 
     status RegistrationStatus @default(UNREGISTERED)
 

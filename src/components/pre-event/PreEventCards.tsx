@@ -119,7 +119,7 @@ export const PreEventCards = () => {
                 <Image
                   borderRadius="5px"
                   boxShadow="4px 4px 4px rgba(0,0,0,0.4)"
-                  src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80"
+                  src="/color-run.webp"
                   alt=""
                   w="100%"
                   h="auto"
