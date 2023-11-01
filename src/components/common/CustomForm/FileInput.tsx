@@ -47,7 +47,7 @@ export const FileInput = ({
           fileState ? "file-input-default-file-exists" : "file-input-default"
         }
         cursor="pointer"
-        accept={AllowableFileTypeEnum.PICTURES || AllowableFileTypeEnum.ZIP} // TODO : Kasih input props untuk menerima file type apa aja
+        accept={`${AllowableFileTypeEnum.PICTURES} , ${AllowableFileTypeEnum.ZIP}`} // TODO : Kasih input props untuk menerima file type apa aja
       />
       {imgUrl && (
         <>

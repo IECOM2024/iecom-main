@@ -62,7 +62,7 @@ function EssayCompetitiontRegistrationPageComponent() {
 
     downloader({
       folder: FolderEnum.ESSAY_COMP_FILES,
-      filename: `${essayRegist.id}.png`,
+      filename: `${essayRegist.id}.zip`,
     }).then(({ url }) => setInitialImgUrl(url));
   }, [essayRegist, downloader]);
 
@@ -70,8 +70,16 @@ function EssayCompetitiontRegistrationPageComponent() {
     toaster(
       essayRegistSaveMutation
         .mutateAsync({
+          name: data.name ?? undefined,
+          email: data.email ?? undefined,
+          phoneNumber: data.phoneNumber ?? undefined,
+          institution: data.institution ?? undefined,
+          major: data.major ?? undefined,
+          batch: data.batch ?? undefined,
+          postLink: data.postLink ?? undefined,
+          twibbonLink: data.twibbonLink ?? undefined,
           whereDidYouKnowThisCompetitionInformation:
-            data.whereDidYouKnowThisCompetitionInformation ?? "",
+            data.whereDidYouKnowThisCompetitionInformation ?? undefined,
         })
         .then(() => essayRegistSubmitMutation.mutateAsync())
     );
@@ -80,15 +88,16 @@ function EssayCompetitiontRegistrationPageComponent() {
   const saveForm = async (data: FormValues) => {
     toaster(
       essayRegistSaveMutation.mutateAsync({
-        name: data.name ?? "",
-        email: data.email ?? "",
-        phoneNumber: data.phoneNumber ?? "",
-        institution: data.institution ?? "",
-        major: data.major ?? "",
-        batch: data.batch ?? "",
-        postLink: data.postLink ?? "",
+        name: data.name ?? undefined,
+        email: data.email ?? undefined,
+        phoneNumber: data.phoneNumber ?? undefined,
+        institution: data.institution ?? undefined,
+        major: data.major ?? undefined,
+        batch: data.batch ?? undefined,
+        postLink: data.postLink ?? undefined,
+        twibbonLink: data.twibbonLink ?? undefined,
         whereDidYouKnowThisCompetitionInformation:
-          data.whereDidYouKnowThisCompetitionInformation ?? "",
+          data.whereDidYouKnowThisCompetitionInformation ?? undefined,
       })
     );
   };
@@ -96,7 +105,7 @@ function EssayCompetitiontRegistrationPageComponent() {
   const uploadFile = async (file: File) => {
     if (!essayRegist) return;
     await uploader(
-      `${essayRegist.id}.png`,
+      `${essayRegist.id}.zip`,
       FolderEnum.COLOR_RUN_PROOF,
       AllowableFileTypeEnum.PNG,
       file

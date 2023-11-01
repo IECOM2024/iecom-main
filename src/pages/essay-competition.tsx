@@ -39,9 +39,9 @@ const REGIST_INFO: [string, number, number, string][] = [
     "Early Bird Registration",
     4,
     60000,
-    "Will be opened until October, 31th 2023",
+    "Closed on 31th October  2023",
   ],
-  ["Normal Registration", 6, 80000, "Will be open on November, 1st 2023"],
+  ["Normal Registration", 6, 80000, "Open until 20th November 2023"],
 ];
 
 const TIMELINE_CONTENT: timelineContent[] = [
@@ -226,11 +226,11 @@ export default function MainCompetitionPage() {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        {index == 0 ? (
+                        {index == 1 ? (
                           <Text>
                             1<Text as="sup">st</Text>
                           </Text>
-                        ) : index == 1 ? (
+                        ) : index == 0 ? (
                           <Text>
                             2<Text as="sup">nd</Text>
                           </Text>
@@ -281,11 +281,11 @@ export default function MainCompetitionPage() {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        {index == 0 ? (
+                        {index == 1 ? (
                           <Text>
                             1<Text as="sup">st</Text>
                           </Text>
-                        ) : index == 1 ? (
+                        ) : index == 0 ? (
                           <Text>
                             2<Text as="sup">nd</Text>
                           </Text>
@@ -443,12 +443,12 @@ export default function MainCompetitionPage() {
                 color="blue"
                 border="0.5px solid black"
                 onClick={() => router.push("essay-competition-registration")}
-                isDisabled={index == 1}
+                isDisabled={index == 0}
               >
                 <Text mr="1em">
-                  {index == 0 ? "Register" : "Not Opened Yet"}
+                  {index == 0 ? "Closed" : "Register"}
                 </Text>{" "}
-                {index == 0 && <MdArrowForward size="1.5em" />}
+                {index == 1 && <MdArrowForward size="1.5em" />}
               </Button>
             </Flex>
           ))}

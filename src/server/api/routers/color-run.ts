@@ -237,14 +237,47 @@ export const colorRunRouter = createTRPCRouter({
               mode: "insensitive",
             },
           },
+          skip: offset,
+          take: limitPerPage,
         });
 
+      const colorRunTicketNumber = await ctx.prisma.colorRunParticipantData.count(
+        {
+          where: {
+            name: {
+              contains:
+                input.filterBy === "name" ? input.searchQuery : undefined,
+              mode: "insensitive",
+              not: null,
+            },
+            email: {
+              contains:
+                input.filterBy === "email" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            phoneNumber: {
+              contains:
+                input.filterBy === "phoneNumber"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+            institution: {
+              contains:
+                input.filterBy === "institution"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+          },
+        }
+      );
       return {
         data: colorRunTicketList,
         metadata: {
           currentPage: currentPage,
           limitPerPage: limitPerPage,
-          total: colorRunTicketList.length,
+          total: colorRunTicketNumber
         },
       };
     }),
@@ -279,6 +312,7 @@ export const colorRunRouter = createTRPCRouter({
           z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
           z.literal(RegistrationStatus.FORM_FILLING),
         ]).optional(),
+        messageFromAdmin: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -302,6 +336,7 @@ export const colorRunRouter = createTRPCRouter({
             registFor: input.registFor,
             paidby: input.paidby,
             status: input.status,
+            messageFromAdmin: input.messageFromAdmin,
           },
         });
 

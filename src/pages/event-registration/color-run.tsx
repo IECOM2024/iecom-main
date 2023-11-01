@@ -143,6 +143,7 @@ function EventRegistrationPageComponent() {
       initialImgUrl={initialImgUrl}
       status={colorRunTicket?.status ?? RegistrationStatus.FORM_FILLING}
       cancelRegistration={cancelRegistration}
+      messageFromAdmin={colorRunTicket?.messageFromAdmin ?? undefined}
     />
   );
 }

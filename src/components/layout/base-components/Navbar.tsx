@@ -193,6 +193,12 @@ const ButtonGroupDesktop = ({ session, router, type }: ButtonGroupProps) => {
                   >
                     Color Run Admin
                   </Button>
+                  <Button
+                    variant="no-border"
+                    onClick={() => router.push("/admin/essay-competition")}
+                  >
+                    Essay Competition Admin
+                  </Button>
                   <Box bg="black" w="80%" m="auto" h="1px" my="1em" />
                 </>
               )}

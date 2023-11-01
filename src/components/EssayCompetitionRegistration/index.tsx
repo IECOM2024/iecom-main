@@ -54,9 +54,10 @@ interface EssayCompetitionRegistrationProps {
   uploadFile: (file: File) => void;
   status: RegistrationStatus;
   cancelRegistration: () => void;
+  messageFromAdmin?: string;
 }
 
-const TWIBPOST_LINK = "https://bit.ly/IECOMTwibbonPoster";
+export const TWIBPOST_LINK = "https://bit.ly/IECOMTwibbonPoster";
 
 export const EssayCompetitionRegistration = ({
   initialFormValues,
@@ -66,6 +67,7 @@ export const EssayCompetitionRegistration = ({
   uploadFile,
   status,
   cancelRegistration,
+  messageFromAdmin,
 }: EssayCompetitionRegistrationProps) => {
   const { handleSubmit, register, formState, getValues, setValue, trigger } =
     useForm<FormValues>({
@@ -97,6 +99,8 @@ export const EssayCompetitionRegistration = ({
       }
     }
   };
+
+  console.log(formState.errors);
 
   return (
     <Flex
@@ -231,7 +235,7 @@ export const EssayCompetitionRegistration = ({
                 entered below.
               </li>
             </UnorderedList>
-            
+
             <FormTextField
               field="twibbonLink"
               title="Twibbon Upload Link"
@@ -329,13 +333,18 @@ export const EssayCompetitionRegistration = ({
                 </Button>
                 <SubmitFormModal
                   onSubmit={onSubmit}
-                  isDirty={formState.isDirty}
+                  isError={!formState.isValid}
                   trigger={trigger}
                 />
               </>
             ) : (
               <Text color="blue" mt="1em">
                 You have already registered and your payment has been confirmed
+              </Text>
+            )}
+            {messageFromAdmin && (
+              <Text color="blue" mt="1em">
+                {messageFromAdmin}
               </Text>
             )}
             {(status === RegistrationStatus.FORM_FILLING ||
@@ -352,11 +361,11 @@ export const EssayCompetitionRegistration = ({
 
 const SubmitFormModal = ({
   onSubmit,
-  isDirty,
+  isError,
   trigger,
 }: {
   onSubmit: () => Promise<void>;
-  isDirty: boolean;
+  isError: boolean;
   trigger: () => void;
 }) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
@@ -373,11 +382,11 @@ const SubmitFormModal = ({
         _hover={{ color: "blue", bg: "white" }}
         onClick={() => {
           trigger();
-          if (!isDirty) {
+          if (!isError) {
             onOpen();
           }
         }}
-        isDisabled={!isDirty}
+        isDisabled={isError}
       >
         Submit
       </Button>

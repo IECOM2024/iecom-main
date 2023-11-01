@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Input,
   Menu,
   MenuButton,
   MenuList,
@@ -11,22 +10,23 @@ import {
   Tr,
   useDisclosure,
   useToast,
+  Input
 } from "@chakra-ui/react";
-import { ColorRunParticipantData, RegistrationStatus } from "@prisma/client";
+import { EssayCompetitionRegistrationData, RegistrationStatus } from "@prisma/client";
 import { MdEdit, MdMessage } from "react-icons/md";
-import { EditColorRunTicketModal } from "./EditColorRunTicketModal";
 import { useDownloader } from "~/utils/hooks/useDownloader";
 import { FolderEnum } from "~/utils/file";
 import { useState } from "react";
+import { EditEssayRegistModal } from "./EditEssayRegistModal";
 
 interface ObjectListRowProps {
-  objectContent: ColorRunParticipantData;
+  objectContent: EssayCompetitionRegistrationData;
   num: number;
-  editObject: (Object: Partial<ColorRunParticipantData>) => Promise<void>;
+  editObject: (Object: Partial<EssayCompetitionRegistrationData>) => Promise<void>;
   deleteObject: (ObjectId: string) => void;
 }
 
-export const ColorRunTicketRow = ({
+export const EssayRegistRow = ({
   objectContent,
   num,
   editObject,
@@ -100,7 +100,7 @@ export const ColorRunTicketRow = ({
   };
 
   const downloadFiles = () => {
-    if (!objectContent.isFilePaymemtUploaded) {
+    if (!objectContent.isFilePaymentUploaded) {
       return;
     }
 
@@ -116,7 +116,7 @@ export const ColorRunTicketRow = ({
 
     downloader({
       folder: FolderEnum.COLOR_RUN_PROOF,
-      filename: `${objectContent.id}.png`,
+      filename: `${objectContent.id}.zip`,
     }).then(({ url }) => forceDownload(url));
   };
 
@@ -154,7 +154,6 @@ export const ColorRunTicketRow = ({
       }
     });
   };
-
   return (
     <Tr>
       <Td>{num}</Td>
@@ -204,14 +203,14 @@ export const ColorRunTicketRow = ({
       </Td>
 
       <Td>
-        <EditColorRunTicketModal
+        <EditEssayRegistModal
           editObject={editObject}
           deleteObject={deleteObjectPipe}
           objectContent={objectContent}
         />
       </Td>
       <Td>
-        {objectContent.isFilePaymemtUploaded ? (
+        {objectContent.isFilePaymentUploaded ? (
           <Button onClick={downloadFiles}>Download</Button>
         ) : (
           <Text fontStyle="italic">No File Uploaded</Text>

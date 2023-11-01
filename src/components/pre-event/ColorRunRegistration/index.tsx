@@ -17,6 +17,7 @@ import {
   Text,
   UnorderedList,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
@@ -25,6 +26,7 @@ import { useState } from "react";
 import { ParticipantType, RegisFor, RegistrationStatus } from "@prisma/client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { initial } from "lodash";
 
 const schema = z.object({
   name: z.string().nonempty().optional().nullable(),
@@ -61,6 +63,7 @@ interface ColorRunProps {
   uploadFile: (file: File) => void;
   status: RegistrationStatus;
   cancelRegistration: () => void;
+  messageFromAdmin?: string;
 }
 
 export const ColorRunRegistration = ({
@@ -71,7 +74,10 @@ export const ColorRunRegistration = ({
   uploadFile,
   status,
   cancelRegistration,
+  messageFromAdmin,
 }: ColorRunProps) => {
+  const toast = useToast();
+
   const { handleSubmit, register, formState, getValues, setValue, watch } =
     useForm<FormValues>({
       defaultValues: initialFormValues,
@@ -79,7 +85,33 @@ export const ColorRunRegistration = ({
     });
   const paymentInputStateArr = useState<File | null | undefined>(null);
 
+  const validateFileUpload = () => {
+    if (paymentInputStateArr[0]) {
+      const file = paymentInputStateArr[0];
+      if (file) {
+        return true;
+      }
+    }
+
+    if (initialImgUrl) {
+      return true;
+    }
+
+    return false;
+  };
+
   const onSubmit = handleSubmit((data) => {
+    if (!validateFileUpload()) {
+      toast({
+        title: "File Upload is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      return
+    }
+
     submitForm(data);
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
@@ -317,22 +349,34 @@ export const ColorRunRegistration = ({
             <Box h="1px" w="100%" mx="auto" bg="black" my="1em" />
             {status !== RegistrationStatus.SUBMITTED_CONFIRMED ? (
               <>
-                <Button
-                  variant="mono-outline"
-                  w="80%"
-                  mx="auto"
-                  mt="1em"
-                  color="blue"
-                  fontSize="lg"
-                  onClick={onSave}
-                >
-                  Save
-                </Button>
-                <SubmitFormModal onSubmit={onSubmit} />
+                {status !== RegistrationStatus.SUBMITTED_UNCONFIRMED && (
+                  <Button
+                    variant="mono-outline"
+                    w="80%"
+                    mx="auto"
+                    mt="1em"
+                    color="blue"
+                    fontSize="lg"
+                    onClick={onSave}
+                  >
+                    Save
+                  </Button>
+                )}
+                <SubmitFormModal
+                  onSubmit={onSubmit}
+                  isSubmitted={
+                    status === RegistrationStatus.SUBMITTED_UNCONFIRMED
+                  }
+                />
               </>
             ) : (
               <Text color="blue" mt="1em">
                 You have already registered and your payment has been confirmed
+              </Text>
+            )}
+            {messageFromAdmin && (
+              <Text color="blue" mt="1em" fontSize="3em" textAlign="center">
+                Message From Admin : {messageFromAdmin}
               </Text>
             )}
             {(status === RegistrationStatus.FORM_FILLING ||
@@ -347,8 +391,67 @@ export const ColorRunRegistration = ({
   );
 };
 
-const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
+const SubmitFormModal = ({
+  onSubmit,
+  isSubmitted,
+}: {
+  onSubmit: () => void;
+  isSubmitted: boolean;
+}) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
+
+  if (isSubmitted) {
+    return (
+      <>
+        <Button
+          w="80%"
+          mx="auto"
+          mt="1em"
+          color="white"
+          bg="blue"
+          fontSize="lg"
+          _hover={{ color: "blue", bg: "white" }}
+          onClick={onOpen}
+        >
+          Resubmit
+        </Button>
+        <Modal onClose={onClose} isOpen={isOpen}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              Are you sure you want to resubmit your registration?
+            </ModalHeader>
+            <ModalBody>
+              Once you have resubmitted, our team will review your data. We will
+              contact you via registered email.
+            </ModalBody>
+            <ModalFooter>
+              <Flex
+                flexDir={{ base: "column", md: "row" }}
+                gap="1em"
+                w={{ base: "100%", md: "auto" }}
+              >
+                <Button
+                  onClick={onClose}
+                  variant="mono-gray"
+                  w={{ base: "100%", md: "5em" }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={onSubmit}
+                  variant="blue"
+                  w={{ base: "100%", md: "5em" }}
+                >
+                  Resubmit
+                </Button>
+              </Flex>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
 
   return (
     <>
@@ -386,7 +489,10 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
                 Cancel
               </Button>
               <Button
-                onClick={onSubmit}
+                onClick={() => {
+                  onSubmit();
+                  onClose();
+                }}
                 variant="blue"
                 w={{ base: "100%", md: "5em" }}
               >
@@ -441,7 +547,10 @@ const CancelFormModal = ({ onCancel }: { onCancel: () => void }) => {
                 No
               </Button>
               <Button
-                onClick={onCancel}
+                onClick={() => {
+                  onCancel();
+                  onClose();
+                }}
                 variant="salmon-outline"
                 w={{ base: "100%", md: "10em" }}
               >

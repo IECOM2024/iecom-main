@@ -71,6 +71,7 @@ export const essayRegistRouter = createTRPCRouter({
                 input.whereDidYouKnowThisCompetitionInformation,
               postLink: input.postLink,
               twibbonLink: input.twibbonLink,
+              status: RegistrationStatus.FORM_FILLING,
               isFilePaymentUploaded: input.isFilePaymentUploaded,
             },
           });
@@ -90,6 +91,7 @@ export const essayRegistRouter = createTRPCRouter({
             batch: input.batch,
             postLink: input.postLink,
             twibbonLink: input.twibbonLink,
+            status: RegistrationStatus.FORM_FILLING,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
           },
@@ -171,12 +173,92 @@ export const essayRegistRouter = createTRPCRouter({
     }
   ),
 
-  adminGetessayRegistDataList: adminProcedure.query(async ({ ctx }) => {
-    const essayRegistDataList =
-      await ctx.prisma.essayCompetitionRegistrationData.findMany();
+  adminGetessayRegistDataList: adminProcedure
+    .input(
+      z.object({
+        currentPage: z.number(),
+        limitPerPage: z.number(),
+        filterBy: z.string().optional(),
+        searchQuery: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const currentPage = input.currentPage;
+      const limitPerPage = input.limitPerPage;
+      const offset = (currentPage - 1) * limitPerPage;
 
-    return essayRegistDataList;
-  }),
+      const essayRegistDataList =
+        await ctx.prisma.essayCompetitionRegistrationData.findMany({
+          where: {
+            name: {
+              contains:
+                input.filterBy === "name" ? input.searchQuery : undefined,
+              mode: "insensitive",
+              not: null,
+            },
+            email: {
+              contains:
+                input.filterBy === "email" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            phoneNumber: {
+              contains:
+                input.filterBy === "phoneNumber"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+            institution: {
+              contains:
+                input.filterBy === "institution"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+          },
+          skip: offset,
+          take: limitPerPage,
+        });
+
+      const essayRegistDataCount =
+        await ctx.prisma.essayCompetitionRegistrationData.count({
+          where: {
+            name: {
+              contains:
+                input.filterBy === "name" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            email: {
+              contains:
+                input.filterBy === "email" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            phoneNumber: {
+              contains:
+                input.filterBy === "phoneNumber"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+            institution: {
+              contains:
+                input.filterBy === "institution"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+          },
+        });
+
+      return {
+        data: essayRegistDataList,
+        metadata: {
+          currentPage: currentPage,
+          limitPerPage: limitPerPage,
+          total: essayRegistDataCount,
+        },
+      };
+    }),
 
   adminUpdateEssayRegistData: adminProcedure
     .input(
@@ -190,8 +272,15 @@ export const essayRegistRouter = createTRPCRouter({
         batch: z.string().optional(),
         postLink: z.string().optional(),
         twibbonLink: z.string().optional(),
+        status: z.union([
+          z.literal(RegistrationStatus.UNREGISTERED),
+          z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
+          z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
+          z.literal(RegistrationStatus.FORM_FILLING),
+        ]),
         whereDidYouKnowThisCompetitionInformation: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
+        messageFromAdmin: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -209,8 +298,11 @@ export const essayRegistRouter = createTRPCRouter({
             batch: input.batch,
             postLink: input.postLink,
             twibbonLink: input.twibbonLink,
+            status: input.status,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
+            isFilePaymentUploaded: input.isFilePaymentUploaded,
+            messageFromAdmin: input.messageFromAdmin,
           },
         });
 
@@ -231,7 +323,6 @@ export const essayRegistRouter = createTRPCRouter({
           },
           data: {
             status: RegistrationStatus.UNREGISTERED,
-            teamName: null,
             name: null,
             email: null,
             phoneNumber: null,

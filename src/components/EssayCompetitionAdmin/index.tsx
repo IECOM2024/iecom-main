@@ -18,14 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { type RouterOutputs, api } from "~/utils/api";
-import { ColorRunTicketRow } from "./ColorRunTicketRow";
+import { EssayRegistRow } from "./EssayRegistRow";
 import { TRPCClientError } from "@trpc/client";
-import _ from "lodash";
 import { useToaster } from "~/utils/hooks/useToaster";
-import { ColorRunParticipantData, RegistrationStatus } from "@prisma/client";
+import { EssayCompetitionRegistrationData, RegistrationStatus } from "@prisma/client";
 import { Loading } from "~/components/common/Loading";
 
-export const ColorRunAdministration = () => {
+export const EssayRegistAdministration = () => {
   const toaster = useToaster();
   const toast = useToast();
 
@@ -36,20 +35,20 @@ export const ColorRunAdministration = () => {
 
   const [jumpInput, setJumpInput] = useState("1");
 
-  const colorRunQuery = api.colorRun.adminGetColorRunTicketList.useQuery({
+  const essayRegistQuery = api.essayRegist.adminGetessayRegistDataList.useQuery({
     currentPage: currentPage,
     limitPerPage: limitPerPage,
     filterBy: filterBy,
     searchQuery: searchQuery,
   });
-  const colorRunEditMutation =
-    api.colorRun.adminUpdateColorRunTicket.useMutation();
-  const colorRunDeleteMutation =
-    api.colorRun.adminDeleteColorRunTicket.useMutation();
+  const essayRegistEditMutation =
+    api.essayRegist.adminUpdateEssayRegistData.useMutation();
+  const essayRegistDeleteMutation =
+    api.essayRegist.adminDeleteEssayRegistData.useMutation();
 
-  const colorRunTicketList = colorRunQuery.data?.data ?? [];
+  const essayRegistList = essayRegistQuery.data?.data ?? []
   const maxPage = Math.ceil(
-    (colorRunQuery.data?.metadata.total ?? 0) / limitPerPage
+    (essayRegistQuery.data?.metadata.total ?? 0) / limitPerPage
   );
 
   const nextPage = () => {
@@ -84,24 +83,22 @@ export const ColorRunAdministration = () => {
     setJumpInput(e.target.value);
   };
 
-  const editObject = async (newData: Partial<ColorRunParticipantData>) => {
-    colorRunEditMutation
+  const editObject = async (newData: Partial<EssayCompetitionRegistrationData>) => {
+    essayRegistEditMutation
       .mutateAsync({
         id: newData.id ?? "",
         name: newData.name ?? undefined,
         email: newData.email ?? undefined,
         phoneNumber: newData.phoneNumber ?? undefined,
         institution: newData.institution ?? undefined,
-        address: newData.address ?? undefined,
-        healthHistory: newData.healthHistory ?? undefined,
-        emergencyContactName: newData.emergencyContactName ?? undefined,
-        emergencyContactNumber: newData.emergencyContactNumber ?? undefined,
-        emergencyContactRelationship:
-          newData.emergencyContactRelationship ?? undefined,
-        registFor: newData.registFor ?? undefined,
-        paidby: newData.paidby ?? undefined,
-        status: newData.status ?? undefined,
-        messageFromAdmin: newData.messageFromAdmin ?? undefined
+        major: newData.major ?? undefined,
+        batch: newData.batch ?? undefined,
+        postLink: newData.postLink ?? undefined,
+        twibbonLink: newData.twibbonLink ?? undefined,
+        whereDidYouKnowThisCompetitionInformation:
+          newData.whereDidYouKnowThisCompetitionInformation ?? undefined,
+        status: newData.status ?? RegistrationStatus.FORM_FILLING,
+        
       })
       .then(async (result) => {
         toast({
@@ -111,7 +108,7 @@ export const ColorRunAdministration = () => {
           isClosable: true,
           position: "top",
         });
-        await colorRunQuery.refetch();
+        await essayRegistQuery.refetch();
       })
       .catch(async (error) => {
         if (!(error instanceof TRPCClientError)) throw error;
@@ -123,14 +120,14 @@ export const ColorRunAdministration = () => {
           isClosable: true,
           position: "top",
         });
-        await colorRunQuery.refetch();
+        await essayRegistQuery.refetch();
       });
   };
 
-  const deleteObject = (colorRunTicketId: string) => {
-    colorRunDeleteMutation
+  const deleteObject = (essayRegistTicketId: string) => {
+    essayRegistDeleteMutation
       .mutateAsync({
-        id: colorRunTicketId,
+        id: essayRegistTicketId,
       })
       .then((result) => {
         toast({
@@ -154,7 +151,7 @@ export const ColorRunAdministration = () => {
       });
   };
 
-  if (colorRunQuery.isLoading) return <Loading/>;
+  if (essayRegistQuery.isLoading) return <Loading/>;
 
   return (
     <Flex flexDir="column" px="1em" pt="2em" pb="10em">
@@ -182,7 +179,7 @@ export const ColorRunAdministration = () => {
         </Text>
       </Flex>
 
-      {colorRunTicketList.length < 1 ? (
+      {essayRegistList.length < 1 ? (
         <Text fontStyle="italic" fontSize="xl" color="gray.400">
           {" "}
           No Events
@@ -200,19 +197,25 @@ export const ColorRunAdministration = () => {
             <Table w="100%" variant="black">
               <Thead>
                 <Tr>
-                  <Th w="5%">No.</Th>
+                  <Th w="10%">No.</Th>
                   <Th w="20%">Nama </Th>
                   <Th w="15%">Email</Th>
                   <Th w="15%">Phone Number</Th>
                   <Th w="15%">Status</Th>
                   <Th w="10%">View</Th>
                   <Th w="10%">Download Files</Th>
+                  <Th w="10%">Message</Th>
+                  <Th w="10%">Edit</Th>
+                  <Th w="10%">Delete</Th>
+                  <Th w="10%">Message</Th>
+                  <Th w="10%">Edit</Th>
+                  <Th w="10%">Delete</Th>
                   <Th w="10%">Msg</Th>
                 </Tr>
               </Thead>
               <Tbody borderRadius="0 0 12px 12px">
-                {colorRunTicketList.map((e, index) => (
-                  <ColorRunTicketRow
+                {essayRegistList.map((e, index) => (
+                  <EssayRegistRow
                     key={index}
                     objectContent={e}
                     num={limitPerPage * (currentPage - 1) + index + 1}

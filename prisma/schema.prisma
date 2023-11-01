@@ -164,7 +164,6 @@ model EssayCompetitionRegistrationData {
 
     status CompetitionRegistrationStatus @default(UNREGISTERED)
 
-    teamName                                  String?
     name                                      String?
     institution                               String?
     major                                     String?
@@ -274,6 +273,7 @@ model ColorRunParticipantData {
     status RegistrationStatus @default(UNREGISTERED)
 
     isFilePaymemtUploaded Boolean @default(false)
+    messageFromAdmin      String?
 
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId String

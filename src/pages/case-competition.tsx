@@ -40,13 +40,13 @@ const REGIST_INFO: [string, number, string, string][] = [
     "Early Bird Registration",
     20,
     "300000",
-    "Will be opened until October 31th 2023",
+    "Closed on October 31th 2023",
   ],
   [
     "Normal Registration",
     26,
     "375000",
-    "Will be opened on November 1st 2023",
+    "Open until November 21th 2023",
   ],
 ];
 
@@ -427,12 +427,12 @@ export default function MainCompetitionPage() {
                 color="blue"
                 border="0.5px solid black"
                 onClick={() => router.push("case-competition-registration")}
-                isDisabled={index == 1}
+                isDisabled={index == 0}
               >
                 <Text mr="1em">
-                  {index == 0 ? "Register" : "Not Opened Yet"}
+                  {index == 0 ? "Closed" : "Register"}
                 </Text>{" "}
-                {index == 0 && <MdArrowForward size="1.5em" />}
+                {index == 1 && <MdArrowForward size="1.5em" />}
               </Button>
             </Flex>
           ))}
