@@ -344,7 +344,7 @@ export const ColorRunRegistration = ({
             </Text>
             <UnorderedList color="blue" textAlign="justify" gap="2em" my="1em">
               <li>
-                Payment proof (in JPG/PNG/PDF format) with name of the
+                Payment proof (in PNG format) with name of the
                 participant as the file name
               </li>
             </UnorderedList>

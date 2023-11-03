@@ -80,7 +80,8 @@ function EventRegistrationPageComponent() {
           healthHistory: data.healthHistory ?? undefined,
           emergencyContactName: data.emergencyContactName ?? undefined,
           emergencyContactNumber: data.emergencyContactNumber ?? undefined,
-          emergencyContactRelationship: data.emergencyContactRelationship ?? undefined,
+          emergencyContactRelationship:
+            data.emergencyContactRelationship ?? undefined,
           type: data.partType ?? undefined,
           registFor: data.registFor ?? undefined,
           paidby: data.paidby ?? undefined,
@@ -101,7 +102,8 @@ function EventRegistrationPageComponent() {
         healthHistory: data.healthHistory ?? undefined,
         emergencyContactName: data.emergencyContactName ?? undefined,
         emergencyContactNumber: data.emergencyContactNumber ?? undefined,
-        emergencyContactRelationship: data.emergencyContactRelationship ?? undefined,
+        emergencyContactRelationship:
+          data.emergencyContactRelationship ?? undefined,
         type: data.partType ?? undefined,
         registFor: data.registFor ?? undefined,
         paidby: data.paidby ?? undefined,
@@ -134,6 +136,22 @@ function EventRegistrationPageComponent() {
 
   if (colorRunTicketQuery.isLoading) return <Loading />;
 
+  if (!colorRunTicket) return (
+    <Flex
+      color="blue"
+      fontWeight="bold"
+      flexDirection="column"
+      alignItems="center"
+      fontSize="5xl"
+      py="4em"
+      px="3em"
+      mx="auto"
+    >
+      This form is closed, thank you for your attention!
+    </Flex>
+  );
+
+
   return (
     <ColorRunRegistration
       initialFormValues={{
@@ -155,6 +173,7 @@ function EventRegistrationPageComponent() {
 export default function ColorRunRegistrationPage() {
   const { data: session } = useSession();
 
+  
   return (
     <AuthorizedRoleLayout session={session}>
       <EventRegistrationPageComponent />

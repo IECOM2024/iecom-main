@@ -32,7 +32,7 @@ export const ColorRunAdministration = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limitPerPage, setLimitPerPage] = useState(15);
   const [filterBy, setFilterBy] = useState("all");
-  const [searchQuery, setSearchQuery] = useState(undefined);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [jumpInput, setJumpInput] = useState("1");
 
@@ -101,7 +101,7 @@ export const ColorRunAdministration = () => {
         registFor: newData.registFor ?? undefined,
         paidby: newData.paidby ?? undefined,
         status: newData.status ?? undefined,
-        messageFromAdmin: newData.messageFromAdmin ?? undefined
+        messageFromAdmin: newData.messageFromAdmin ?? undefined,
       })
       .then(async (result) => {
         toast({
@@ -154,32 +154,63 @@ export const ColorRunAdministration = () => {
       });
   };
 
-  if (colorRunQuery.isLoading) return <Loading/>;
+  if (colorRunQuery.isLoading) return <Loading />;
 
   return (
     <Flex flexDir="column" px="1em" pt="2em" pb="10em">
-      <Flex alignItems="center" mt="1em">
-        <Select
-          borderRadius="12"
-          cursor="pointer"
-          color="gray.500"
-          borderWidth="2px"
-          borderColor="gray.500"
-          w="8em"
-          _active={{
-            bg: "rgba(47, 46, 46, 0.6)",
-            shadow: "none",
-          }}
-          onChange={(e) => setLimitPerPage(parseInt(e.target.value))}
-          defaultValue={5}
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-        </Select>
-        <Text ml="1em" fontWeight="bold" color="black">
-          Records per page
-        </Text>
+      <Flex alignItems="center" mt="1em" justifyContent="space-between">
+        <Flex>
+          <Select
+            borderRadius="12"
+            cursor="pointer"
+            color="gray.500"
+            borderWidth="2px"
+            borderColor="gray.500"
+            w="8em"
+            _active={{
+              bg: "rgba(47, 46, 46, 0.6)",
+              shadow: "none",
+            }}
+            onChange={(e) => setLimitPerPage(parseInt(e.target.value))}
+            defaultValue={5}
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+          </Select>
+          <Text ml="1em" fontWeight="bold" color="black">
+            Records per page
+          </Text>
+        </Flex>
+
+        <Flex>
+          <Select
+            borderRadius="12"
+            cursor="pointer"
+            color="gray.500"
+            borderWidth="2px"
+            borderColor="gray.500"
+            w="8em"
+            _active={{
+              bg: "rgba(47, 46, 46, 0.6)",
+              shadow: "none",
+            }}
+            onChange={(e) => setFilterBy(e.target.value)}
+            defaultValue={"all"}
+          >
+            <option value={"all"}>All</option>
+            <option value={"name"}>Name</option>
+            <option value={"email"}>Email</option>
+            <option value={"messageFromAdmin"}>Message From Admin</option>
+          </Select>
+          <Input
+            ml="1em"
+            placeholder="Search"
+            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery ?? ""}
+          />
+
+        </Flex>
       </Flex>
 
       {colorRunTicketList.length < 1 ? (

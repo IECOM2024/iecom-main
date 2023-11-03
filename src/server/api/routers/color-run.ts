@@ -18,12 +18,8 @@ export const colorRunRouter = createTRPCRouter({
         },
       });
 
-    if (!savedColorRunTicket) {
-      const newColorRunTicket = await ctx.prisma.colorRunParticipantData.create(
-        { data: { userId: ctx.session.user.id } }
-      );
-
-      return newColorRunTicket;
+    if (!savedColorRunTicket?.name) {
+      return null
     }
 
     return savedColorRunTicket;
