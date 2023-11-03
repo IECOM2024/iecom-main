@@ -14,24 +14,25 @@ import {
 } from "@chakra-ui/react";
 import {
   EssayCompetitionRegistrationData,
+  MainCompetitionRegistrationData,
   RegistrationStatus,
 } from "@prisma/client";
 import { MdEdit, MdLink, MdMessage } from "react-icons/md";
 import { useDownloader } from "~/utils/hooks/useDownloader";
 import { FolderEnum } from "~/utils/file";
 import { useState } from "react";
-import { EditEssayRegistModal } from "./EditEssayRegistModal";
+import { EditCaseRegistModal } from "./EditCaseRegistModal";
 
 interface ObjectListRowProps {
-  objectContent: EssayCompetitionRegistrationData;
+  objectContent: MainCompetitionRegistrationData;
   num: number;
   editObject: (
-    Object: Partial<EssayCompetitionRegistrationData>
+    Object: Partial<MainCompetitionRegistrationData>
   ) => Promise<void>;
   deleteObject: (ObjectId: string) => void;
 }
 
-export const EssayRegistRow = ({
+export const CaseRegistRow = ({
   objectContent,
   num,
   editObject,
@@ -122,7 +123,7 @@ export const EssayRegistRow = ({
     downloader({
       folder: FolderEnum.COLOR_RUN_PROOF,
       filename: `${objectContent.id}.zip`,
-    }).then(({ url }) => forceDownload(url, `${objectContent.name}.zip`));
+    }).then(({ url }) => forceDownload(url, `${objectContent.teamName}.zip`));
   };
 
   const onChangeStatus = (newStatus: RegistrationStatus) => () => {
@@ -162,9 +163,12 @@ export const EssayRegistRow = ({
   return (
     <Tr>
       <Td>{num}</Td>
-      <Td>{objectContent.name}</Td>
-      <Td>{objectContent.email}</Td>
-      <Td>{objectContent.institution}</Td>
+      <Td>{objectContent.teamName}</Td>
+      <Td>{objectContent.leaderName}</Td>
+      <Td>{objectContent.leaderInstitution}</Td>
+      <Td>{objectContent.leaderEmail}</Td>
+      <Td>{objectContent.member1Name}</Td>
+      <Td>{objectContent.member2Name}</Td>
       <Td>
         <Menu>
           <MenuButton
@@ -208,7 +212,7 @@ export const EssayRegistRow = ({
       </Td>
 
       <Td>
-        <EditEssayRegistModal
+        <EditCaseRegistModal
           editObject={editObject}
           deleteObject={deleteObjectPipe}
           objectContent={objectContent}
@@ -223,8 +227,8 @@ export const EssayRegistRow = ({
       </Td>
 
       <Td>
-        {objectContent.twibbonLink ? (
-          <a href={objectContent.twibbonLink} target="_blank" rel="noreferrer">
+        {objectContent.leaderTwibbonLink ? (
+          <a href={objectContent.leaderTwibbonLink} target="_blank" rel="noreferrer">
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -234,8 +238,8 @@ export const EssayRegistRow = ({
         )}
       </Td>
       <Td>
-        {objectContent.postLink ? (
-          <a href={objectContent.postLink} target="_blank" rel="noreferrer">
+        {objectContent.leaderPostLink ? (
+          <a href={objectContent.leaderPostLink} target="_blank" rel="noreferrer">
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -244,7 +248,51 @@ export const EssayRegistRow = ({
           <Text fontStyle="italic">No link</Text>
         )}
       </Td>
-
+      <Td>
+        {objectContent.member1TwibbonLink ? (
+          <a href={objectContent.member1TwibbonLink} target="_blank" rel="noreferrer">
+            <Flex w="100%" justifyContent="center">
+              <MdLink size="2em" />
+            </Flex>
+          </a>
+        ) : (
+          <Text fontStyle="italic">No link</Text>
+        )}
+      </Td>
+      <Td>
+        {objectContent.member1PostLink ? (
+          <a href={objectContent.member1PostLink} target="_blank" rel="noreferrer">
+            <Flex w="100%" justifyContent="center">
+              <MdLink size="2em" />
+            </Flex>
+          </a>
+        ) : (
+          <Text fontStyle="italic">No link</Text>
+        )}
+      </Td>
+      <Td>
+        {objectContent.member2TwibbonLink ? (
+          <a href={objectContent.member2TwibbonLink} target="_blank" rel="noreferrer">
+            <Flex w="100%" justifyContent="center">
+              <MdLink size="2em" />
+            </Flex>
+          </a>
+        ) : (
+          <Text fontStyle="italic">No link</Text>
+        )}
+      </Td>
+      <Td>
+        {objectContent.member2PostLink ? (
+          <a href={objectContent.member2PostLink} target="_blank" rel="noreferrer">
+            <Flex w="100%" justifyContent="center">
+              <MdLink size="2em" />
+            </Flex>
+          </a>
+        ) : (
+          <Text fontStyle="italic">No link</Text>
+        )}
+      </Td>
+      
       <Td>
         <Menu>
           <MenuButton as={Button}>

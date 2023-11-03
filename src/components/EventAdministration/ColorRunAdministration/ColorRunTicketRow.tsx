@@ -117,7 +117,7 @@ export const ColorRunTicketRow = ({
     downloader({
       folder: FolderEnum.COLOR_RUN_PROOF,
       filename: `${objectContent.id}.png`,
-    }).then(({ url }) => forceDownload(url));
+    }).then(({ url }) => forceDownload(url, `${objectContent.name}.png`));
   };
 
   const onChangeStatus = (newStatus: RegistrationStatus) => () => {

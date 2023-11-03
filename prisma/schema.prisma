@@ -247,6 +247,8 @@ enum RegisFor {
 enum ParticipantType {
     ITB_STUDENT
     PUBLIC
+    MTI_MEMBER
+    MTI_ALUMNI
 }
 
 // Color Run Models

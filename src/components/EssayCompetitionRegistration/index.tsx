@@ -27,6 +27,7 @@ import { FileInput } from "~/components/common/CustomForm/FileInput";
 import { useState } from "react";
 import { RegistrationStatus } from "@prisma/client";
 import { z } from "zod";
+import { AllowableFileTypeEnum } from "~/utils/file";
 
 const schema = z.object({
   name: z.string().nonempty().optional().nullable(),
@@ -314,6 +315,7 @@ export const EssayCompetitionRegistration = ({
               <FileInput
                 fileStateArr={paymentInputStateArr}
                 imgUrl={initialImgUrl}
+                allowed={[AllowableFileTypeEnum.ZIP]}
               />
             </Flex>
 

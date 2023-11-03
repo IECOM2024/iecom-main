@@ -62,7 +62,7 @@ function CaseCompetitiontRegistrationPageComponent() {
 
     downloader({
       folder: FolderEnum.CASE_COMP_FILES,
-      filename: `${caseRegist.id}.png`,
+      filename: `${caseRegist.id}.zip`,
     }).then(({ url }) => setInitialImgUrl(url));
   }, [caseRegist, downloader]);
 
@@ -70,27 +70,33 @@ function CaseCompetitiontRegistrationPageComponent() {
     toaster(
       caseRegistSaveMutation
         .mutateAsync({
-          teamName: data.teamName ?? "",
-          leaderName: data.leaderName ?? "",
-          leaderEmail: data.leaderEmail ?? "",
-          leaderPhoneNumber: data.leaderPhoneNumber ?? "",
-          leaderInstitution: data.leaderInstitution ?? "",
-          leaderBatch: data.leaderBatch ?? "",
-          leaderMajor: data.leaderMajor ?? "",
-          member1Name: data.member1Name ?? "",
-          member1Email: data.member1Email ?? "",
-          member1PhoneNumber: data.member1PhoneNumber ?? "",
-          member1Institution: data.member1Institution ?? "",
-          member1Batch: data.member1Batch ?? "",
-          member1Major: data.member1Major ?? "",
-          member2Name: data.member2Name ?? "",
-          member2Email: data.member2Email ?? "",
-          member2PhoneNumber: data.member2PhoneNumber ?? "",
-          member2Institution: data.member2Institution ?? "",
-          member2Batch: data.member2Batch ?? "",
-          member2Major: data.member2Major ?? "",
+          teamName: data.teamName ?? undefined,
+          leaderName: data.leaderName ?? undefined,
+          leaderEmail: data.leaderEmail ?? undefined,
+          leaderPhoneNumber: data.leaderPhoneNumber ?? undefined,
+          leaderInstitution: data.leaderInstitution ?? undefined,
+          leaderBatch: data.leaderBatch ?? undefined,
+          leaderMajor: data.leaderMajor ?? undefined,
+          member1Name: data.member1Name ?? undefined,
+          member1Email: data.member1Email ?? undefined,
+          member1PhoneNumber: data.member1PhoneNumber ?? undefined,
+          member1Institution: data.member1Institution ?? undefined,
+          member1Batch: data.member1Batch ?? undefined,
+          member1Major: data.member1Major ?? undefined,
+          member2Name: data.member2Name ?? undefined,
+          member2Email: data.member2Email ?? undefined,
+          member2PhoneNumber: data.member2PhoneNumber ?? undefined,
+          member2Institution: data.member2Institution ?? undefined,
+          member2Batch: data.member2Batch ?? undefined,
+          member2Major: data.member2Major ?? undefined,
           whereDidYouKnowThisCompetitionInformation:
-            data.whereDidYouKnowThisCompetitionInformation ?? "",
+            data.whereDidYouKnowThisCompetitionInformation ?? undefined,
+          leaderTwibbonLink: data.leaderTwibbonLink ?? undefined,
+          member1TwibbonLink: data.member1TwibbonLink ?? undefined,
+          member2TwibbonLink: data.member2TwibbonLink ?? undefined,
+          leaderPostLink: data.leaderPostLink ?? undefined,
+          member1PostLink: data.member1PostLink ?? undefined,
+          member2PostLink: data.member2PostLink ?? undefined,
         })
         .then(() => caseRegistSubmitMutation.mutateAsync())
     );
@@ -99,27 +105,34 @@ function CaseCompetitiontRegistrationPageComponent() {
   const saveForm = async (data: FormValues) => {
     toaster(
       caseRegistSaveMutation.mutateAsync({
-        teamName: data.teamName ?? "",
-        leaderName: data.leaderName ?? "",
-        leaderEmail: data.leaderEmail ?? "",
-        leaderPhoneNumber: data.leaderPhoneNumber ?? "",
-        leaderInstitution: data.leaderInstitution ?? "",
-        leaderBatch: data.leaderBatch ?? "",
-        leaderMajor: data.leaderMajor ?? "",
-        member1Name: data.member1Name ?? "",
-        member1Email: data.member1Email ?? "",
-        member1PhoneNumber: data.member1PhoneNumber ?? "",
-        member1Institution: data.member1Institution ?? "",
-        member1Batch: data.member1Batch ?? "",
-        member1Major: data.member1Major ?? "",
-        member2Name: data.member2Name ?? "",
-        member2Email: data.member2Email ?? "",
-        member2PhoneNumber: data.member2PhoneNumber ?? "",
-        member2Institution: data.member2Institution ?? "",
-        member2Batch: data.member2Batch ?? "",
-        member2Major: data.member2Major ?? "",
+        status: RegistrationStatus.FORM_FILLING,
+        teamName: data.teamName ?? undefined,
+        leaderName: data.leaderName ?? undefined,
+        leaderEmail: data.leaderEmail ?? undefined,
+        leaderPhoneNumber: data.leaderPhoneNumber ?? undefined,
+        leaderInstitution: data.leaderInstitution ?? undefined,
+        leaderBatch: data.leaderBatch ?? undefined,
+        leaderMajor: data.leaderMajor ?? undefined,
+        member1Name: data.member1Name ?? undefined,
+        member1Email: data.member1Email ?? undefined,
+        member1PhoneNumber: data.member1PhoneNumber ?? undefined,
+        member1Institution: data.member1Institution ?? undefined,
+        member1Batch: data.member1Batch ?? undefined,
+        member1Major: data.member1Major ?? undefined,
+        member2Name: data.member2Name ?? undefined,
+        member2Email: data.member2Email ?? undefined,
+        member2PhoneNumber: data.member2PhoneNumber ?? undefined,
+        member2Institution: data.member2Institution ?? undefined,
+        member2Batch: data.member2Batch ?? undefined,
+        member2Major: data.member2Major ?? undefined,
         whereDidYouKnowThisCompetitionInformation:
-          data.whereDidYouKnowThisCompetitionInformation ?? "",
+          data.whereDidYouKnowThisCompetitionInformation ?? undefined,
+        leaderTwibbonLink: data.leaderTwibbonLink ?? undefined,
+        member1TwibbonLink: data.member1TwibbonLink ?? undefined,
+        member2TwibbonLink: data.member2TwibbonLink ?? undefined,
+        leaderPostLink: data.leaderPostLink ?? undefined,
+        member1PostLink: data.member1PostLink ?? undefined,
+        member2PostLink: data.member2PostLink ?? undefined,
       })
     );
   };
@@ -128,8 +141,8 @@ function CaseCompetitiontRegistrationPageComponent() {
     if (!caseRegist) return;
     // upload file didnt have toaster
     await uploader(
-      `${caseRegist.id}.png`,
-      FolderEnum.COLOR_RUN_PROOF,
+      `${caseRegist.id}.zip`,
+      FolderEnum.CASE_COMP_FILES,
       AllowableFileTypeEnum.PNG,
       file
     ).then(() => {

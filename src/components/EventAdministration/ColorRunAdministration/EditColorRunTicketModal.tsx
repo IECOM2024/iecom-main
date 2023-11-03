@@ -48,7 +48,10 @@ export const EditColorRunTicketModal = ({
     formState: { errors },
     handleSubmit,
     watch
-  } = useForm<FormValues>({ defaultValues: objectContent });
+  } = useForm<FormValues>({ defaultValues: {
+    ...objectContent,
+    partType: objectContent.type ?? ParticipantType.ITB_STUDENT,
+  } });
 
   const onSubmit = handleSubmit((data) => {
     const newData = {
@@ -56,6 +59,7 @@ export const EditColorRunTicketModal = ({
       id: objectContent.id,
       registFor: data.registFor ?? objectContent.registFor ?? RegisFor.INDIVIDUAL,
     }
+    console.log(newData)
 
     editObject(newData);
   });
@@ -147,6 +151,7 @@ export const EditColorRunTicketModal = ({
             >
               <option value="ITB_STUDENT">ITB_STUDENT</option>
               <option value="PUBLIC">PUBLIC</option>
+              <option value="MTI_MEMBER">MTI_MEMBER</option>
             </Select>
             {watch("partType") === ParticipantType.PUBLIC && (
               <>

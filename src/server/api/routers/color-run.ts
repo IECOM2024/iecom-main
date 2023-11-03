@@ -46,6 +46,8 @@ export const colorRunRouter = createTRPCRouter({
           .union([
             z.literal(ParticipantType.ITB_STUDENT),
             z.literal(ParticipantType.PUBLIC),
+            z.literal(ParticipantType.MTI_MEMBER),
+            z.literal(ParticipantType.MTI_ALUMNI),
           ])
           .optional(),
         registFor: z
@@ -241,8 +243,8 @@ export const colorRunRouter = createTRPCRouter({
           take: limitPerPage,
         });
 
-      const colorRunTicketNumber = await ctx.prisma.colorRunParticipantData.count(
-        {
+      const colorRunTicketNumber =
+        await ctx.prisma.colorRunParticipantData.count({
           where: {
             name: {
               contains:
@@ -270,14 +272,13 @@ export const colorRunRouter = createTRPCRouter({
               mode: "insensitive",
             },
           },
-        }
-      );
+        });
       return {
         data: colorRunTicketList,
         metadata: {
           currentPage: currentPage,
           limitPerPage: limitPerPage,
-          total: colorRunTicketNumber
+          total: colorRunTicketNumber,
         },
       };
     }),
@@ -300,18 +301,22 @@ export const colorRunRouter = createTRPCRouter({
           .union([
             z.literal(ParticipantType.ITB_STUDENT),
             z.literal(ParticipantType.PUBLIC),
+            z.literal(ParticipantType.MTI_MEMBER),
+            z.literal(ParticipantType.MTI_ALUMNI),
           ])
           .optional(),
         registFor: z
           .union([z.literal(RegisFor.INDIVIDUAL), z.literal(RegisFor.BUNDLE)])
           .optional(),
         paidby: z.string().optional(),
-        status: z.union([
-          z.literal(RegistrationStatus.UNREGISTERED),
-          z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
-          z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
-          z.literal(RegistrationStatus.FORM_FILLING),
-        ]).optional(),
+        status: z
+          .union([
+            z.literal(RegistrationStatus.UNREGISTERED),
+            z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
+            z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
+            z.literal(RegistrationStatus.FORM_FILLING),
+          ])
+          .optional(),
         messageFromAdmin: z.string().optional(),
       })
     )

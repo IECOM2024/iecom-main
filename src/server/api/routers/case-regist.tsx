@@ -54,6 +54,20 @@ export const caseRegistRouter = createTRPCRouter({
         member2Batch: z.string().optional(),
         whereDidYouKnowThisCompetitionInformation: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
+        leaderPostLink: z.string().optional(),
+        member1PostLink: z.string().optional(),
+        member2PostLink: z.string().optional(),
+        leaderTwibbonLink: z.string().optional(),
+        member1TwibbonLink: z.string().optional(),
+        member2TwibbonLink: z.string().optional(),
+        status: z.union(
+          [
+            z.literal(RegistrationStatus.UNREGISTERED),
+            z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
+            z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
+            z.literal(RegistrationStatus.FORM_FILLING)
+          ]
+        ).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -93,6 +107,13 @@ export const caseRegistRouter = createTRPCRouter({
               whereDidYouKnowThisCompetitionInformation:
                 input.whereDidYouKnowThisCompetitionInformation,
               isFilePaymentUploaded: input.isFilePaymentUploaded,
+              leaderPostLink: input.leaderPostLink,
+              member1PostLink: input.member1PostLink,
+              member2PostLink: input.member2PostLink,
+              leaderTwibbonLink: input.leaderTwibbonLink,
+              member1TwibbonLink: input.member1TwibbonLink,
+              member2TwibbonLink: input.member2TwibbonLink,
+              status: input.status,
             },
           });
 
@@ -124,6 +145,14 @@ export const caseRegistRouter = createTRPCRouter({
             member2Batch: input.member2Batch,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
+            isFilePaymentUploaded: input.isFilePaymentUploaded,
+            leaderPostLink: input.leaderPostLink,
+            member1PostLink: input.member1PostLink,
+            member2PostLink: input.member2PostLink,
+            leaderTwibbonLink: input.leaderTwibbonLink,
+            member1TwibbonLink: input.member1TwibbonLink,
+            member2TwibbonLink: input.member2TwibbonLink,
+            status: input.status,
           },
         });
 
@@ -214,12 +243,42 @@ export const caseRegistRouter = createTRPCRouter({
     }
   ),
 
-  adminGetCaseRegistDataList: adminProcedure.query(async ({ ctx }) => {
-    const CaseRegistDataList =
-      await ctx.prisma.mainCompetitionRegistrationData.findMany();
+  adminGetCaseRegistDataList: adminProcedure
+    .input(
+      z.object({
+        currentPage: z.number(),
+        limitPerPage: z.number(),
+        filterBy: z.string().optional(),
+        searchQuery: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const currentPage = input.currentPage;
+      const limitPerPage = input.limitPerPage;
+      const offset = (currentPage - 1) * limitPerPage;
+      const CaseRegistDataList =
+        await ctx.prisma.mainCompetitionRegistrationData.findMany({
+          where: {
+            teamName: {
+              contains:
+                input.filterBy === "teamName" ? input.searchQuery : undefined,
+              mode: "insensitive",
+              not: null,
+            },
+          },
+          skip: offset,
+          take: limitPerPage,
+        });
 
-    return CaseRegistDataList;
-  }),
+      return {
+        data: CaseRegistDataList,
+        metadata: {
+          currentPage: currentPage,
+          limitPerPage: limitPerPage,
+          total: CaseRegistDataList.length,
+        },
+      };
+    }),
 
   adminUpdateCaseRegistData: adminProcedure
     .input(
@@ -246,6 +305,21 @@ export const caseRegistRouter = createTRPCRouter({
         member2Batch: z.string().optional(),
         whereDidYouKnowThisCompetitionInformation: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
+        messageFromAdmin: z.string().optional(),
+        leaderPostLink: z.string().optional(),
+        member1PostLink: z.string().optional(),
+        member2PostLink: z.string().optional(),
+        leaderTwibbonLink: z.string().optional(),
+        member1TwibbonLink: z.string().optional(),
+        member2TwibbonLink: z.string().optional(),
+        status: z.union(
+          [
+            z.literal(RegistrationStatus.UNREGISTERED),
+            z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
+            z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
+            z.literal(RegistrationStatus.FORM_FILLING)
+          ]
+        ).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -276,6 +350,15 @@ export const caseRegistRouter = createTRPCRouter({
             member2Batch: input.member2Batch,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
+            isFilePaymentUploaded: input.isFilePaymentUploaded,
+            messageFromAdmin: input.messageFromAdmin,
+            leaderPostLink: input.leaderPostLink,
+            member1PostLink: input.member1PostLink,
+            member2PostLink: input.member2PostLink,
+            leaderTwibbonLink: input.leaderTwibbonLink,
+            member1TwibbonLink: input.member1TwibbonLink,
+            member2TwibbonLink: input.member2TwibbonLink,
+            status: input.status,
           },
         });
 
@@ -316,6 +399,12 @@ export const caseRegistRouter = createTRPCRouter({
             member2Major: null,
             member2Batch: null,
             whereDidYouKnowThisCompetitionInformation: null,
+            leaderPostLink: null,
+            member1PostLink: null,
+            member2PostLink: null,
+            leaderTwibbonLink: null,
+            member1TwibbonLink: null,
+            member2TwibbonLink: null,
           },
         });
 

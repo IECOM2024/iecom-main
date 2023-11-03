@@ -18,16 +18,17 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { type RouterOutputs, api } from "~/utils/api";
-import { EssayRegistRow } from "./EssayRegistRow";
+import { CaseRegistRow } from "./CaseRegistRow";
 import { TRPCClientError } from "@trpc/client";
 import { useToaster } from "~/utils/hooks/useToaster";
 import {
   EssayCompetitionRegistrationData,
+  MainCompetitionRegistrationData,
   RegistrationStatus,
 } from "@prisma/client";
 import { Loading } from "~/components/common/Loading";
 
-export const EssayRegistAdministration = () => {
+export const CaseRegistAdministration = () => {
   const toaster = useToaster();
   const toast = useToast();
 
@@ -38,22 +39,20 @@ export const EssayRegistAdministration = () => {
 
   const [jumpInput, setJumpInput] = useState("1");
 
-  const essayRegistQuery = api.essayRegist.adminGetessayRegistDataList.useQuery(
-    {
-      currentPage: currentPage,
-      limitPerPage: limitPerPage,
-      filterBy: filterBy,
-      searchQuery: searchQuery,
-    }
-  );
-  const essayRegistEditMutation =
-    api.essayRegist.adminUpdateEssayRegistData.useMutation();
-  const essayRegistDeleteMutation =
-    api.essayRegist.adminDeleteEssayRegistData.useMutation();
+  const caseRegistQuery = api.caseRegist.adminGetCaseRegistDataList.useQuery({
+    currentPage: currentPage,
+    limitPerPage: limitPerPage,
+    filterBy: filterBy,
+    searchQuery: searchQuery,
+  });
+  const caseRegistEditMutation =
+    api.caseRegist.adminUpdateCaseRegistData.useMutation();
+  const caseRegistDeleteMutation =
+    api.caseRegist.adminDeleteCaseRegistData.useMutation();
 
-  const essayRegistList = essayRegistQuery.data?.data ?? [];
+  const caseRegistList = caseRegistQuery.data?.data ?? [];
   const maxPage = Math.ceil(
-    (essayRegistQuery.data?.metadata.total ?? 0) / limitPerPage
+    (caseRegistQuery.data?.metadata.total ?? 0) / limitPerPage
   );
 
   const nextPage = () => {
@@ -89,22 +88,39 @@ export const EssayRegistAdministration = () => {
   };
 
   const editObject = async (
-    newData: Partial<EssayCompetitionRegistrationData>
+    newData: Partial<MainCompetitionRegistrationData>
   ) => {
-    essayRegistEditMutation
+    caseRegistEditMutation
       .mutateAsync({
         id: newData.id ?? "",
-        name: newData.name ?? undefined,
-        email: newData.email ?? undefined,
-        phoneNumber: newData.phoneNumber ?? undefined,
-        institution: newData.institution ?? undefined,
-        major: newData.major ?? undefined,
-        batch: newData.batch ?? undefined,
-        postLink: newData.postLink ?? undefined,
-        twibbonLink: newData.twibbonLink ?? undefined,
+        teamName: newData.teamName ?? undefined,
+        leaderName: newData.leaderName ?? undefined,
+        leaderEmail: newData.leaderEmail ?? undefined,
+        leaderPhoneNumber: newData.leaderPhoneNumber ?? undefined,
+        leaderInstitution: newData.leaderInstitution ?? undefined,
+        leaderMajor: newData.leaderMajor ?? undefined,
+        leaderBatch: newData.leaderBatch ?? undefined,
+        member1Name: newData.member1Name ?? undefined,
+        member1Email: newData.member1Email ?? undefined,
+        member1PhoneNumber: newData.member1PhoneNumber ?? undefined,
+        member1Institution: newData.member1Institution ?? undefined,
+        member1Major: newData.member1Major ?? undefined,
+        member1Batch: newData.member1Batch ?? undefined,
+        member2Name: newData.member2Name ?? undefined,
+        member2Email: newData.member2Email ?? undefined,
+        member2PhoneNumber: newData.member2PhoneNumber ?? undefined,
+        member2Institution: newData.member2Institution ?? undefined,
+        member2Major: newData.member2Major ?? undefined,
+        member2Batch: newData.member2Batch ?? undefined,
+        leaderPostLink: newData.leaderPostLink ?? undefined,
+        member1PostLink: newData.member1PostLink ?? undefined,
+        member2PostLink: newData.member2PostLink ?? undefined,
+        leaderTwibbonLink: newData.leaderTwibbonLink ?? undefined,
+        member1TwibbonLink: newData.member1TwibbonLink ?? undefined,
+        member2TwibbonLink: newData.member2TwibbonLink ?? undefined,
         whereDidYouKnowThisCompetitionInformation:
           newData.whereDidYouKnowThisCompetitionInformation ?? undefined,
-        status: newData.status ?? RegistrationStatus.FORM_FILLING,
+        status: newData.status ?? undefined,
       })
       .then(async (result) => {
         toast({
@@ -114,7 +130,7 @@ export const EssayRegistAdministration = () => {
           isClosable: true,
           position: "top",
         });
-        await essayRegistQuery.refetch();
+        await caseRegistQuery.refetch();
       })
       .catch(async (error) => {
         if (!(error instanceof TRPCClientError)) throw error;
@@ -126,14 +142,14 @@ export const EssayRegistAdministration = () => {
           isClosable: true,
           position: "top",
         });
-        await essayRegistQuery.refetch();
+        await caseRegistQuery.refetch();
       });
   };
 
-  const deleteObject = (essayRegistTicketId: string) => {
-    essayRegistDeleteMutation
+  const deleteObject = (caseRegistTicketId: string) => {
+    caseRegistDeleteMutation
       .mutateAsync({
-        id: essayRegistTicketId,
+        id: caseRegistTicketId,
       })
       .then((result) => {
         toast({
@@ -157,7 +173,7 @@ export const EssayRegistAdministration = () => {
       });
   };
 
-  if (essayRegistQuery.isLoading) return <Loading />;
+  if (caseRegistQuery.isLoading) return <Loading />;
 
   return (
     <Flex flexDir="column" px="1em" pt="2em" pb="10em">
@@ -185,10 +201,10 @@ export const EssayRegistAdministration = () => {
         </Text>
       </Flex>
 
-      {essayRegistList.length < 1 ? (
+      {caseRegistList.length < 1 ? (
         <Text fontStyle="italic" fontSize="xl" color="gray.400">
           {" "}
-          No Events
+          No Registration
         </Text>
       ) : (
         <Box
@@ -200,7 +216,7 @@ export const EssayRegistAdministration = () => {
           borderColor="gray.400"
           mb="1em"
           sx={
-            essayRegistList.length > 0
+            caseRegistList.length > 0
               ? {
                   "&::-webkit-scrollbar": {
                     width: "0.4em",
@@ -225,20 +241,27 @@ export const EssayRegistAdministration = () => {
               <Thead>
                 <Tr>
                   <Th w="10%">No.</Th>
-                  <Th w="20%">Nama </Th>
-                  <Th w="15%">Email</Th>
-                  <Th w="15%">Phone Number</Th>
+                  <Th w="10%">Team Name</Th>
+                  <Th w="10%">Leader Name</Th>
+                  <Th w="10%">Leader Institution</Th>
+                  <Th w="10%">Leader Email</Th>
+                  <Th w="10%">Member 1 Name</Th>
+                  <Th w="10%">Member 2 Name</Th>
                   <Th w="15%">Status</Th>
                   <Th w="10%">View</Th>
                   <Th w="10%">Download Files</Th>
-                  <Th w="6%">Twib Link</Th>
-                  <Th w="6%">Post Link</Th>
+                  <Th w="6%">Le Twib Link</Th>
+                  <Th w="6%">Le Post Link</Th>
+                  <Th w="6%">M1 Twib Link</Th>
+                  <Th w="6%">M1 Post Link</Th>
+                  <Th w="6%">M2 Twib Link</Th>
+                  <Th w="6%">M2 Post Link</Th>
                   <Th w="10%">Msg</Th>
                 </Tr>
               </Thead>
               <Tbody borderRadius="0 0 12px 12px">
-                {essayRegistList.map((e, index) => (
-                  <EssayRegistRow
+                {caseRegistList.map((e, index) => (
+                  <CaseRegistRow
                     key={index}
                     objectContent={e}
                     num={limitPerPage * (currentPage - 1) + index + 1}

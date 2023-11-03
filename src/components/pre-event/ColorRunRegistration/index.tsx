@@ -27,6 +27,7 @@ import { ParticipantType, RegisFor, RegistrationStatus } from "@prisma/client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { initial } from "lodash";
+import { AllowableFileTypeEnum } from "~/utils/file";
 
 const schema = z.object({
   name: z.string().nonempty().optional().nullable(),
@@ -43,6 +44,8 @@ const schema = z.object({
     .union([
       z.literal(ParticipantType.ITB_STUDENT),
       z.literal(ParticipantType.PUBLIC),
+      z.literal(ParticipantType.MTI_MEMBER),
+      z.literal(ParticipantType.MTI_ALUMNI),
     ])
     .optional()
     .nullable(),
@@ -100,6 +103,7 @@ export const ColorRunRegistration = ({
     return false;
   };
 
+  
   const onSubmit = handleSubmit((data) => {
     if (!validateFileUpload()) {
       toast({
@@ -119,7 +123,14 @@ export const ColorRunRegistration = ({
         uploadFile(file);
       }
     }
-  });
+  },(errors) => {
+    toast({
+      title: Object.keys(errors).join(", ") + " is not valid",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    })
+  })
 
   const onSave = async () => {
     const data = getValues();
@@ -256,6 +267,7 @@ export const ColorRunRegistration = ({
             </Text>
             <UnorderedList color="blue" fontWeight="bold" mt="1em">
               <li>For ITB Student, the registration fee is IDR 125.000</li>
+              <li>For MTI Member, the registration fee is IDR 75.000</li>
               <li>For Non-ITB Student :</li>
               <UnorderedList>
                 <li>Individual : IDR 165.000</li>
@@ -287,6 +299,7 @@ export const ColorRunRegistration = ({
             >
               <option value="ITB_STUDENT">ITB_STUDENT</option>
               <option value="PUBLIC">PUBLIC</option>
+              <option value="MTI_MEMBER">MTI_MEMBER</option>
             </Select>
             {watch("partType") === ParticipantType.PUBLIC && (
               <>
@@ -323,7 +336,7 @@ export const ColorRunRegistration = ({
               File Upload
             </Text>
             <Text color="blue" fontSize="xl" mt="1em" mx="auto">
-              Please zip all the required files into one zip file and upload it
+              Please prepare all the required files and upload it
               by the button below
             </Text>
             <Text color="blue" fontSize="md" mt="1em">
@@ -334,15 +347,12 @@ export const ColorRunRegistration = ({
                 Payment proof (in JPG/PNG/PDF format) with name of the
                 participant as the file name
               </li>
-              <li>
-                For ITB participants : Student ID (in JPG/PNG/PDF format) with
-                name of the team_the member's position_Student ID
-              </li>
             </UnorderedList>
             <Flex mt="1em" w="100%" justifyContent="center">
               <FileInput
                 fileStateArr={paymentInputStateArr}
                 imgUrl={initialImgUrl}
+                allowed={[AllowableFileTypeEnum.PNG]}
               />
             </Flex>
 

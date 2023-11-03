@@ -89,10 +89,10 @@ export const SignIn = ({ csrfToken }: SignInProps) => {
             />
 
             <Flex w="100%" flexDir="column" mt="1em">
-              <Button type="submit" w="50%" m="auto">
+              <Button type="submit" w={{base:"90%", md:"50%"}} m="auto">
                 Sign In with Email
               </Button>
-              <Button mx="auto" mt="1em" w="50%" onClick={googleSignIn}>
+              <Button mx="auto" mt="1em" w={{base:"90%", md:"50%"}} onClick={googleSignIn}>
                 <Image src="google_logo.ico" alt="" w="1em" mr="1em"/>
                 Sign In with Google
               </Button>

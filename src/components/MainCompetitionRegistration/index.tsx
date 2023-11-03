@@ -22,6 +22,7 @@ import { useState } from "react";
 import { RegistrationStatus } from "@prisma/client";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AllowableFileTypeEnum } from "~/utils/file";
 
 const schema = z.object({
   teamName: z.string().nonempty().optional().nullable(),
@@ -413,10 +414,10 @@ export const CaseCompetitionRegistration = ({
               requirements.
             </Text>
             <Text color="blue" fontSize="xl" mt="1em">
-              National Students: Rp300,000.00 or USD 20
+              National Students: Rp400,000.00 or USD 26
             </Text>
             <Text color="blue" fontSize="xl" mt="1em">
-              International Students: Rp375,000.00 or USD 24
+              International Students: Rp450,000.00 or USD 29
             </Text>
             <Text color="blue" fontWeight="bolder" fontSize="xl" mt="1em">
               Please Transfer the Registration Fee to the following account.
@@ -472,6 +473,7 @@ export const CaseCompetitionRegistration = ({
               <FileInput
                 fileStateArr={paymentInputStateArr}
                 imgUrl={initialImgUrl}
+                allowed={[AllowableFileTypeEnum.ZIP]}
               />
             </Flex>
 

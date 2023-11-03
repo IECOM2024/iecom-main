@@ -71,16 +71,16 @@ function EventRegistrationPageComponent() {
     toaster(
       colorRunTicketSaveMutation
         .mutateAsync({
-          name: data.name ?? "",
-          email: data.email ?? "",
-          phoneNumber: data.phoneNumber ?? "",
-          address: data.address ?? "",
-          institution: data.institution ?? "",
-          bloodType: data.bloodType ?? "",
-          healthHistory: data.healthHistory ?? "",
-          emergencyContactName: data.emergencyContactName ?? "",
-          emergencyContactNumber: data.emergencyContactNumber ?? "",
-          emergencyContactRelationship: data.emergencyContactRelationship ?? "",
+          name: data.name ?? undefined,
+          email: data.email ?? undefined,
+          phoneNumber: data.phoneNumber ?? undefined,
+          address: data.address ?? undefined,
+          institution: data.institution ?? undefined,
+          bloodType: data.bloodType ?? undefined,
+          healthHistory: data.healthHistory ?? undefined,
+          emergencyContactName: data.emergencyContactName ?? undefined,
+          emergencyContactNumber: data.emergencyContactNumber ?? undefined,
+          emergencyContactRelationship: data.emergencyContactRelationship ?? undefined,
           type: data.partType ?? undefined,
           registFor: data.registFor ?? undefined,
           paidby: data.paidby ?? undefined,
@@ -92,16 +92,16 @@ function EventRegistrationPageComponent() {
   const saveForm = async (data: FormValues) => {
     toaster(
       colorRunTicketSaveMutation.mutateAsync({
-        name: data.name ?? "",
-        email: data.email ?? "",
-        phoneNumber: data.phoneNumber ?? "",
-        address: data.address ?? "",
-        institution: data.institution ?? "",
-        bloodType: data.bloodType ?? "",
-        healthHistory: data.healthHistory ?? "",
-        emergencyContactName: data.emergencyContactName ?? "",
-        emergencyContactNumber: data.emergencyContactNumber ?? "",
-        emergencyContactRelationship: data.emergencyContactRelationship ?? "",
+        name: data.name ?? undefined,
+        email: data.email ?? undefined,
+        phoneNumber: data.phoneNumber ?? undefined,
+        address: data.address ?? undefined,
+        institution: data.institution ?? undefined,
+        bloodType: data.bloodType ?? undefined,
+        healthHistory: data.healthHistory ?? undefined,
+        emergencyContactName: data.emergencyContactName ?? undefined,
+        emergencyContactNumber: data.emergencyContactNumber ?? undefined,
+        emergencyContactRelationship: data.emergencyContactRelationship ?? undefined,
         type: data.partType ?? undefined,
         registFor: data.registFor ?? undefined,
         paidby: data.paidby ?? undefined,
@@ -136,7 +136,10 @@ function EventRegistrationPageComponent() {
 
   return (
     <ColorRunRegistration
-      initialFormValues={colorRunTicket}
+      initialFormValues={{
+        ...colorRunTicket,
+        partType: colorRunTicket?.type ?? undefined,
+      }}
       submitForm={submitForm}
       saveForm={saveForm}
       uploadFile={uploadFile}

@@ -8,11 +8,13 @@ export interface FileInputProps {
     React.Dispatch<React.SetStateAction<File | null | undefined>>
   ];
   imgUrl?: string;
+  allowed?: AllowableFileTypeEnum[];
 }
 
 export const FileInput = ({
   fileStateArr,
   imgUrl,
+  allowed,
   ...rest
 }: FileInputProps) => {
   const [fileState, setFileState] = fileStateArr;
@@ -47,7 +49,7 @@ export const FileInput = ({
           fileState ? "file-input-default-file-exists" : "file-input-default"
         }
         cursor="pointer"
-        accept={`${AllowableFileTypeEnum.PICTURES} , ${AllowableFileTypeEnum.ZIP}`} // TODO : Kasih input props untuk menerima file type apa aja
+        accept={allowed ? allowed.join(",") : `${AllowableFileTypeEnum.PICTURES} , ${AllowableFileTypeEnum.ZIP}`} // TODO : Kasih input props untuk menerima file type apa aja
       />
       {imgUrl && (
         <>

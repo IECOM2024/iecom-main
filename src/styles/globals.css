@@ -117,3 +117,10 @@ a {
 a {
   text-decoration: underline !important;
 }
+
+.darkscroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 1);
+  height: 3px;
+  border: 1px solid slategrey;
+  border-radius: 12px;
+}
