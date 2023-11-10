@@ -14,6 +14,7 @@ import {
   Text,
   UnorderedList,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import {
@@ -26,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FileInput } from "~/components/common/CustomForm/FileInput";
 import { useState } from "react";
 import { RegistrationStatus } from "@prisma/client";
-import { z } from "zod";
+import { object, z } from "zod";
 import { AllowableFileTypeEnum } from "~/utils/file";
 
 const schema = z.object({
@@ -52,7 +53,7 @@ interface EssayCompetitionRegistrationProps {
   initialImgUrl?: string;
   submitForm: (data: FormValues) => void;
   saveForm: (data: FormValues) => void;
-  uploadFile: (file: File) => void;
+  uploadFile: (file: File, filename: string) => void;
   status: RegistrationStatus;
   cancelRegistration: () => void;
   messageFromAdmin?: string;
@@ -75,19 +76,48 @@ export const EssayCompetitionRegistration = ({
       defaultValues: initialFormValues,
       resolver: zodResolver(schema),
     });
+
+  const toast = useToast();
   const paymentInputStateArr = useState<File | null | undefined>(null);
   const isFrozen =
     status === RegistrationStatus.SUBMITTED_UNCONFIRMED ||
     status === RegistrationStatus.SUBMITTED_CONFIRMED;
 
-  const onSubmit = handleSubmit((data) => {
-    submitForm(data);
+  const validateFileUpload = () => {
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
       if (file) {
-        uploadFile(file);
+        return true;
       }
     }
+
+    if (initialImgUrl) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const onSubmit = handleSubmit((data) => {
+    if (!validateFileUpload()) {
+      toast({
+        title: "File Upload is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      return;
+    }
+
+    if (paymentInputStateArr[0]) {
+      const file = paymentInputStateArr[0];
+      if (file) {
+        uploadFile(file, (data.name ?? ""));
+      }
+    }
+    submitForm(data);
+
   });
 
   const onSave = () => {
@@ -96,12 +126,10 @@ export const EssayCompetitionRegistration = ({
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
       if (file) {
-        uploadFile(file);
+        uploadFile(file, (data.name ?? ""));
       }
     }
   };
-
-  console.log(formState.errors);
 
   return (
     <Flex
@@ -414,7 +442,12 @@ const SubmitFormModal = ({
                 Cancel
               </Button>
               <Button
-                onClick={() => onSubmit().then(onClose)}
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => {
+                    onSubmit();
+                  }, 150)
+                }}
                 variant="blue"
                 w={{ base: "100%", md: "5em" }}
               >

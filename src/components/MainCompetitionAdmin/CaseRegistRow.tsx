@@ -165,10 +165,11 @@ export const CaseRegistRow = ({
       <Td>{num}</Td>
       <Td>{objectContent.teamName}</Td>
       <Td>{objectContent.leaderName}</Td>
-      <Td>{objectContent.leaderInstitution}</Td>
-      <Td>{objectContent.leaderEmail}</Td>
       <Td>{objectContent.member1Name}</Td>
       <Td>{objectContent.member2Name}</Td>
+      <Td>{objectContent.leaderInstitution}</Td>
+      <Td>{objectContent.leaderPhoneNumber}</Td>
+      <Td>{objectContent.leaderEmail}</Td>
       <Td>
         <Menu>
           <MenuButton
@@ -228,7 +229,11 @@ export const CaseRegistRow = ({
 
       <Td>
         {objectContent.leaderTwibbonLink ? (
-          <a href={objectContent.leaderTwibbonLink} target="_blank" rel="noreferrer">
+          <a
+            href={objectContent.leaderTwibbonLink}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -239,7 +244,11 @@ export const CaseRegistRow = ({
       </Td>
       <Td>
         {objectContent.leaderPostLink ? (
-          <a href={objectContent.leaderPostLink} target="_blank" rel="noreferrer">
+          <a
+            href={objectContent.leaderPostLink}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -250,7 +259,11 @@ export const CaseRegistRow = ({
       </Td>
       <Td>
         {objectContent.member1TwibbonLink ? (
-          <a href={objectContent.member1TwibbonLink} target="_blank" rel="noreferrer">
+          <a
+            href={objectContent.member1TwibbonLink}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -261,7 +274,11 @@ export const CaseRegistRow = ({
       </Td>
       <Td>
         {objectContent.member1PostLink ? (
-          <a href={objectContent.member1PostLink} target="_blank" rel="noreferrer">
+          <a
+            href={objectContent.member1PostLink}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -272,7 +289,11 @@ export const CaseRegistRow = ({
       </Td>
       <Td>
         {objectContent.member2TwibbonLink ? (
-          <a href={objectContent.member2TwibbonLink} target="_blank" rel="noreferrer">
+          <a
+            href={objectContent.member2TwibbonLink}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -283,7 +304,11 @@ export const CaseRegistRow = ({
       </Td>
       <Td>
         {objectContent.member2PostLink ? (
-          <a href={objectContent.member2PostLink} target="_blank" rel="noreferrer">
+          <a
+            href={objectContent.member2PostLink}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Flex w="100%" justifyContent="center">
               <MdLink size="2em" />
             </Flex>
@@ -292,7 +317,7 @@ export const CaseRegistRow = ({
           <Text fontStyle="italic">No link</Text>
         )}
       </Td>
-      
+
       <Td>
         <Menu>
           <MenuButton as={Button}>

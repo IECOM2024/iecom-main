@@ -17,10 +17,14 @@ import { useIsMobile } from "~/utils/hooks/useIsMobile";
 
 const NEWS: NewsPanelProps[] = [
   {
-    title: "Color Run",
-    imgUrl:
-      "https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80",
-    linkTo: "pre-event#color-run",
+    title: "Case Competition",
+    imgUrl: "/iecom-docs/iecom-docs-1.webp",
+    linkTo: "/case-competition",
+  },
+  {
+    title: "Essay Competition",
+    imgUrl: "/essay-paper.webp",
+    linkTo: "/essay-competition",
   },
   {
     title: "Seminar & Workshop",

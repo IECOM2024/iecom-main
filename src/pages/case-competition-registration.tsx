@@ -40,6 +40,7 @@ import { RegistrationStatus } from "@prisma/client";
 
 function CaseCompetitiontRegistrationPageComponent() {
   const toaster = useToaster();
+  const router = useRouter();
   const { uploader } = useUploader();
   const { downloader } = useDownloader();
   const [initialImgUrl, setInitialImgUrl] = useState<string | undefined>(); // For Proof of Payment
@@ -98,7 +99,9 @@ function CaseCompetitiontRegistrationPageComponent() {
           member1PostLink: data.member1PostLink ?? undefined,
           member2PostLink: data.member2PostLink ?? undefined,
         })
-        .then(() => caseRegistSubmitMutation.mutateAsync())
+        .then(() => caseRegistSubmitMutation.mutateAsync()).then(() => {
+          router.push("/case-competition-registration");
+        })
     );
   };
 
@@ -137,17 +140,17 @@ function CaseCompetitiontRegistrationPageComponent() {
     );
   };
 
-  const uploadFile = async (file: File) => {
+  const uploadFile = async (file: File, filename: string) => {
     if (!caseRegist) return;
-    // upload file didnt have toaster
     await uploader(
-      `${caseRegist.id}.zip`,
+      `${filename}-${caseRegist.id.length >= 3 ? caseRegist.id.slice(caseRegist.id.length - 3,caseRegist.id.length) : ""}.zip`,
       FolderEnum.CASE_COMP_FILES,
-      AllowableFileTypeEnum.PNG,
+      AllowableFileTypeEnum.ZIP,
       file
-    ).then(() => {
+    ).then((res) => {
+      
       caseRegistSaveMutation.mutateAsync({
-        isFilePaymentUploaded: true,
+        fileUploadLink: res?.url,
       });
     }),
       {
@@ -163,13 +166,55 @@ function CaseCompetitiontRegistrationPageComponent() {
 
   if (caseRegistQuery.isLoading) return <Loading />;
 
+  if (caseRegist?.status === RegistrationStatus.SUBMITTED_CONFIRMED) {
+    return (
+      <Flex
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+        mt="2em"
+      >
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Your registration has been confirmed, Please wait for the next information
+        </Text>
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Thank you for participating!
+        </Text>
+      </Flex>
+    );
+  }
+
+  if (caseRegist?.status === RegistrationStatus.SUBMITTED_UNCONFIRMED) {
+    return (
+      <Flex
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+        mt="2em"
+        mb="80vh"
+        w="min(95%, 1000px)"
+        bg="whiteCream"
+        p="1em"
+        borderRadius="1em"
+        mx="auto"
+      >
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Your registration has been submitted. Our team will confirm your registration soon
+        </Text>
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Thank you for participating!
+        </Text>
+      </Flex>
+    );
+  }
+
   return (
     <CaseCompetitionRegistration
       initialFormValues={caseRegist}
       submitForm={submitForm}
       saveForm={saveForm}
       uploadFile={uploadFile}
-      initialImgUrl={initialImgUrl}
+      initialImgUrl={caseRegist?.fileUploadLink ?? undefined}
       status={caseRegist?.status ?? RegistrationStatus.FORM_FILLING}
       cancelRegistration={cancelRegistration}
     />

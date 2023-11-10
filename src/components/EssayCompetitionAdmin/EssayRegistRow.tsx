@@ -21,6 +21,7 @@ import { useDownloader } from "~/utils/hooks/useDownloader";
 import { FolderEnum } from "~/utils/file";
 import { useState } from "react";
 import { EditEssayRegistModal } from "./EditEssayRegistModal";
+import { useRouter } from "next/router";
 
 interface ObjectListRowProps {
   objectContent: EssayCompetitionRegistrationData;
@@ -38,6 +39,7 @@ export const EssayRegistRow = ({
   deleteObject,
 }: ObjectListRowProps) => {
   const { downloader, forceDownload } = useDownloader();
+  const router = useRouter();
   const toast = useToast();
 
   const [status, setStatus] = useState<RegistrationStatus>(
@@ -105,24 +107,9 @@ export const EssayRegistRow = ({
   };
 
   const downloadFiles = () => {
-    if (!objectContent.isFilePaymentUploaded) {
-      return;
-    }
+    if (!objectContent.fileUploadLink) return;
 
-    if (
-      !(
-        objectContent.status === RegistrationStatus.SUBMITTED_UNCONFIRMED ||
-        objectContent.status === RegistrationStatus.SUBMITTED_CONFIRMED ||
-        objectContent.status === RegistrationStatus.FORM_FILLING
-      )
-    ) {
-      return;
-    }
-
-    downloader({
-      folder: FolderEnum.COLOR_RUN_PROOF,
-      filename: `${objectContent.id}.zip`,
-    }).then(({ url }) => forceDownload(url, `${objectContent.name}.zip`));
+    router.push(objectContent.fileUploadLink)
   };
 
   const onChangeStatus = (newStatus: RegistrationStatus) => () => {
@@ -215,7 +202,7 @@ export const EssayRegistRow = ({
         />
       </Td>
       <Td>
-        {objectContent.isFilePaymentUploaded ? (
+        {objectContent.fileUploadLink ? (
           <Button onClick={downloadFiles}>Download</Button>
         ) : (
           <Text fontStyle="italic">No File Uploaded</Text>

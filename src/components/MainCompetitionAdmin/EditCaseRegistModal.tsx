@@ -336,9 +336,9 @@ export const EditCaseRegistModal = ({
             </Flex>
           </ModalBody>
           <ModalFooter>
-            <Button variant="mono-outline" onClick={onSubmit}>
+            {/* <Button variant="mono-outline" onClick={onSubmit}>
               Simpan
-            </Button>
+            </Button> */}
             {/*<Button
               variant="mono-outline"
               color="salmon"

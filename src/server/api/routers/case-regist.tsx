@@ -21,7 +21,10 @@ export const caseRegistRouter = createTRPCRouter({
     if (!savedCaseRegistData) {
       const newCaseRegistData =
         await ctx.prisma.mainCompetitionRegistrationData.create({
-          data: { userId: ctx.session.user.id },
+          data: {
+            userId: ctx.session.user.id,
+            status: RegistrationStatus.FORM_FILLING,
+          },
         });
 
       return newCaseRegistData;
@@ -60,14 +63,15 @@ export const caseRegistRouter = createTRPCRouter({
         leaderTwibbonLink: z.string().optional(),
         member1TwibbonLink: z.string().optional(),
         member2TwibbonLink: z.string().optional(),
-        status: z.union(
-          [
+        status: z
+          .union([
             z.literal(RegistrationStatus.UNREGISTERED),
             z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
             z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
-            z.literal(RegistrationStatus.FORM_FILLING)
-          ]
-        ).optional(),
+            z.literal(RegistrationStatus.FORM_FILLING),
+          ])
+          .optional(),
+        fileUploadLink: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -114,6 +118,7 @@ export const caseRegistRouter = createTRPCRouter({
               member1TwibbonLink: input.member1TwibbonLink,
               member2TwibbonLink: input.member2TwibbonLink,
               status: input.status,
+              fileUploadLink: input.fileUploadLink,
             },
           });
 
@@ -153,6 +158,7 @@ export const caseRegistRouter = createTRPCRouter({
             member1TwibbonLink: input.member1TwibbonLink,
             member2TwibbonLink: input.member2TwibbonLink,
             status: input.status,
+            fileUploadLink: input.fileUploadLink,
           },
         });
 
@@ -186,6 +192,7 @@ export const caseRegistRouter = createTRPCRouter({
           },
           data: {
             status: RegistrationStatus.SUBMITTED_UNCONFIRMED,
+            lastSubmissionTime: new Date(),
           },
         });
 
@@ -312,14 +319,15 @@ export const caseRegistRouter = createTRPCRouter({
         leaderTwibbonLink: z.string().optional(),
         member1TwibbonLink: z.string().optional(),
         member2TwibbonLink: z.string().optional(),
-        status: z.union(
-          [
+        status: z
+          .union([
             z.literal(RegistrationStatus.UNREGISTERED),
             z.literal(RegistrationStatus.SUBMITTED_UNCONFIRMED),
             z.literal(RegistrationStatus.SUBMITTED_CONFIRMED),
-            z.literal(RegistrationStatus.FORM_FILLING)
-          ]
-        ).optional(),
+            z.literal(RegistrationStatus.FORM_FILLING),
+          ])
+          .optional(),
+        fileUploadLink: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -359,6 +367,7 @@ export const caseRegistRouter = createTRPCRouter({
             member1TwibbonLink: input.member1TwibbonLink,
             member2TwibbonLink: input.member2TwibbonLink,
             status: input.status,
+            fileUploadLink: input.fileUploadLink,
           },
         });
 

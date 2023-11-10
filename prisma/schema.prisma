@@ -152,6 +152,8 @@ model MainCompetitionRegistrationData {
     member2TwibbonLink                        String?
 
     messageFromAdmin      String?
+    fileUploadLink        String?
+    lastSubmissionTime       DateTime?
     isFilePaymentUploaded Boolean @default(false)
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -175,6 +177,8 @@ model EssayCompetitionRegistrationData {
     twibbonLink                               String?
 
     messageFromAdmin      String?
+    fileUploadLink        String?
+    lastSubmissionTime      DateTime?
     isFilePaymentUploaded Boolean @default(false)
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)

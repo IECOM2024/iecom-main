@@ -21,7 +21,10 @@ export const essayRegistRouter = createTRPCRouter({
     if (!savedEssayRegistData) {
       const newEssayRegistData =
         await ctx.prisma.essayCompetitionRegistrationData.create({
-          data: { userId: ctx.session.user.id },
+          data: {
+            userId: ctx.session.user.id,
+            status: RegistrationStatus.FORM_FILLING,
+          },
         });
 
       return newEssayRegistData;
@@ -43,6 +46,7 @@ export const essayRegistRouter = createTRPCRouter({
         postLink: z.string().optional(),
         twibbonLink: z.string().optional(),
         isFilePaymentUploaded: z.boolean().optional(),
+        fileUploadLink: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -71,8 +75,8 @@ export const essayRegistRouter = createTRPCRouter({
                 input.whereDidYouKnowThisCompetitionInformation,
               postLink: input.postLink,
               twibbonLink: input.twibbonLink,
-              status: RegistrationStatus.FORM_FILLING,
               isFilePaymentUploaded: input.isFilePaymentUploaded,
+              fileUploadLink: input.fileUploadLink,
             },
           });
 
@@ -91,9 +95,10 @@ export const essayRegistRouter = createTRPCRouter({
             batch: input.batch,
             postLink: input.postLink,
             twibbonLink: input.twibbonLink,
-            status: RegistrationStatus.FORM_FILLING,
             whereDidYouKnowThisCompetitionInformation:
               input.whereDidYouKnowThisCompetitionInformation,
+            isFilePaymentUploaded: input.isFilePaymentUploaded,
+            fileUploadLink: input.fileUploadLink,
           },
         });
 
@@ -127,6 +132,7 @@ export const essayRegistRouter = createTRPCRouter({
           },
           data: {
             status: RegistrationStatus.SUBMITTED_UNCONFIRMED,
+            lastSubmissionTime: new Date(),
           },
         });
 

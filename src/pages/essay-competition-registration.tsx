@@ -40,6 +40,7 @@ import { RegistrationStatus } from "@prisma/client";
 
 function EssayCompetitiontRegistrationPageComponent() {
   const toaster = useToaster();
+  const router = useRouter();
   const { uploader } = useUploader();
   const { downloader } = useDownloader();
   const [initialImgUrl, setInitialImgUrl] = useState<string | undefined>(); // For Proof of Payment
@@ -82,6 +83,9 @@ function EssayCompetitiontRegistrationPageComponent() {
             data.whereDidYouKnowThisCompetitionInformation ?? undefined,
         })
         .then(() => essayRegistSubmitMutation.mutateAsync())
+        .then(() => {
+          router.push("/essay-competition-registration");
+        })
     );
   };
 
@@ -102,16 +106,23 @@ function EssayCompetitiontRegistrationPageComponent() {
     );
   };
 
-  const uploadFile = async (file: File) => {
+  const uploadFile = async (file: File, filename: string) => {
     if (!essayRegist) return;
     await uploader(
-      `${essayRegist.id}.zip`,
-      FolderEnum.COLOR_RUN_PROOF,
-      AllowableFileTypeEnum.PNG,
+      `${filename}-${
+        essayRegist.id.length >= 3
+          ? essayRegist.id.slice(
+              essayRegist.id.length - 3,
+              essayRegist.id.length
+            )
+          : ""
+      }.zip`,
+      FolderEnum.ESSAY_COMP_FILES,
+      AllowableFileTypeEnum.ZIP,
       file
-    ).then(() => {
+    ).then((res) => {
       essayRegistSaveMutation.mutateAsync({
-        isFilePaymentUploaded: true,
+        fileUploadLink: res?.url,
       });
     }),
       {
@@ -127,13 +138,57 @@ function EssayCompetitiontRegistrationPageComponent() {
 
   if (essayRegistQuery.isLoading) return <Loading />;
 
+  if (essayRegist?.status === RegistrationStatus.SUBMITTED_CONFIRMED) {
+    return (
+      <Flex
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+        mt="2em"
+      >
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Your registration has been confirmed, Please wait for the next
+          information
+        </Text>
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Thank you for participating!
+        </Text>
+      </Flex>
+    );
+  }
+
+  if (essayRegist?.status === RegistrationStatus.SUBMITTED_UNCONFIRMED) {
+    return (
+      <Flex
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+        mt="2em"
+        mb="80vh"
+        w="min(95%, 1000px)"
+        bg="whiteCream"
+        p="1em"
+        borderRadius="1em"
+        mx="auto"
+      >
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Your registration has been submitted. Our team will confirm your
+          registration soon
+        </Text>
+        <Text fontSize="2xl" fontWeight="bold" color="blue">
+          Thank you for participating!
+        </Text>
+      </Flex>
+    );
+  }
+
   return (
     <EssayCompetitionRegistration
       initialFormValues={essayRegist}
       submitForm={submitForm}
       saveForm={saveForm}
       uploadFile={uploadFile}
-      initialImgUrl={initialImgUrl}
+      initialImgUrl={essayRegist?.fileUploadLink ?? undefined}
       status={essayRegist?.status ?? RegistrationStatus.FORM_FILLING}
       cancelRegistration={cancelRegistration}
     />

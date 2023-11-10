@@ -243,10 +243,11 @@ export const CaseRegistAdministration = () => {
                   <Th w="10%">No.</Th>
                   <Th w="10%">Team Name</Th>
                   <Th w="10%">Leader Name</Th>
-                  <Th w="10%">Leader Institution</Th>
-                  <Th w="10%">Leader Email</Th>
                   <Th w="10%">Member 1 Name</Th>
                   <Th w="10%">Member 2 Name</Th>
+                  <Th w="10%">Leader Institution</Th>
+                  <Th w="10%">Leader Phone Number</Th>
+                  <Th w="10%">Leader Email</Th>
                   <Th w="15%">Status</Th>
                   <Th w="10%">View</Th>
                   <Th w="10%">Download Files</Th>

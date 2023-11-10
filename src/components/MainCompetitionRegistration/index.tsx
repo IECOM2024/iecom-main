@@ -14,6 +14,7 @@ import {
   Text,
   UnorderedList,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { PublicLayout } from "~/components/layout/PublicLayout";
 import { useForm, UseFormRegister, FieldErrors } from "react-hook-form";
@@ -65,7 +66,7 @@ interface CaseCompetitionRegistrationProps {
   initialImgUrl?: string;
   submitForm: (data: FormValues) => void;
   saveForm: (data: FormValues) => void;
-  uploadFile: (file: File) => void;
+  uploadFile: (file: File, filename: string) => void;
   status: RegistrationStatus;
   cancelRegistration: () => void;
 }
@@ -86,16 +87,45 @@ export const CaseCompetitionRegistration = ({
       defaultValues: initialFormValues,
       resolver: zodResolver(schema),
     });
+
+  const toast = useToast();
   const paymentInputStateArr = useState<File | null | undefined>(null);
 
-  const onSubmit = handleSubmit((data) => {
-    submitForm(data);
+  const validateFileUpload = () => {
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
       if (file) {
-        uploadFile(file);
+        return true;
       }
     }
+
+    if (initialImgUrl) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const onSubmit = handleSubmit((data) => {
+    if (!validateFileUpload()) {
+      toast({
+        title: "File Upload is required",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      return;
+    }
+
+    if (paymentInputStateArr[0]) {
+      const file = paymentInputStateArr[0];
+      if (file) {
+        uploadFile(file, (data.teamName ?? ""));
+      }
+    }
+    submitForm(data);
+
   });
 
   const onSave = () => {
@@ -104,11 +134,10 @@ export const CaseCompetitionRegistration = ({
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
       if (file) {
-        uploadFile(file);
+        uploadFile(file, (data.teamName ?? ""));
       }
     }
   };
-
   return (
     <Flex
       flexDir="column"
@@ -447,26 +476,22 @@ export const CaseCompetitionRegistration = ({
             <Text color="blue" fontSize="md" mt="1em">
               Required files:
             </Text>
-            <UnorderedList
-              color="blue"
-              textAlign="justify"
-              gap="2em"
-              my="1em"
-            >
+            <UnorderedList color="blue" textAlign="justify" gap="2em" my="1em">
               <li>
-                Payment proof (in JPG/PNG/PDF format) with name of the team_payment
-                as the file name
+                Payment proof (in JPG/PNG/PDF format) with name of the
+                team_payment as the file name
               </li>
               <li>
-                Twibbon post proof (in JPG/PNG/PDF format) with name of the team_the member's position_Twibbon
-                as the file name
+                Twibbon post proof (in JPG/PNG/PDF format) with name of the
+                team_the member's position_Twibbon as the file name
               </li>
               <li>
-                Repost proof (in JPG/PNG/PDF format) with name of the team_the member's position_Repost
-                as the file name
+                Repost proof (in JPG/PNG/PDF format) with name of the team_the
+                member's position_Repost as the file name
               </li>
               <li>
-                Student ID (in JPG/PNG/PDF format) with name of the team_the member's position_Student ID
+                Student ID (in JPG/PNG/PDF format) with name of the team_the
+                member's position_Student ID
               </li>
             </UnorderedList>
             <Flex mt="1em" w="100%" justifyContent="center">
@@ -549,7 +574,11 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
                 Cancel
               </Button>
               <Button
-                onClick={onSubmit}
+                onClick={() => {
+                  onClose();
+                  setTimeout(() => 
+                  onSubmit(),150)
+                }}
                 variant="blue"
                 w={{ base: "100%", md: "5em" }}
               >
