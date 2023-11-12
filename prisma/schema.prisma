@@ -84,6 +84,7 @@ model User {
     ExamEnrollment                   ExamEnrollment[]
     ColorRunParticipantData          ColorRunParticipantData[]
     EssayCompetitionRegistrationData EssayCompetitionRegistrationData[]
+    EssaySubmission                  EssaySubmission[]
 }
 
 model VerificationToken {
@@ -153,8 +154,8 @@ model MainCompetitionRegistrationData {
 
     messageFromAdmin      String?
     fileUploadLink        String?
-    lastSubmissionTime       DateTime?
-    isFilePaymentUploaded Boolean @default(false)
+    lastSubmissionTime    DateTime?
+    isFilePaymentUploaded Boolean   @default(false)
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -178,10 +179,25 @@ model EssayCompetitionRegistrationData {
 
     messageFromAdmin      String?
     fileUploadLink        String?
-    lastSubmissionTime      DateTime?
-    isFilePaymentUploaded Boolean @default(false)
+    lastSubmissionTime    DateTime?
+    isFilePaymentUploaded Boolean   @default(false)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+    EssaySubmission EssaySubmission[]
+}
+
+model EssaySubmission {
+    id String @id @default(cuid())
+
+    userId                             String
+    essayCompetitionRegistrationDataId String
+
+    messageFromAdmin    String?
+    essaySubmissionLink String?
+    lastSubmissionTime  DateTime?
+
+    user                             User                             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    essayCompetitionRegistrationData EssayCompetitionRegistrationData @relation(fields: [essayCompetitionRegistrationDataId], references: [id], onDelete: Cascade)
 }
 
 // Event Models

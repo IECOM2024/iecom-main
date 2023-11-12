@@ -52,7 +52,7 @@ export const storageRouter = createTRPCRouter({
           z.literal(AllowableFileTypeEnum.PNG),
           z.literal(AllowableFileTypeEnum.JPEG),
           z.literal(AllowableFileTypeEnum.ZIP),
-          z.literal(AllowableFileTypeEnum.PICTURES)
+          z.literal(AllowableFileTypeEnum.PICTURES),
         ])
       })
     )

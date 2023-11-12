@@ -7,6 +7,7 @@ import { eventRouter } from "./routers/event";
 import { colorRunRouter } from "./routers/color-run";
 import { caseRegistRouter } from "./routers/case-regist";
 import { essayRegistRouter } from "./routers/essay-regist";
+import { essaySubmisRouter } from "./routers/essay-submis";
 
 /**
  * This is the primary router for your server.
@@ -21,7 +22,8 @@ export const appRouter = createTRPCRouter({
   event: eventRouter,
   colorRun: colorRunRouter,
   caseRegist: caseRegistRouter,
-  essayRegist: essayRegistRouter
+  essayRegist: essayRegistRouter,
+  essaySubmis: essaySubmisRouter
 });
 
 // export type definition of API

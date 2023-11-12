@@ -8,7 +8,7 @@ export enum FolderEnum {
   CASE_COMP_PROOF = "case-comp-proof",
   ESSAY_COMP_FILES = "essay-comp-files",
   ESSAY_COMP_PROOF = "essay-comp-proof",
-
+  ESSAY_COMP_SUBMISSION = "essay-comp-submission",
 }
 
 export enum AllowableFileTypeEnum {
