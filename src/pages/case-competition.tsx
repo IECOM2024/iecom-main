@@ -45,7 +45,7 @@ const REGIST_INFO: [string, number, string, string][] = [
   [
     "Normal Registration",
     26,
-    "375000",
+    "400000",
     "Open until November 21th 2023",
   ],
 ];
