@@ -57,6 +57,8 @@ const schema = z.object({
   leaderPostLink: z.string().nonempty().optional().nullable(),
   member1PostLink: z.string().nonempty().optional().nullable(),
   member2PostLink: z.string().nonempty().optional().nullable(),
+  isUsingRefferalCode: z.boolean().optional().nullable(),
+  refferalCode: z.string().nonempty().optional().nullable(),
 });
 
 export type FormValues = z.infer<typeof schema>;
@@ -69,6 +71,7 @@ interface CaseCompetitionRegistrationProps {
   uploadFile: (file: File, filename: string) => void;
   status: RegistrationStatus;
   cancelRegistration: () => void;
+  checkRefferal: (code: string) => void;
 }
 
 const TWIBPOST_LINK = "https://bit.ly/IECOMTwibbonPoster";
@@ -81,8 +84,9 @@ export const CaseCompetitionRegistration = ({
   uploadFile,
   status,
   cancelRegistration,
+  checkRefferal,
 }: CaseCompetitionRegistrationProps) => {
-  const { handleSubmit, register, formState, getValues, setValue } =
+  const { handleSubmit, register, formState, getValues, setValue, watch } =
     useForm<FormValues>({
       defaultValues: initialFormValues,
       resolver: zodResolver(schema),
@@ -121,11 +125,10 @@ export const CaseCompetitionRegistration = ({
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
       if (file) {
-        uploadFile(file, (data.teamName ?? ""));
+        uploadFile(file, data.teamName ?? "");
       }
     }
     submitForm(data);
-
   });
 
   const onSave = () => {
@@ -134,10 +137,16 @@ export const CaseCompetitionRegistration = ({
     if (paymentInputStateArr[0]) {
       const file = paymentInputStateArr[0];
       if (file) {
-        uploadFile(file, (data.teamName ?? ""));
+        uploadFile(file, data.teamName ?? "");
       }
     }
   };
+
+  const onCheckReferralCode = () => {
+    const data = getValues();
+    checkRefferal(data.refferalCode ?? "");
+  };
+
   return (
     <Flex
       flexDir="column"
@@ -428,6 +437,39 @@ export const CaseCompetitionRegistration = ({
               desc="e.g. https://www.instagram.com/p/CyqRn72Rzh/"
             />
 
+            {/* Refferal Section */}
+            <Text
+              textAlign="center"
+              fontSize="3xl"
+              color="blue"
+              fontWeight="bold"
+              w="100%"
+            >
+              Refferal code (optional)
+            </Text>
+
+            <Flex alignItems="center" gap="1em" h="3em">
+              <Input
+                type="checkbox"
+                {...register("isUsingRefferalCode")}
+                bg={watch("isUsingRefferalCode") ? "blue" : undefined}
+                w="1.5em"
+                h="1.5em"
+                cursor="pointer"
+              />
+              <Text color="blue" fontWeight="bold" fontSize="md" mt="1em">
+                I have a refferal code
+              </Text>
+            </Flex>
+            {watch("isUsingRefferalCode") && (
+              <FormTextField
+                field="refferalCode"
+                title="Refferal Code"
+                register={register}
+                error={formState.errors.refferalCode}
+              />
+            )}
+
             {/* Payment Information */}
             <Text
               textAlign="center"
@@ -576,8 +618,7 @@ const SubmitFormModal = ({ onSubmit }: { onSubmit: () => void }) => {
               <Button
                 onClick={() => {
                   onClose();
-                  setTimeout(() => 
-                  onSubmit(),150)
+                  setTimeout(() => onSubmit(), 150);
                 }}
                 variant="blue"
                 w={{ base: "100%", md: "5em" }}

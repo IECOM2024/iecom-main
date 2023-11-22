@@ -10,6 +10,7 @@ import {
   Td,
   Text,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { GetStaticProps } from "next";
 import { useSession } from "next-auth/react";
@@ -40,6 +41,7 @@ import { RegistrationStatus } from "@prisma/client";
 
 function CaseCompetitiontRegistrationPageComponent() {
   const toaster = useToaster();
+  const toast = useToast();
   const router = useRouter();
   const { uploader } = useUploader();
   const { downloader } = useDownloader();
@@ -55,6 +57,8 @@ function CaseCompetitiontRegistrationPageComponent() {
     api.caseRegist.participantSubmitCaseRegistData.useMutation();
   const caseRegistDeleteMutation =
     api.caseRegist.participantDeleteCaseRegistData.useMutation();
+  const checkRefferalCode =
+    api.caseRegist.participantCheckRefferalCode.useMutation();
 
   useEffect(() => {
     if (!caseRegist || !caseRegist.isFilePaymentUploaded) {
@@ -98,8 +102,11 @@ function CaseCompetitiontRegistrationPageComponent() {
           leaderPostLink: data.leaderPostLink ?? undefined,
           member1PostLink: data.member1PostLink ?? undefined,
           member2PostLink: data.member2PostLink ?? undefined,
+          isUsingReferral: data.isUsingRefferalCode ?? undefined,
+          referralCode: data.refferalCode ?? undefined,
         })
-        .then(() => caseRegistSubmitMutation.mutateAsync()).then(() => {
+        .then(() => caseRegistSubmitMutation.mutateAsync())
+        .then(() => {
           router.push("/case-competition-registration");
         })
     );
@@ -136,6 +143,8 @@ function CaseCompetitiontRegistrationPageComponent() {
         leaderPostLink: data.leaderPostLink ?? undefined,
         member1PostLink: data.member1PostLink ?? undefined,
         member2PostLink: data.member2PostLink ?? undefined,
+        isUsingReferral: data.isUsingRefferalCode ?? undefined,
+        referralCode: data.refferalCode ?? undefined,
       })
     );
   };
@@ -143,12 +152,15 @@ function CaseCompetitiontRegistrationPageComponent() {
   const uploadFile = async (file: File, filename: string) => {
     if (!caseRegist) return;
     await uploader(
-      `${filename}-${caseRegist.id.length >= 3 ? caseRegist.id.slice(caseRegist.id.length - 3,caseRegist.id.length) : ""}.zip`,
+      `${filename}-${
+        caseRegist.id.length >= 3
+          ? caseRegist.id.slice(caseRegist.id.length - 3, caseRegist.id.length)
+          : ""
+      }.zip`,
       FolderEnum.CASE_COMP_FILES,
       AllowableFileTypeEnum.ZIP,
       file
     ).then((res) => {
-      
       caseRegistSaveMutation.mutateAsync({
         fileUploadLink: res?.url,
       });
@@ -164,6 +176,17 @@ function CaseCompetitiontRegistrationPageComponent() {
     toaster(caseRegistDeleteMutation.mutateAsync());
   };
 
+  const checkRefferalCodeHandler = (code: string) => {
+    checkRefferalCode.mutateAsync({ refferalCode: code }).then((res) => {
+      toast({
+        title: "Check Result",
+        description: res,
+        duration: 3000,
+        isClosable: true,
+      });
+    });
+  };
+
   if (caseRegistQuery.isLoading) return <Loading />;
 
   if (caseRegist?.status === RegistrationStatus.SUBMITTED_CONFIRMED) {
@@ -175,7 +198,8 @@ function CaseCompetitiontRegistrationPageComponent() {
         mt="2em"
       >
         <Text fontSize="2xl" fontWeight="bold" color="blue">
-          Your registration has been confirmed, Please wait for the next information
+          Your registration has been confirmed, Please wait for the next
+          information
         </Text>
         <Text fontSize="2xl" fontWeight="bold" color="blue">
           Thank you for participating!
@@ -199,7 +223,8 @@ function CaseCompetitiontRegistrationPageComponent() {
         mx="auto"
       >
         <Text fontSize="2xl" fontWeight="bold" color="blue">
-          Your registration has been submitted. Our team will confirm your registration soon
+          Your registration has been submitted. Our team will confirm your
+          registration soon
         </Text>
         <Text fontSize="2xl" fontWeight="bold" color="blue">
           Thank you for participating!
@@ -217,6 +242,7 @@ function CaseCompetitiontRegistrationPageComponent() {
       initialImgUrl={caseRegist?.fileUploadLink ?? undefined}
       status={caseRegist?.status ?? RegistrationStatus.FORM_FILLING}
       cancelRegistration={cancelRegistration}
+      checkRefferal={checkRefferalCodeHandler}
     />
   );
 }

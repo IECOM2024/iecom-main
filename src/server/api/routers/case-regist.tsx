@@ -72,9 +72,13 @@ export const caseRegistRouter = createTRPCRouter({
           ])
           .optional(),
         fileUploadLink: z.string().optional(),
+        isUsingReferral: z.boolean().optional(),
+        referralCode: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const sanitizedRefferalCode = input.referralCode?.trim().toUpperCase();
+
       const savedCaseRegistData =
         await ctx.prisma.mainCompetitionRegistrationData.findFirst({
           where: {
@@ -82,7 +86,86 @@ export const caseRegistRouter = createTRPCRouter({
           },
         });
 
+        console.log(input.isUsingReferral)
+
       if (savedCaseRegistData) {
+        // logic to manage refferal usage
+        if (input.isUsingReferral) {
+          console.log(sanitizedRefferalCode)
+          const refferalData = await ctx.prisma.referral.findFirst({
+            where: {
+              id: sanitizedRefferalCode ?? "",
+            },
+          });
+          if (!refferalData) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Referral code not found.",
+            });
+          }
+
+          if (
+            savedCaseRegistData.isUsingReferral &&
+            savedCaseRegistData.referralId !== sanitizedRefferalCode
+          ) {
+            const decrementedRefferalData = await ctx.prisma.referral.update({
+              where: {
+                id: savedCaseRegistData.referralId!,
+              },
+              data: {
+                currentUsed: refferalData.currentUsed - 1,
+              },
+            });
+
+            const incrementedRefferalData = await ctx.prisma.referral.update({
+              where: {
+                id: sanitizedRefferalCode,
+              },
+              data: {
+                currentUsed: refferalData.currentUsed + 1,
+              },
+            });
+          } else if (!savedCaseRegistData.isUsingReferral) {
+            if (refferalData.currentUsed >= refferalData.maxUsed) {
+              throw new TRPCError({
+                code: "NOT_FOUND",
+                message: "Referral code has been exhausted.",
+              });
+            }
+            const newRefferalData = await ctx.prisma.referral.update({
+              where: {
+                id: sanitizedRefferalCode,
+              },
+              data: {
+                currentUsed: refferalData.currentUsed + 1,
+              },
+            });
+          }
+        } else {
+          if (savedCaseRegistData.isUsingReferral) {
+            const refferalData = await ctx.prisma.referral.findFirst({
+              where: {
+                id: savedCaseRegistData.referralId ?? "",
+              },
+            });
+
+            if (!refferalData) {
+              throw new TRPCError({
+                code: "NOT_FOUND",
+                message: "Referral code not found.",
+              });
+            }
+            const decrementedRefferalData = await ctx.prisma.referral.update({
+              where: {
+                id: savedCaseRegistData.referralId!,
+              },
+              data: {
+                currentUsed: refferalData.currentUsed - 1,
+              },
+            });
+          }
+        }
+
         const updatedCaseRegistData =
           await ctx.prisma.mainCompetitionRegistrationData.update({
             where: {
@@ -119,6 +202,8 @@ export const caseRegistRouter = createTRPCRouter({
               member2TwibbonLink: input.member2TwibbonLink,
               status: input.status,
               fileUploadLink: input.fileUploadLink,
+              isUsingReferral: input.isUsingReferral,
+              referralId: input.isUsingReferral ? sanitizedRefferalCode : undefined,
             },
           });
 
@@ -159,6 +244,8 @@ export const caseRegistRouter = createTRPCRouter({
             member2TwibbonLink: input.member2TwibbonLink,
             status: input.status,
             fileUploadLink: input.fileUploadLink,
+            isUsingReferral: input.isUsingReferral,
+            referralId: input.isUsingReferral ? sanitizedRefferalCode : undefined,
           },
         });
 
@@ -249,6 +336,32 @@ export const caseRegistRouter = createTRPCRouter({
       return deletedCaseRegistData;
     }
   ),
+
+  participantCheckRefferalCode: participantProcedure
+    .input(
+      z.object({
+        refferalCode: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const sanitizedRefferalCode = input.refferalCode.trim().toUpperCase();
+
+      const refferalData = await ctx.prisma.referral.findFirst({
+        where: {
+          id: sanitizedRefferalCode ?? "",
+        },
+      });
+
+      if (!refferalData) {
+        return "Referral code not found.";
+      }
+
+      if (refferalData.currentUsed >= refferalData.maxUsed) {
+        return "Referral code has been exhausted.";
+      }
+
+      return "Referral code available";
+    }),
 
   adminGetCaseRegistDataList: adminProcedure
     .input(

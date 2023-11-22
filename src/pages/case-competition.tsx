@@ -46,19 +46,20 @@ const REGIST_INFO: [string, number, string, string][] = [
     "Normal Registration",
     26,
     "400000",
-    "Open until November 21th 2023",
+    "Open until November 30th 2023",
   ],
 ];
 
 const TIMLINE_CONTENT: timelineContent[] = [
   ["Early Bird Registration", "21-31 October 2023"],
-  ["Regular Registration", "1-21 November 2023"],
-  ["D-Day Preliminary Stage", "25 November 2023"],
-  ["Preliminary Stage Announcement", "1 December 2023"],
+  ["Normal Registration", "1-30 November 2023"],
+  ["D-Day Preliminary Stage", "2 November 2023"],
+  ["Preliminary Stage Announcement", "8 December 2023"],
   ["D-Day Simulation Stage", "16 December 2023"],
   ["Simulation Stage Announcement", "30 December 2023"],
   ["D-day Amazing Race", " 26 January 2024"],
   ["Finalist Announcement", "28 January 2024"],
+  ["Company Visit", "29 January 2024"],
   ["D-Day Grand Final", " 30 January 2024"],
   ["Awarding Night", "30 January 2024"],
 ].map((e) => ({
