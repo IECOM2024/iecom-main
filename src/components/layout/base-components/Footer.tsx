@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import { MdCamera, MdCameraFront, MdPhotoCamera } from "react-icons/md";
 import { AiOutlineInstagram } from "react-icons/ai";
 import { LuAtSign } from "react-icons/lu";
+import { useIsMobile } from "~/utils/hooks/useIsMobile";
 
 export const Footer = () => {
   const router = useRouter();
+  const isMobile = useIsMobile()
 
   return (
     <Flex
@@ -22,13 +24,17 @@ export const Footer = () => {
       py="3em"
       px="2em"
       zIndex="10"
+      flexDir={isMobile ? "column" : undefined}
     >
       <Image src="/main-icon.webp" alt="IECOM 2024" w="auto" h="6em" />
-      <Flex
-        flexDir="column"
-        w="15em"
-        fontFamily="heading"
-      >
+      <Flex flexDir="column">
+        <Text>Sponsored By :</Text>
+        <Flex w="100%" justifyContent="space-between" flexDir={isMobile ? "column" : undefined}>
+          <Image src="/sponsor/kpi.webp" alt="KPI" w="auto" h="5em" />
+          <Image src="/sponsor/zekindo.webp" alt="IEEE" w="auto" h="5em" />
+        </Flex>
+      </Flex>
+      <Flex flexDir="column" w="15em" fontFamily="heading" alignItems={isMobile ? "center" : undefined}>
         <Text fontWeight="bold" textAlign="left" w="100%" h="3rem">
           {" "}
           Contact us:{" "}

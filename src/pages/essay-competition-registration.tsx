@@ -153,6 +153,14 @@ function EssayCompetitiontRegistrationPageComponent() {
         <Text fontSize="2xl" fontWeight="bold" color="blue">
           Thank you for participating!
         </Text>
+        <Button
+          mt="1em"
+          colorScheme="blue"
+          onClick={() => router.push("/essay-competition-submission")}
+          w="min(95%, 1000px)"
+        >
+          Submit My Essay
+        </Button>
       </Flex>
     );
   }
@@ -181,6 +189,21 @@ function EssayCompetitiontRegistrationPageComponent() {
       </Flex>
     );
   }
+
+  return (
+    <Flex
+      color="blue"
+      fontWeight="bold"
+      flexDirection="column"
+      alignItems="center"
+      fontSize="5xl"
+      py="4em"
+      px="3em"
+      mx="auto"
+    >
+      This form is closed, thank you for your attention!
+    </Flex>
+  );
 
   return (
     <EssayCompetitionRegistration

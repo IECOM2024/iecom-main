@@ -86,12 +86,12 @@ export const caseRegistRouter = createTRPCRouter({
           },
         });
 
-        console.log(input.isUsingReferral)
+      console.log(input.isUsingReferral);
 
       if (savedCaseRegistData) {
         // logic to manage refferal usage
         if (input.isUsingReferral) {
-          console.log(sanitizedRefferalCode)
+          console.log(sanitizedRefferalCode);
           const refferalData = await ctx.prisma.referral.findFirst({
             where: {
               id: sanitizedRefferalCode ?? "",
@@ -203,7 +203,9 @@ export const caseRegistRouter = createTRPCRouter({
               status: input.status,
               fileUploadLink: input.fileUploadLink,
               isUsingReferral: input.isUsingReferral,
-              referralId: input.isUsingReferral ? sanitizedRefferalCode : undefined,
+              referralId: input.isUsingReferral
+                ? sanitizedRefferalCode
+                : undefined,
             },
           });
 
@@ -245,7 +247,9 @@ export const caseRegistRouter = createTRPCRouter({
             status: input.status,
             fileUploadLink: input.fileUploadLink,
             isUsingReferral: input.isUsingReferral,
-            referralId: input.isUsingReferral ? sanitizedRefferalCode : undefined,
+            referralId: input.isUsingReferral
+              ? sanitizedRefferalCode
+              : undefined,
           },
         });
 
@@ -385,9 +389,47 @@ export const caseRegistRouter = createTRPCRouter({
               mode: "insensitive",
               not: null,
             },
+            leaderPhoneNumber: {
+              contains:
+                input.filterBy === "phone" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            leaderEmail: {
+              contains:
+                input.filterBy === "email" ? input.searchQuery : undefined,
+              mode: "insensitive",
+            },
+            leaderInstitution: {
+              contains:
+                input.filterBy === "institution"
+                  ? input.searchQuery
+                  : undefined,
+              mode: "insensitive",
+            },
+            status:
+              input.filterBy === "status"
+                ? {
+                    equals:
+                      input.filterBy === "status"
+                        ? (input.searchQuery as RegistrationStatus)
+                        : undefined,
+                  }
+                : undefined,
           },
           skip: offset,
           take: limitPerPage,
+        });
+
+      const totalCaseRegistData =
+        await ctx.prisma.mainCompetitionRegistrationData.count({
+          where: {
+            teamName: {
+              contains:
+                input.filterBy === "teamName" ? input.searchQuery : undefined,
+              mode: "insensitive",
+              not: null,
+            },
+          },
         });
 
       return {
@@ -395,7 +437,7 @@ export const caseRegistRouter = createTRPCRouter({
         metadata: {
           currentPage: currentPage,
           limitPerPage: limitPerPage,
-          total: CaseRegistDataList.length,
+          total: totalCaseRegistData,
         },
       };
     }),

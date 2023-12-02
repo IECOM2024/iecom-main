@@ -20,7 +20,7 @@ export const essaySubmisRouter = createTRPCRouter({
       include: {
         user: true,
         essayCompetitionRegistrationData: true,
-      }
+      },
     });
 
     if (essaySubmission) {
@@ -53,7 +53,7 @@ export const essaySubmisRouter = createTRPCRouter({
       include: {
         user: true,
         essayCompetitionRegistrationData: true,
-      }
+      },
     });
 
     return newEssaySubmission;
@@ -94,41 +94,47 @@ export const essaySubmisRouter = createTRPCRouter({
       return updatedEssaySubmission;
     }),
 
-  adminGetAllSubmissions: adminProcedure.input(z.object({
-    page: z.number().optional(),
-    rowPerPage: z.number().optional(),
-    filterBy: z.string().optional(),
-    searchQuery: z.string().optional(),
-  })).query(async ({ ctx, input }) => {
-    const offset = input.page && input.rowPerPage ? (input.page - 1) * input.rowPerPage : 0;
+  adminGetAllSubmissions: adminProcedure
+    .input(
+      z.object({
+        page: z.number().optional(),
+        rowPerPage: z.number().optional(),
+        filterBy: z.string().optional(),
+        searchQuery: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const offset =
+        input.page && input.rowPerPage
+          ? (input.page - 1) * input.rowPerPage
+          : 0;
 
-    const essaySubmissions = await ctx.prisma.essaySubmission.findMany({
-      include: {
-        user: true,
-        essayCompetitionRegistrationData: true,
-      },
-      where: {
-        essayCompetitionRegistrationData: {
-          user: {
-            name: {
-              contains: input.filterBy === "name" ? input.searchQuery : "",
-              mode: "insensitive",
+      const essaySubmissions = await ctx.prisma.essaySubmission.findMany({
+        include: {
+          user: true,
+          essayCompetitionRegistrationData: true,
+        },
+        where: {
+          essayCompetitionRegistrationData: {
+            user: {
+              name: {
+                contains: input.filterBy === "name" ? input.searchQuery : "",
+                mode: "insensitive",
+              },
             },
           },
         },
-      },
-      skip: offset,
-      take: input.rowPerPage,
-    });
+        skip: offset,
+        take: input.rowPerPage,
+      });
 
-    const essaySubmissionCount = await ctx.prisma.essaySubmission.count();
+      const essaySubmissionCount = await ctx.prisma.essaySubmission.count();
 
-    return {
-      data: essaySubmissions,
-      metadata: {
-        total: essaySubmissionCount,
-        
-      }
-    }
-  })
+      return {
+        data: essaySubmissions,
+        metadata: {
+          total: essaySubmissionCount,
+        },
+      };
+    }),
 });

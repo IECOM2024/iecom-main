@@ -234,6 +234,21 @@ function CaseCompetitiontRegistrationPageComponent() {
   }
 
   return (
+    <Flex
+      color="blue"
+      fontWeight="bold"
+      flexDirection="column"
+      alignItems="center"
+      fontSize="5xl"
+      py="4em"
+      px="3em"
+      mx="auto"
+    >
+      This form is closed, thank you for your attention!
+    </Flex>
+  )
+
+  return (
     <CaseCompetitionRegistration
       initialFormValues={caseRegist}
       submitForm={submitForm}

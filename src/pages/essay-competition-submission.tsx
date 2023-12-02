@@ -152,9 +152,8 @@ const EssaySubmissionPageComponent = () => {
         Submission Rules :
       </Text>
       <OrderedList color="blue">
-        <ListItem>Essay must not racist</ListItem>
-        <ListItem>Essay must respect Labora Lestari Purba</ListItem>
-        <ListItem>Essay must be in English</ListItem>
+        <ListItem>Essay must be in a PDF format</ListItem>
+        <ListItem>The file size must be less than 10MB</ListItem>
       </OrderedList>
       <Flex w="100%" justifyContent="center" mt="1em">
         <FileInput

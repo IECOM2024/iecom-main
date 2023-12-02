@@ -35,7 +35,7 @@ export const CaseRegistAdministration = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [limitPerPage, setLimitPerPage] = useState(15);
   const [filterBy, setFilterBy] = useState("all");
-  const [searchQuery, setSearchQuery] = useState(undefined);
+  const [searchQuery, setSearchQuery] = useState<string | undefined>(undefined);
 
   const [jumpInput, setJumpInput] = useState("1");
 
@@ -199,6 +199,56 @@ export const CaseRegistAdministration = () => {
         <Text ml="1em" fontWeight="bold" color="black">
           Records per page
         </Text>
+
+        <Flex>
+          <Select
+            borderRadius="12"
+            cursor="pointer"
+            color="gray.500"
+            borderWidth="2px"
+            borderColor="gray.500"
+            w="8em"
+            _active={{
+              bg: "rgba(47, 46, 46, 0.6)",
+              shadow: "none",
+            }}
+            onChange={(e) => setFilterBy(e.target.value)}
+            defaultValue={"all"}
+          >
+            <option value={"all"}>None</option>
+            <option value={"name"}>Team Name</option>
+            <option value={"email"}>Leader Email</option>
+            <option value={"phone"}>Leader Phone Number</option>
+            <option value={"institution"}>Leader Institution</option>
+            <option value={"status"}>Status</option>
+          </Select>
+          {filterBy === "status" ? (
+            <Select
+              borderRadius="12"
+              cursor="pointer"
+              color="gray.500"
+              borderWidth="2px"
+              borderColor="gray.500"
+              w="8em"
+              _active={{
+                bg: "rgba(47, 46, 46, 0.6)",
+                shadow: "none",
+              }}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            >
+              <option value={RegistrationStatus.FORM_FILLING}>FORM_FILLING</option>
+              <option value={RegistrationStatus.SUBMITTED_UNCONFIRMED}>SUBMITTED_UNCONFIRMED</option>
+              <option value={RegistrationStatus.SUBMITTED_CONFIRMED}>SUBMITTED_CONFIRMED</option>
+            </Select>
+          ) : (
+            <Input
+              ml="1em"
+              placeholder="Search"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery ?? ""}
+            />
+          )}
+        </Flex>
       </Flex>
 
       {caseRegistList.length < 1 ? (

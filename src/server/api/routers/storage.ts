@@ -28,14 +28,7 @@ export const storageRouter = createTRPCRouter({
           responseHeader: ["Content-Type"]
         }
       ]);
-
-      const ref = bucket.file(`${input.folder}/${input.filename}`);
-
-      const [url] = await ref.getSignedUrl({
-        version: "v4",
-        action: "read",
-        expires: Date.now() + env.URL_EXPIRATION_TIME
-      });
+      const url = `https://storage.cloud.google.com/${env.BUCKET_NAME}/${input.folder}/${input.filename}`;
 
       return {
         url

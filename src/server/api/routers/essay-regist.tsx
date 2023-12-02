@@ -221,7 +221,17 @@ export const essayRegistRouter = createTRPCRouter({
                   : undefined,
               mode: "insensitive",
             },
+            status:
+              input.filterBy === "status"
+                ? {
+                    equals:
+                      input.filterBy === "status"
+                        ? (input.searchQuery as RegistrationStatus)
+                        : undefined,
+                  }
+                : undefined,
           },
+
           skip: offset,
           take: limitPerPage,
         });
